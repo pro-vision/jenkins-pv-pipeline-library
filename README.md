@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/pro-vision/jenkins-pv-pipeline-library.svg?branch=master)](https://travis-ci.org/pro-vision/jenkins-pv-pipeline-library)
+[![Code Coverage](https://codecov.io/gh/pro-vision/jenkins-pv-pipeline-library/branch/master/graph/badge.svg)](https://codecov.io/gh/pro-vision/jenkins-pv-pipeline-library)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.pro-vision.devops.jenkins/de.pro-vision.devops.jenkins.pv-pipeline-library/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.pro-vision.devops.jenkins/de.pro-vision.devops.jenkins.pv-pipeline-library)
+[![Sonatype Snapshots](https://img.shields.io/nexus/s/https/oss.sonatype.org/de.pro-vision.devops.jenkins/de.pro-vision.devops.jenkins.pv-pipeline-library.svg)](https://oss.sonatype.org/content/repositories/snapshots/io/wcm/devops/jenkins/io.wcm.devops.jenkins.pipeline-library/)
+
 # PV Pipeline Library
 
 The PV pipeline library is an extension for the
