@@ -1,0 +1,3 @@
+[submodule "submodules/jenkins-pipeline-library/master"]
+	path = submodules/jenkins-pipeline-library/master
+	url = https://github.com/wcm-io-devops/jenkins-pipeline-library.git
