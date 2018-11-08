@@ -1,6 +1,6 @@
 /*-
  * #%L
- * wcm.io
+ * pro!vision GmbH
  * %%
  * Copyright (C) 2018 pro!vision GmbH
  * %%

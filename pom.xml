@@ -445,7 +445,7 @@
           <configuration>
             <licenseName>apache_v2</licenseName>
             <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
-            <projectName>wcm.io</projectName>
+            <projectName>pro!vision GmbH</projectName>
             <roots>
               <root>src</root>
               <root>test</root>
