@@ -1,0 +1,14 @@
+// jenkinsfile for running integrationtest without maven deploy
+@Library('pipeline-library') pipelineLibrary
+@Library('pv-pipeline-library') pvPipelineLibrary
+
+import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
+import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
+
+Map config = [
+  (STAGE_COMPILE): [
+    (MAVEN): [(MAVEN_GOALS): "clean install"]
+  ],
+]
+
+routeDefaultJenkinsFile(config)

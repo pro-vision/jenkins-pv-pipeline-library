@@ -1,0 +1,26 @@
+/**
+ * gdsl for pipeline steps that do not need a allocated node
+ */
+def pvPipelineCtx = context(scope: scriptScope())
+contributor(pvPipelineCtx) {
+  method(name: 'buildFeature', type: 'void', params: [config: Map], doc: 'Executes a default build for a feature branch')
+  method(name: 'buildDefault', type: 'void', params: [config: Map], doc: 'Executes a default build for master/develop')
+  method(name: 'defaultAnalyzeStage', type: 'void', params: [config: Map], doc: 'Default analyze stage for maven builds')
+  method(name: 'defaultBuildWrapper', type: 'void', params: [config: Map], doc: 'Default wrapper which can be used to simplify your builds')
+  method(name: 'defaultCompileStage', type: 'void', params: [config: Map], doc: 'Default compile stage for maven builds')
+  method(name: 'defaultPreparationStage', type: 'void', params: [config: Map], doc: 'Default preparation stage for checkout, artifact cleaning etc')
+  method(name: 'defaultResultsStage', type: 'void', params: [config: Map], doc: 'Default result stage build artifact analysing and publishing (junit, pmd, checkstyle etc.)')
+  method(name: 'deleteArtifactsFromRepository', type: 'void', params: [groupIds: 'List<String>'], doc: 'Deletes given group ids from local maven repository')
+  method(name: 'deleteProjectArtifactsFromRepository', type: 'void', params: [pomPath: String], doc: 'Deletes projects artifacts from local maven repository by reading defined pom.xml')
+  method(name: 'featurePreparationStage', type: 'void', params: [config: Map], doc: 'Preparation stage for feature branches')
+  method(name: 'getDefaultMavenDefines', type: 'Map', doc: 'Returns the default maven defines based on the detected project structure')
+  method(name: 'routeDefaultJenkinsFile', type: 'void', params: [config: Map], doc: 'Default build step to be used in the projects root Jenkinsfile')
+  method(name: 'setJobProperties', type: 'void', params: [config: Map], doc: 'Utility step to set job properties based on the given configuration')
+  method(name: 'setupPVTools', type: 'void', params: [config: Map], doc: 'Sets up Maven and JDK by using either defaults or the provided configuration')
+  property(name: 'defaults', type: 'defaults', doc: 'Defaults utility')
+}
+
+def defaultsCtx = context(ctype: "defaults", scope: scriptScope())
+contributor(defaultsCtx) {
+  method(name: 'getTriggers', type: 'List', doc: 'Returns the default triggers')
+}

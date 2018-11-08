@@ -1,0 +1,15 @@
+tool:
+  maven:
+    default: defaultMaven
+  jdk:
+    default: defaultJDK
+  nodejs:
+    default: defaultNodeJS
+jobs:
+  default:
+    properties:
+      pipelineTriggers:
+        pollSCM:
+        - defaultScmPolling1
+        - defaultScmPolling2
+
