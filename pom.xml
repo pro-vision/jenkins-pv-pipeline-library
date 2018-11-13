@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
     <version>2.37</version>
-    <relativePath/>
+    <relativePath />
   </parent>
 
   <groupId>de.pro-vision.devops.jenkins</groupId>
   <artifactId>de.pro-vision.devops.jenkins.pv-pipeline-library</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
 
   <scm>
     <connection>scm:git:git@github.com:pro-vision/jenkins-pv-pipeline-library.git</connection>
     <developerConnection>scm:git:git@github.com:pro-vision/jenkins-pv-pipeline-library.git</developerConnection>
     <url>https://github.com/pro-vision/jenkins-pv-pipeline-library</url>
-    <tag>HEAD</tag>
+    <tag>1.0.0</tag>
   </scm>
 
   <inceptionYear>2018</inceptionYear>
