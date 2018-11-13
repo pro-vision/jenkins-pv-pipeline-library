@@ -38,8 +38,8 @@ import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
 void call(Map config = [:]) {
   PipelineConfiguration pipelineConfig = new PipelineConfiguration(this)
   Map toolsConfig = (Map) config[TOOLS] ?: [:]
-  String defaultMaven = pipelineConfig.getDefaultMaven()
-  String defaultJdk = pipelineConfig.getDefaultJdk()
+  String defaultMaven = pipelineConfig.getMaven()
+  String defaultJdk = pipelineConfig.getJdk()
   String toolMaven = toolsConfig[TOOL_MAVEN] ?: defaultMaven
   String toolJdk = toolsConfig[TOOL_JDK] ?: defaultJdk
 

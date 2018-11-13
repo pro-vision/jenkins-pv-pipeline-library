@@ -61,18 +61,43 @@ class PipelineConfigurationTest extends CpsScriptTestBase {
   @Test
   void shouldReturnDefaults() {
     underTest = new PipelineConfiguration(this.script)
-    Assert.assertEquals("defaultJDK", underTest.getDefaultJdk())
-    Assert.assertEquals("defaultMaven", underTest.getDefaultMaven())
-    Assert.assertEquals("defaultNodeJS", underTest.getDefaultNodeJs())
+    Assert.assertEquals("defaultJDK", underTest.getJdk())
+    Assert.assertEquals("defaultMaven", underTest.getMaven())
+    Assert.assertEquals("defaultNodeJS", underTest.getNodeJs())
     List expectedScmPollingConfig = [
       "defaultScmPolling"
     ]
     Assert.assertEquals(expectedScmPollingConfig, underTest.getDefaultSCMPolling())
   }
 
-  @Test(expected = AbortException.class)
+  @Test
+  void shouldReturnCorrectJdk() {
+    underTest = new PipelineConfiguration(this.script,"pv-pipeline-library/config/config-multiple-tools.yaml")
+    Assert.assertEquals("sun-java8-jdk", underTest.getJdk("8"))
+    Assert.assertEquals("sun-java7-jdk", underTest.getJdk("jdk_7"))
+    Assert.assertEquals("sun-java8-192-jdk", underTest.getJdk("1.8.0_192"))
+  }
+
+  @Test
+  void shouldReturnCorrectMaven() {
+    underTest = new PipelineConfiguration(this.script,"pv-pipeline-library/config/config-multiple-tools.yaml")
+    Assert.assertEquals("apache-maven-3.6.0", underTest.getMaven("3.6.0"))
+    Assert.assertEquals("apache-maven-3.5.4", underTest.getMaven("3_5_4"))
+    Assert.assertEquals("maven-test1", underTest.getMaven("11__22__3_"))
+    Assert.assertEquals("maven-test2", underTest.getMaven("_11___22_3__4"))
+    Assert.assertEquals("maven-test3", underTest.getMaven("11__22__a_"))
+  }
+
+  @Test
+  void shouldReturnCorrectNodeJs() {
+    underTest = new PipelineConfiguration(this.script, "pv-pipeline-library/config/config-multiple-tools.yaml")
+    Assert.assertEquals("nodejs-11.1.0", underTest.getNodeJs("11.1.0"))
+    Assert.assertEquals("nodejs-10.13.0", underTest.getNodeJs("10_13_0"))
+  }
+
+  @Test
   void shouldReturnMultipleScmPollingConfigs() {
-    underTest = new PipelineConfiguration(this.script, "pv-pipeline-library/config/multiple-polling.yaml")
+    underTest = new PipelineConfiguration(this.script, "pv-pipeline-library/config/config-multiple-polling.yaml")
     List expectedScmPollingConfig = [
       "defaultScmPolling1",
       "defaultScmPolling2"
@@ -89,18 +114,18 @@ class PipelineConfigurationTest extends CpsScriptTestBase {
   @Test(expected = AbortException.class)
   void shouldAbortOnMissingJdkConfig() {
     underTest = new PipelineConfiguration(this.script, "pv-pipeline-library/config/invalid-config.yaml")
-    underTest.getDefaultJdk()
+    underTest.getJdk()
   }
 
   @Test(expected = AbortException.class)
   void shouldAbortOnMissingMavenConfig() {
     underTest = new PipelineConfiguration(this.script, "pv-pipeline-library/config/invalid-config.yaml")
-    underTest.getDefaultMaven()
+    underTest.getMaven()
   }
 
   @Test(expected = AbortException.class)
   void shouldAbortOnMissingNodsJsConfig() {
     underTest = new PipelineConfiguration(this.script, "pv-pipeline-library/config/invalid-config.yaml")
-    underTest.getDefaultNodeJs()
+    underTest.getNodeJs()
   }
 }

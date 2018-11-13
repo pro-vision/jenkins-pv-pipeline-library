@@ -27,14 +27,16 @@ node() {
 
   integrationTestUtils.integrationTestUtils.runTestsOnPackage("de.provision.devops.jenkins.pipeline") {
     integrationTestUtils.runTest("PipelineConfiguration") {
-      PipelineConfiguration configuration = new PipelineConfiguration(this)
-      integrationTestUtils.assertEquals("sun-java8-jdk",configuration.getDefaultJdk())
-      integrationTestUtils.assertEquals("apache-maven3",configuration.getDefaultMaven())
-      integrationTestUtils.assertEquals("nodejs-6",configuration.getDefaultNodeJs())
-      integrationTestUtils.assertEquals(['H/15 * * * 0-6'],configuration.getDefaultSCMPolling())
+      PipelineConfiguration configuration = new PipelineConfiguration(this, "test/pv-pipeline-library/config/config.yaml")
+      integrationTestUtils.assertEquals("defaultJDK",configuration.getJdk())
+      integrationTestUtils.assertEquals("defaultMaven",configuration.getMaven())
+      integrationTestUtils.assertEquals("defaultNodeJS",configuration.getNodeJs())
+      integrationTestUtils.assertEquals("maven-test1",configuration.getMaven("11__22__3_"))
+      integrationTestUtils.assertEquals("maven-test2",configuration.getMaven("_11___22_3__4"))
+      integrationTestUtils.assertEquals("maven-test3",configuration.getMaven("11__22__a_"))
+      integrationTestUtils.assertEquals(['defaultScmPolling'],configuration.getDefaultSCMPolling())
     }
   }
-
 
   integrationTestUtils.integrationTestUtils.runTestsOnPackage("de.provision.devops.jenkins.pipeline.utils") {
     integrationTestUtils.runTest("ConfigConstants") {

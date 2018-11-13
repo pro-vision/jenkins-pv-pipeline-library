@@ -1,0 +1,24 @@
+tool:
+  maven:
+    default: defaultMaven
+    3.6.0: apache-maven-3.6.0
+    3_5_4: apache-maven-3.5.4
+    11__22__3_ : maven-test1
+    _11___22_3__4 : maven-test2
+    11__22__a_ : maven-test3
+  jdk:
+    default: defaultJDK
+    8: sun-java8-jdk
+    jdk_7: sun-java7-jdk
+    1.8.0_192: sun-java8-192-jdk
+  nodejs:
+    default: defaultNodeJS
+    11.1.0: nodejs-11.1.0
+    10_13_0: nodejs-10.13.0
+jobs:
+  default:
+    properties:
+      pipelineTriggers:
+        pollSCM:
+        - defaultScmPolling
+

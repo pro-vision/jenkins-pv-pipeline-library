@@ -24,6 +24,9 @@ import io.wcm.devops.jenkins.pipeline.utils.logging.Logger
 import io.wcm.devops.jenkins.pipeline.utils.resources.YamlLibraryResource
 import org.jenkinsci.plugins.workflow.cps.DSL
 
+/**
+ * Configuration class for the pro!vision pipeline library
+ */
 class PipelineConfiguration implements Serializable {
 
   private static final long serialVersionUID = 1L
@@ -45,7 +48,12 @@ class PipelineConfiguration implements Serializable {
     this.configPath = configPath
   }
 
-  Object getConfig() {
+  /**
+   * Loads and returns the configuration
+   *
+   * @return The loaded yaml configuration as mal
+   */
+  Map getConfig() {
     if (this.cfg == null) {
       YamlLibraryResource configResource = new YamlLibraryResource((DSL) this.script.steps, this.configPath)
       this.cfg = configResource.load()
@@ -53,36 +61,60 @@ class PipelineConfiguration implements Serializable {
     return this.cfg
   }
 
-  String getDefaultJdk() {
+  /**
+   * Retrieves the name of JDK installation from the configuration.
+   * When no key is provided the default name is returned
+   *
+   * @param key The key of the JDK tool to retrieve the tool name for
+   * @return The name of the JDK tool
+   */
+  String getJdk(String key = "default") {
     Object ret = null
     try {
-      ret = this.getConfig().tool.jdk.default
+      ret = _getEntryByKey((Map) this.getConfig().tool.jdk, key)
     } catch (NullPointerException ex) {
-      failOnMissingConfig("jenkins.tools.jdk.default")
+      failOnMissingConfig("jenkins.tools.jdk.$key")
     }
     return ret
   }
 
-  String getDefaultMaven() {
+  /**
+   * Retrieves the name of Maven installation from the configuration.
+   * When no key is provided the default name is returned.
+   *
+   * @param key The key of the Maven tool to retrieve the tool name for
+   * @return The name of the Maven tool
+   */
+  String getMaven(String key = "default") {
     Object ret
     try {
-      ret = this.getConfig().tool.maven.default
+      ret = _getEntryByKey((Map) this.getConfig().tool.maven, key)
     } catch (NullPointerException ex) {
-      failOnMissingConfig("jenkins.tools.maven.default")
+      failOnMissingConfig("jenkins.tools.maven.$key")
     }
     return ret
   }
 
-  String getDefaultNodeJs() {
+  /**
+   * Retrieves the name of NodeJS installation from the configuration.
+   * When no key is provided the default name is returned.
+   *
+   * @param key The key of the NodeJS tool to retrieve the tool name for
+   * @return The name of the NodeJS tool
+   */
+  String getNodeJs(String key = "default") {
     Object ret
     try {
-      ret = this.getConfig().tool.nodejs.default
+      ret = _getEntryByKey((Map) this.getConfig().tool.nodejs, key)
     } catch (NullPointerException ex) {
-      failOnMissingConfig("jenkins.tools.nodejs.default")
+      failOnMissingConfig("jenkins.tools.nodejs.$key")
     }
     return ret
   }
 
+  /**
+   * @return The default scm polling configuration
+   */
   List getDefaultSCMPolling() {
     Object ret
     try {
@@ -93,7 +125,34 @@ class PipelineConfiguration implements Serializable {
     return ret
   }
 
-  String failOnMissingConfig(String id) {
+  /**
+   * Utility function to retrieve a tool by its key from the configuration
+   *
+   * @param config The configuration to retrieve the item with the matching key from
+   * @param key The key to search for
+   * @return The found configuration entry
+   */
+  private String _getEntryByKey(Map config, String key) {
+    // apply fix for names like 3_5_4, the underscores are getting stripped
+    if (key =~ /^\d[\d_]+$/) {
+      key = key.replace("_","")
+    }
+    String ret = null
+    for (entry in config) {
+      if ("${entry.key}" == "$key") {
+        ret = entry.value
+        break
+      }
+    }
+    return ret
+  }
+
+  /**
+   * Utility function to mark the configuration retrieve process as failed.
+   *
+   * @param id The id of the configuration to fail for.
+   */
+  void failOnMissingConfig(String id) {
     log.error("Unable to retrieve '$id' from config. Make sure that a valid config is present!")
     script.error("Unable to retrieve '$id' from config. Make sure that a valid config is present!")
   }
