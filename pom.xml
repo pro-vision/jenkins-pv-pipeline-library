@@ -16,7 +16,7 @@
 
   <scm>
     <connection>scm:git:git@github.com:pro-vision/jenkins-pv-pipeline-library.git</connection>
-    <developerConnection>scm:git@github.com:pro-vision/jenkins-pv-pipeline-library.git</developerConnection>
+    <developerConnection>scm:git:git@github.com:pro-vision/jenkins-pv-pipeline-library.git</developerConnection>
     <url>https://github.com/pro-vision/jenkins-pv-pipeline-library</url>
     <tag>HEAD</tag>
   </scm>
