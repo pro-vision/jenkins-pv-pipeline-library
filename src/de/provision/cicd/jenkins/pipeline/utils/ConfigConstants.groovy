@@ -19,8 +19,6 @@
  */
 package de.provision.cicd.jenkins.pipeline.utils
 
-import de.provision.devops.jenkins.pipeline.utils.ConfigConstants as NewConfigConstants
-
 /**
  * Legacy constants for configuration.
  * This class was kept as adapter class for legacy projects accessing the old package
@@ -28,95 +26,95 @@ import de.provision.devops.jenkins.pipeline.utils.ConfigConstants as NewConfigCo
 @Deprecated
 class ConfigConstants {
 
-  public static final String JOB_TYPE = NewConfigConstants.JOB_TYPE
-  public static final String JOB_TYPE_FEATURE = NewConfigConstants.JOB_TYPE_FEATURE
+  public static final String JOB_TYPE = "jobType"
+  public static final String JOB_TYPE_FEATURE = "feature"
 
-  public static final String NODE = NewConfigConstants.NODE
+  public static final String NODE = "node"
 
-  public static final String PROPERTIES = NewConfigConstants.PROPERTIES
+  public static final String PROPERTIES = "properties"
 
-  public static final String PROPERTIES_PIPELINE_TRIGGERS = NewConfigConstants.PROPERTIES_PIPELINE_TRIGGERS
-  public static final String PROPERTIES_PARAMETERS = NewConfigConstants.PROPERTIES_PARAMETERS
-  public static final String PROPERTIES_BUILD_DISCARDER = NewConfigConstants.PROPERTIES_BUILD_DISCARDER
-  public static final String PROPERTIES_BUILD_DISCARDER_ARTIFACT_DAYS_TO_KEEP = NewConfigConstants.PROPERTIES_BUILD_DISCARDER_ARTIFACT_DAYS_TO_KEEP
-  public static final String PROPERTIES_BUILD_DISCARDER_ARTIFACT_NUM_TO_KEEP = NewConfigConstants.PROPERTIES_BUILD_DISCARDER_ARTIFACT_NUM_TO_KEEP
-  public static final String PROPERTIES_BUILD_DISCARDER_DAYS_TO_KEEP = NewConfigConstants.PROPERTIES_BUILD_DISCARDER_DAYS_TO_KEEP
-  public static final String PROPERTIES_BUILD_DISCARDER_NUM_TO_KEEP = NewConfigConstants.PROPERTIES_BUILD_DISCARDER_NUM_TO_KEEP
-  public static final String PROPERTIES_DISABLE_CONCURRENT_BUILDS = NewConfigConstants.PROPERTIES_DISABLE_CONCURRENT_BUILDS
-
-
-  public static final String STAGE_COMPILE = NewConfigConstants.STAGE_COMPILE
-  public static final String STAGE_ANALYZE = NewConfigConstants.STAGE_ANALYZE
-
-  public static final String STAGE_PREPARATION = NewConfigConstants.STAGE_PREPARATION
-
-  public static final String STAGE_PREPARATION_CHECKOUT_SCM = NewConfigConstants.STAGE_PREPARATION_CHECKOUT_SCM
-  public static final String STAGE_PREPARATION_PURGE_SHAPSHOTS = NewConfigConstants.STAGE_PREPARATION_PURGE_SHAPSHOTS
-  public static final String STAGE_PREPARATION_SET_BUILD_NAME = NewConfigConstants.STAGE_PREPARATION_SET_BUILD_NAME
-  public static final String STAGE_PREPARATION_SETUP_TOOLS = NewConfigConstants.STAGE_PREPARATION_SETUP_TOOLS
-
-  public static final String STAGE_RESULTS = NewConfigConstants.STAGE_RESULTS
-
-  public static final String STAGE_RESULTS_ANALYSIS_PUBLISHER = NewConfigConstants.STAGE_RESULTS_ANALYSIS_PUBLISHER
-  public static final String STAGE_RESULTS_ANALYSIS_PUBLISHER_ENABLED = NewConfigConstants.STAGE_RESULTS_ANALYSIS_PUBLISHER_ENABLED
-
-  public static final String STAGE_RESULTS_CHECKSTYLE = NewConfigConstants.STAGE_RESULTS_CHECKSTYLE
-  public static final String STAGE_RESULTS_CHECKSTYLE_ENABLED = NewConfigConstants.STAGE_RESULTS_CHECKSTYLE_ENABLED
-
-  public static final String STAGE_RESULTS_JACOCO = NewConfigConstants.STAGE_RESULTS_JACOCO
-  public static final String STAGE_RESULTS_JACOCO_ENABLED = NewConfigConstants.STAGE_RESULTS_JACOCO_ENABLED
-  public static final String STAGE_RESULTS_JACOCO_BUILD_OVER_BUILD = NewConfigConstants.STAGE_RESULTS_JACOCO_BUILD_OVER_BUILD
-  public static final String STAGE_RESULTS_JACOCO_CHANGE_BUILD_STATUS = NewConfigConstants.STAGE_RESULTS_JACOCO_CHANGE_BUILD_STATUS
-  public static final String STAGE_RESULTS_JACOCO_CLASS_PATTERN = NewConfigConstants.STAGE_RESULTS_JACOCO_CLASS_PATTERN
-  public static final String STAGE_RESULTS_JACOCO_DELTA_BRANCH_COVERAGE = NewConfigConstants.STAGE_RESULTS_JACOCO_DELTA_BRANCH_COVERAGE
-  public static final String STAGE_RESULTS_JACOCO_DELTA_CLASS_COVERAGE = NewConfigConstants.STAGE_RESULTS_JACOCO_DELTA_CLASS_COVERAGE
-  public static final String STAGE_RESULTS_JACOCO_DELTA_COMPLEXITY_COVERAGE = NewConfigConstants.STAGE_RESULTS_JACOCO_DELTA_COMPLEXITY_COVERAGE
-  public static final String STAGE_RESULTS_JACOCO_DELTA_INSTRUCTION_COVERAGE = NewConfigConstants.STAGE_RESULTS_JACOCO_DELTA_INSTRUCTION_COVERAGE
-  public static final String STAGE_RESULTS_JACOCO_DELTA_LINE_COVERAGE = NewConfigConstants.STAGE_RESULTS_JACOCO_DELTA_LINE_COVERAGE
-  public static final String STAGE_RESULTS_JACOCO_DELTA_METHOD_COVERAGE = NewConfigConstants.STAGE_RESULTS_JACOCO_DELTA_METHOD_COVERAGE
-  public static final String STAGE_RESULTS_JACOCO_EXCLUSION_PATTERN = NewConfigConstants.STAGE_RESULTS_JACOCO_EXCLUSION_PATTERN
-  public static final String STAGE_RESULTS_JACOCO_EXEC_PATTERN = NewConfigConstants.STAGE_RESULTS_JACOCO_EXEC_PATTERN
-  public static final String STAGE_RESULTS_JACOCO_INCLUSION_PATTERN = NewConfigConstants.STAGE_RESULTS_JACOCO_INCLUSION_PATTERN
-
-  public static final String STAGE_RESULTS_JACOCO_MAXIMUM_BRANCH_COVERAGE = NewConfigConstants.STAGE_RESULTS_JACOCO_MAXIMUM_BRANCH_COVERAGE
-  public static final String STAGE_RESULTS_JACOCO_MAXIMUM_CLASS_COVERAGE = NewConfigConstants.STAGE_RESULTS_JACOCO_MAXIMUM_CLASS_COVERAGE
-  public static final String STAGE_RESULTS_JACOCO_MAXIMUM_COMPLEXITY_COVERAGE = NewConfigConstants.STAGE_RESULTS_JACOCO_MAXIMUM_COMPLEXITY_COVERAGE
-  public static final String STAGE_RESULTS_JACOCO_MAXIMUM_INSTRUCTION_COVERAGE = NewConfigConstants.STAGE_RESULTS_JACOCO_MAXIMUM_INSTRUCTION_COVERAGE
-  public static final String STAGE_RESULTS_JACOCO_MAXIMUM_LINE_COVERAGE = NewConfigConstants.STAGE_RESULTS_JACOCO_MAXIMUM_LINE_COVERAGE
-  public static final String STAGE_RESULTS_JACOCO_MAXIMUM_METHOD_COVERAGE = NewConfigConstants.STAGE_RESULTS_JACOCO_MAXIMUM_METHOD_COVERAGE
-
-  public static final String STAGE_RESULTS_JACOCO_MINIMUM_BRANCH_COVERAGE = NewConfigConstants.STAGE_RESULTS_JACOCO_MINIMUM_BRANCH_COVERAGE
-  public static final String STAGE_RESULTS_JACOCO_MINIMUM_CLASS_COVERAGE = NewConfigConstants.STAGE_RESULTS_JACOCO_MINIMUM_CLASS_COVERAGE
-  public static final String STAGE_RESULTS_JACOCO_MINIMUM_COMPLEXITY_COVERAGE = NewConfigConstants.STAGE_RESULTS_JACOCO_MINIMUM_COMPLEXITY_COVERAGE
-  public static final String STAGE_RESULTS_JACOCO_MINIMUM_INSTRUCTION_COVERAGE = NewConfigConstants.STAGE_RESULTS_JACOCO_MINIMUM_INSTRUCTION_COVERAGE
-  public static final String STAGE_RESULTS_JACOCO_MINIMUM_LINE_COVERAGE = NewConfigConstants.STAGE_RESULTS_JACOCO_MINIMUM_LINE_COVERAGE
-  public static final String STAGE_RESULTS_JACOCO_MINIMUM_METHOD_COVERAGE = NewConfigConstants.STAGE_RESULTS_JACOCO_MINIMUM_METHOD_COVERAGE
-
-  public static final String STAGE_RESULTS_JACOCO_SKIP_COPY_OF_SRC_FILES = NewConfigConstants.STAGE_RESULTS_JACOCO_SKIP_COPY_OF_SRC_FILES
-  public static final String STAGE_RESULTS_JACOCO_SOURCE_PATTERN = NewConfigConstants.STAGE_RESULTS_JACOCO_SOURCE_PATTERN
-
-  public static final String STAGE_RESULTS_FINDBUGS = NewConfigConstants.STAGE_RESULTS_FINDBUGS
-  public static final String STAGE_RESULTS_FINDBUGS_ENABLED = NewConfigConstants.STAGE_RESULTS_FINDBUGS_ENABLED
-
-  public static final String STAGE_RESULTS_JUNIT = NewConfigConstants.STAGE_RESULTS_JUNIT
-  public static final String STAGE_RESULTS_JUNIT_ENABLED = NewConfigConstants.STAGE_RESULTS_JUNIT_ENABLED
-
-  public static final String STAGE_RESULTS_OPEN_TASKS = NewConfigConstants.STAGE_RESULTS_OPEN_TASKS
-  public static final String STAGE_RESULTS_OPEN_TASKS_ENABLED = NewConfigConstants.STAGE_RESULTS_OPEN_TASKS_ENABLED
-
-  public static final String STAGE_RESULTS_PMD = NewConfigConstants.STAGE_RESULTS_PMD
-  public static final String STAGE_RESULTS_PMD_ENABLED = NewConfigConstants.STAGE_RESULTS_PMD_ENABLED
+  public static final String PROPERTIES_PIPELINE_TRIGGERS = "pipelineTriggers"
+  public static final String PROPERTIES_PARAMETERS = "parameters"
+  public static final String PROPERTIES_BUILD_DISCARDER = "buildDiscarder"
+  public static final String PROPERTIES_BUILD_DISCARDER_ARTIFACT_DAYS_TO_KEEP = "artifactDaysToKeep"
+  public static final String PROPERTIES_BUILD_DISCARDER_ARTIFACT_NUM_TO_KEEP = "artifactsNumToKeep"
+  public static final String PROPERTIES_BUILD_DISCARDER_DAYS_TO_KEEP = "daysToKeep"
+  public static final String PROPERTIES_BUILD_DISCARDER_NUM_TO_KEEP = "numToKeep"
+  public static final String PROPERTIES_DISABLE_CONCURRENT_BUILDS = "disableConcurrentBuilds"
 
 
-  public static final String STASH = NewConfigConstants.STASH
+  public static final String STAGE_COMPILE = "compile"
+  public static final String STAGE_ANALYZE = "analyze"
 
-  public static final String STASH_COMPILE_FILES = NewConfigConstants.STASH_COMPILE_FILES
-  public static final String STASH_ANALYZE_FILES = NewConfigConstants.STASH_ANALYZE_FILES
+  public static final String STAGE_PREPARATION = "preparationStage"
 
-  public static final String TIMEOUT = NewConfigConstants.TIMEOUT
-  public static final String TIMEOUT_TIME = NewConfigConstants.TIMEOUT_TIME
-  public static final String TIMEOUT_UNIT = NewConfigConstants.TIMEOUT_UNIT
+  public static final String STAGE_PREPARATION_CHECKOUT_SCM = "checkoutScm"
+  public static final String STAGE_PREPARATION_PURGE_SHAPSHOTS = "purgeSnapshots"
+  public static final String STAGE_PREPARATION_SET_BUILD_NAME = "setBuildName"
+  public static final String STAGE_PREPARATION_SETUP_TOOLS = "setupTools"
 
-  public static final String TOOL_MAVEN = NewConfigConstants.TOOL_MAVEN
-  public static final String TOOL_JDK = NewConfigConstants.TOOL_JDK
+  public static final String STAGE_RESULTS = "stageResults"
+
+  public static final String STAGE_RESULTS_ANALYSIS_PUBLISHER = "analysisPublisher"
+  public static final String STAGE_RESULTS_ANALYSIS_PUBLISHER_ENABLED = "enabled"
+
+  public static final String STAGE_RESULTS_CHECKSTYLE = "checkstyle"
+  public static final String STAGE_RESULTS_CHECKSTYLE_ENABLED = "enabled"
+
+  public static final String STAGE_RESULTS_JACOCO = "jacoco"
+  public static final String STAGE_RESULTS_JACOCO_ENABLED = "enabled"
+  public static final String STAGE_RESULTS_JACOCO_BUILD_OVER_BUILD = "buildOverBuild"
+  public static final String STAGE_RESULTS_JACOCO_CHANGE_BUILD_STATUS = "changeBuildStatus"
+  public static final String STAGE_RESULTS_JACOCO_CLASS_PATTERN = "classPattern"
+  public static final String STAGE_RESULTS_JACOCO_DELTA_BRANCH_COVERAGE = "deltaBranchCoverage"
+  public static final String STAGE_RESULTS_JACOCO_DELTA_CLASS_COVERAGE = "deltaClassCoverage"
+  public static final String STAGE_RESULTS_JACOCO_DELTA_COMPLEXITY_COVERAGE = "deltaComplexityCoverage"
+  public static final String STAGE_RESULTS_JACOCO_DELTA_INSTRUCTION_COVERAGE = "deltaInstructionCoverage"
+  public static final String STAGE_RESULTS_JACOCO_DELTA_LINE_COVERAGE = "deltaLineCoverage"
+  public static final String STAGE_RESULTS_JACOCO_DELTA_METHOD_COVERAGE = "deltaMethodCoverage"
+  public static final String STAGE_RESULTS_JACOCO_EXCLUSION_PATTERN = "exclusionPattern"
+  public static final String STAGE_RESULTS_JACOCO_EXEC_PATTERN = "execPattern"
+  public static final String STAGE_RESULTS_JACOCO_INCLUSION_PATTERN = "inclusionPattern"
+
+  public static final String STAGE_RESULTS_JACOCO_MAXIMUM_BRANCH_COVERAGE = "maximumBranchCoverage"
+  public static final String STAGE_RESULTS_JACOCO_MAXIMUM_CLASS_COVERAGE = "maximumClassCoverage"
+  public static final String STAGE_RESULTS_JACOCO_MAXIMUM_COMPLEXITY_COVERAGE = "maximumComplexityCoverage"
+  public static final String STAGE_RESULTS_JACOCO_MAXIMUM_INSTRUCTION_COVERAGE = "maximumInstructionCoverage"
+  public static final String STAGE_RESULTS_JACOCO_MAXIMUM_LINE_COVERAGE = "maximumLineCoverage"
+  public static final String STAGE_RESULTS_JACOCO_MAXIMUM_METHOD_COVERAGE = "maximumMethodCoverage"
+
+  public static final String STAGE_RESULTS_JACOCO_MINIMUM_BRANCH_COVERAGE = "minimumBranchCoverage"
+  public static final String STAGE_RESULTS_JACOCO_MINIMUM_CLASS_COVERAGE = "minimumClassCoverage"
+  public static final String STAGE_RESULTS_JACOCO_MINIMUM_COMPLEXITY_COVERAGE = "minimumComplexityCoverage"
+  public static final String STAGE_RESULTS_JACOCO_MINIMUM_INSTRUCTION_COVERAGE = "minimumInstructionCoverage"
+  public static final String STAGE_RESULTS_JACOCO_MINIMUM_LINE_COVERAGE = "minimumLineCoverage"
+  public static final String STAGE_RESULTS_JACOCO_MINIMUM_METHOD_COVERAGE = "minimumMethodCoverage"
+
+  public static final String STAGE_RESULTS_JACOCO_SKIP_COPY_OF_SRC_FILES = "skipCopyOfSrcFiles"
+  public static final String STAGE_RESULTS_JACOCO_SOURCE_PATTERN = "sourcePattern"
+
+  public static final String STAGE_RESULTS_FINDBUGS = "findbugs"
+  public static final String STAGE_RESULTS_FINDBUGS_ENABLED = "enabled"
+
+  public static final String STAGE_RESULTS_JUNIT = "junit"
+  public static final String STAGE_RESULTS_JUNIT_ENABLED = "enabled"
+
+  public static final String STAGE_RESULTS_OPEN_TASKS = "openTasks"
+  public static final String STAGE_RESULTS_OPEN_TASKS_ENABLED = "enabled"
+
+  public static final String STAGE_RESULTS_PMD = "pmd"
+  public static final String STAGE_RESULTS_PMD_ENABLED = "enabled"
+
+
+  public static final String STASH = "stash"
+
+  public static final String STASH_COMPILE_FILES = "compileFiles"
+  public static final String STASH_ANALYZE_FILES = "analyzeFiles"
+
+  public static final String TIMEOUT = "timeout"
+  public static final String TIMEOUT_TIME = "timeoutTime"
+  public static final String TIMEOUT_UNIT = "timeoutUnit"
+
+  public static final String TOOL_MAVEN = "maven"
+  public static final String TOOL_JDK = "jdk"
 }
