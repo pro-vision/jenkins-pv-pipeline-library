@@ -6,6 +6,10 @@ import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
 import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 
 Map config = [
+  (PROPERTIES) : [
+    // disable triggers
+    (PROPERTIES_PIPELINE_TRIGGERS) : []
+  ],
   (STAGE_COMPILE): [
     (MAVEN): [(MAVEN_GOALS): "clean install"]
   ],
