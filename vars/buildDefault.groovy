@@ -49,7 +49,7 @@ void call(Map config = [:]) {
     Logger log = new Logger(this)
 
     Map propertyCfg = config[PROPERTIES] ?: [:]
-    List triggerCfg = propertyCfg[PROPERTIES_PIPELINE_TRIGGERS] ?: null
+    List triggerCfg = propertyCfg[PROPERTIES_PIPELINE_TRIGGERS] != null ? propertyCfg[PROPERTIES_PIPELINE_TRIGGERS] : null
     if (triggerCfg == null) {
       log.info("no trigger configuration detected, setting the default triggers")
       triggerCfg = defaults.getTriggers()
