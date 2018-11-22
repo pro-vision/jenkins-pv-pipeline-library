@@ -8,7 +8,9 @@ import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 Map config = [
   (PROPERTIES) : [
     // disable triggers
-    (PROPERTIES_PIPELINE_TRIGGERS) : []
+    (PROPERTIES_PIPELINE_TRIGGERS) : [
+      pollSCM("H H * * *")
+    ]
   ],
   (STAGE_COMPILE): [
     (MAVEN): [(MAVEN_GOALS): "clean install"]
