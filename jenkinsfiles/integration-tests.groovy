@@ -34,7 +34,7 @@ node() {
       integrationTestUtils.assertEquals("maven-test1",configuration.getMaven("11__22__3_"))
       integrationTestUtils.assertEquals("maven-test2",configuration.getMaven("_11___22_3__4"))
       integrationTestUtils.assertEquals("maven-test3",configuration.getMaven("11__22__a_"))
-      integrationTestUtils.assertEquals(['defaultScmPolling'],configuration.getDefaultSCMPolling())
+      integrationTestUtils.assertEquals(['H/15 * * * 0-6'],configuration.getDefaultSCMPolling())
     }
   }
 

@@ -20,5 +20,5 @@ jobs:
     properties:
       pipelineTriggers:
         pollSCM:
-        - "defaultScmPolling" # e.g. "H/15 * * * 0-6"
+        - "H/15 * * * 0-6"
 
