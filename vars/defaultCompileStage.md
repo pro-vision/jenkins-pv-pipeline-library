@@ -10,11 +10,12 @@ and the arg
 
 # Table of contents
 * [Workflow]()
-    * [Get default maven defines]()
-    * [Configuration merge]()
-    * [Execute Maven]()
-    * [Stashing workspace files]()
-* [Configuration options]()
+    * [Get default maven defines](#get-default-maven-defines)
+    * [Configuration merge](#configuration-merge)
+    * [Execute Maven](#execute-maven)
+    * [Recording fingerprints](#recording-fingerprints)
+    * [Stashing workspace files](#stashing-workspace-files)
+* [Configuration options](#configuration-options)
     * [`maven`](#maven-optional)
     * [`stash`](#stash-optional)
 * [RdefaultAnalyzeStage.md#maven-optional()
@@ -40,6 +41,11 @@ incoming configuration.
 After the configuration merge the
 [`execMaven`](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/execMaven.md)
 step is called with the configuration
+
+### Recording fingerprints
+
+After the maven execution the fingerprints of the artifacts are recorded.
+Used pattern: `**/target/**/*.jar,**/target/**/*.zip`
 
 ### Stashing workspace files
 

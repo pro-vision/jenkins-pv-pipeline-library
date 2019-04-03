@@ -49,7 +49,7 @@ void call(Map config) {
     execMaven(compileStageCfg)
 
     // fingerprint artifacts
-    fingerprint('**/target/**/*.jar,**/target/**/*.zip,')
+    fingerprint('**/target/**/*.jar,**/target/**/*.zip')
 
     // check if we have to stash the files for later use
     if (compileStageCfg[STASH]) {
