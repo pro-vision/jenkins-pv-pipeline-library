@@ -26,7 +26,7 @@ import io.wcm.devops.jenkins.pipeline.utils.logging.Logger
  * - no automatic rebuild
  * - rebuild is enabled
  * - poll scm every 15 minutes on each day
- * - keep builds maximum 30 days, but 50 builds max
+ * - keep builds maximum 365 days, but 50 builds max
  * - disable concurrent builds
  *
  * @see <a href="../vars/defaultBuildWrapper.groovy">defaultBuildWrapper.groovy</a>

@@ -47,7 +47,7 @@ But you can define triggers by configuration instead!
 
 ### Build discarding
 
-* keep builds 30 days
+* keep builds 365 days
 * keep up to 50 builds
 * keep no artifacts
 
@@ -56,7 +56,7 @@ buildDiscarder(
     logRotator(
         artifactDaysToKeepStr: '', 
         artifactNumToKeepStr: '', 
-        daysToKeepStr: '30', 
+        daysToKeepStr: '365',
         numToKeepStr: '50'
     )
 )
@@ -85,7 +85,7 @@ setJobProperties(
         (PROPERTIES_BUILD_DISCARDER) : [
             (PROPERTIES_BUILD_DISCARDER_ARTIFACT_DAYS_TO_KEEP) : '',
             (PROPERTIES_BUILD_DISCARDER_ARTIFACT_NUM_TO_KEEP) : '',
-            (PROPERTIES_BUILD_DISCARDER_DAYS_TO_KEEP) : '30',
+            (PROPERTIES_BUILD_DISCARDER_DAYS_TO_KEEP) : '365',
             (PROPERTIES_BUILD_DISCARDER_NUM_TO_KEEP) : '50'
         ],
         (PROPERTIES_DISABLE_CONCURRENT_BUILDS) : true,
@@ -114,7 +114,7 @@ Default:
 (PROPERTIES_BUILD_DISCARDER) : [
     (PROPERTIES_BUILD_DISCARDER_ARTIFACT_DAYS_TO_KEEP) : '',
     (PROPERTIES_BUILD_DISCARDER_ARTIFACT_NUM_TO_KEEP) : '',
-    (PROPERTIES_BUILD_DISCARDER_DAYS_TO_KEEP) : '30',
+    (PROPERTIES_BUILD_DISCARDER_DAYS_TO_KEEP) : '365',
     (PROPERTIES_BUILD_DISCARDER_NUM_TO_KEEP) : '50'
 ]
 ```
@@ -142,7 +142,7 @@ Use this configuration option to define how many artifacts will be kept.
 |:---------|:--------------------------------------------------------------------------------------------------------------------------------------|
 | Constant | [`ConfigConstants.PROPERTIES_BUILD_DISCARDER_DAYS_TO_KEEP`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy) |
 | Type     | `String` Days to keep build                                                                                                           |
-| Default  | `'30'` (Build will be kept max 30 days)                                                                                               |
+| Default  | `'365'` (Build will be kept max 365 days)                                                                                             |
 
 Use this configuration option to define how many days the builds will be kept.
 

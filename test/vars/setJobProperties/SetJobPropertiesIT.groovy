@@ -52,7 +52,7 @@ class SetJobPropertiesIT extends PVLibraryIntegrationTestBase {
     List pipelineTriggers = (List) assertOnce(PIPELINE_TRIGGERS)
     assertEquals("[]", pipelineTriggers.toString())
 
-    Map expectedLogRotatorCall = [artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '30', numToKeepStr: '50']
+    Map expectedLogRotatorCall = [artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '365', numToKeepStr: '50']
     Map expectedBuildDiscarderCall = [(LOG_ROTATOR): expectedLogRotatorCall]
 
     Map actualLogRotatorCall = (Map) assertOnce(LOG_ROTATOR)
