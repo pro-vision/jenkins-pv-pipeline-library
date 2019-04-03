@@ -47,7 +47,7 @@ void call(Map config = [:]) {
   Map buildDiscarderCfg = propertiesCfg[PROPERTIES_BUILD_DISCARDER] ?: [:]
   String artifactDaysToKeep = buildDiscarderCfg[PROPERTIES_BUILD_DISCARDER_ARTIFACT_DAYS_TO_KEEP] != null ? buildDiscarderCfg[PROPERTIES_BUILD_DISCARDER_ARTIFACT_DAYS_TO_KEEP] : ''
   String artifactNumToKeep = buildDiscarderCfg[PROPERTIES_BUILD_DISCARDER_ARTIFACT_NUM_TO_KEEP] != null ? buildDiscarderCfg[PROPERTIES_BUILD_DISCARDER_ARTIFACT_NUM_TO_KEEP] : ''
-  String daysToKeep = buildDiscarderCfg[PROPERTIES_BUILD_DISCARDER_DAYS_TO_KEEP] != null ? buildDiscarderCfg[PROPERTIES_BUILD_DISCARDER_DAYS_TO_KEEP] : '30'
+  String daysToKeep = buildDiscarderCfg[PROPERTIES_BUILD_DISCARDER_DAYS_TO_KEEP] != null ? buildDiscarderCfg[PROPERTIES_BUILD_DISCARDER_DAYS_TO_KEEP] : '365'
   String numToKeep = buildDiscarderCfg[PROPERTIES_BUILD_DISCARDER_NUM_TO_KEEP] != null ? buildDiscarderCfg[PROPERTIES_BUILD_DISCARDER_NUM_TO_KEEP] : '50'
 
   Boolean disableConcurrentBuildsCfg = propertiesCfg[PROPERTIES_DISABLE_CONCURRENT_BUILDS] != null ? propertiesCfg[PROPERTIES_DISABLE_CONCURRENT_BUILDS] : true
