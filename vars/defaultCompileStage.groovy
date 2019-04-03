@@ -48,6 +48,9 @@ void call(Map config) {
     // execute maven build
     execMaven(compileStageCfg)
 
+    // fingerprint artifacts
+    fingerprint('**/target/**/*.jar,**/target/**/*.zip,')
+
     // check if we have to stash the files for later use
     if (compileStageCfg[STASH]) {
       log.info("stashing compile files for later usage with name: '${STASH_COMPILE_FILES}'")
