@@ -43,6 +43,7 @@ void call(Map config = [:]) {
 
   List<Map> triggersCfg = propertiesCfg[PROPERTIES_PIPELINE_TRIGGERS] ?: []
   List parametersCfg = propertiesCfg[PROPERTIES_PARAMETERS] ?: []
+  List customPropertiesCfg = propertiesCfg[PROPERTIES_CUSTOM] ?: []
 
   Map buildDiscarderCfg = propertiesCfg[PROPERTIES_BUILD_DISCARDER] ?: [:]
   String artifactDaysToKeep = buildDiscarderCfg[PROPERTIES_BUILD_DISCARDER_ARTIFACT_DAYS_TO_KEEP] != null ? buildDiscarderCfg[PROPERTIES_BUILD_DISCARDER_ARTIFACT_DAYS_TO_KEEP] : ''
@@ -68,6 +69,13 @@ void call(Map config = [:]) {
   if (parametersCfg.size() > 0) {
     jobProperties.push(parameters(parametersCfg))
   }
+
+  for (customProperty in customPropertiesCfg) {
+    log.debug("add custom property", customProperty)
+    jobProperties.push(customProperty)
+  }
+
+
 
   properties(jobProperties)
 }
