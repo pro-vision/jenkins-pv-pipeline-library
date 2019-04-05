@@ -68,6 +68,7 @@ Map config = [
                 (PROPERTIES_BUILD_DISCARDER_DAYS_TO_KEEP) : '365',
                 (PROPERTIES_BUILD_DISCARDER_NUM_TO_KEEP) : '50'
             ],
+            (PROPERTIES_CUSTOM) : [],
             (PROPERTIES_DISABLE_CONCURRENT_BUILDS) : true,
             (PROPERTIES_PARAMETERS) : [],
             (PROPERTIES_PIPELINE_TRIGGERS) : [

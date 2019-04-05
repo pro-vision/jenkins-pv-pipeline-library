@@ -46,6 +46,7 @@ class SetJobPropertiesIT extends PVLibraryIntegrationTestBase {
     assertNone(StepConstants.STRING)
     assertNone(StepConstants.TEXT)
     assertNone(StepConstants.PARAMETERS)
+    assertNone(StepConstants.BUILD_BLOCKER_PROPERTY)
 
     assertOnce(StepConstants.DISABLE_CONCURRENT_BUILDS)
 
@@ -65,6 +66,11 @@ class SetJobPropertiesIT extends PVLibraryIntegrationTestBase {
   @Test
   void shouldSetCustomJobProperties() {
     loadAndExecuteScript("vars/setJobProperties/jobs/setCustomJobPropertiesTestJob.groovy")
+
+    List propertiesCall = assertOnce(StepConstants.PROPERTIES)
+    Map actualBuilddBlockerCall = propertiesCall[4]
+
+    assertEquals(actualBuilddBlockerCall, [$class: 'BuildBlockerProperty', blockLevel: 'GLOBAL', blockingJobs: '.*blocking-job.*', scanQueueFor: 'DISABLED', useBuildBlocker: true])
 
     Map upstreamConfig = assertOnce(StepConstants.UPSTREAM)
     String cronConfig = assertOnce(StepConstants.CRON)

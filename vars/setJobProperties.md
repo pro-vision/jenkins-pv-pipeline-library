@@ -24,6 +24,7 @@ are implicit using this step.
         * [`artifactDaysToKeep`](#artifactdaystokeep)
         * [`daysToKeep`](#daystokeep)
         * [`numToKeep`](#numtokeep)
+    * [`customProperties`](#customproperties)
     * [`disableConcurrentBuilds`](#disableconcurrentbuilds)
     * [`parameters`](#parameters)
     * [`pipelineTriggers`](#pipelinetriggers)
@@ -95,6 +96,9 @@ setJobProperties(
         (PROPERTIES_PIPELINE_TRIGGERS) : [
             // default: empty
         ],
+        (PROPERTIES_CUSTOM) : [
+            // default: empty
+        ],
     ],
 )
 ```
@@ -154,6 +158,19 @@ Use this configuration option to define how many days the builds will be kept.
 | Default  | `'50'` (Max 50 builds will be kept)                                                                                                  |
 
 Use this configuration option to define how many builds will be kept.
+
+### `customProperties`
+|          |                                                                                                                 |
+|:---------|:----------------------------------------------------------------------------------------------------------------|
+| Constant | [`ConfigConstants.PROPERTIES_CUSTOM`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy) |
+| Type     | `List` of custom 'raw' pipeline properties                                                                      |
+| Default  | `[]`                                                                                                            |
+
+Use this configuration option to set custom properties like:
+
+    [$class: 'BuildBlockerProperty', blockLevel: 'GLOBAL', blockingJobs: '.*blocking-job.*', scanQueueFor: 'DISABLED', useBuildBlocker: true]
+
+:bulb: See https://jenkins.io/doc/pipeline/steps/ for more information about syntax.
 
 ### `disableConcurrentBuilds`
 |          |                                                                                                                                    |

@@ -42,7 +42,10 @@ ipsum''', description: '', name: 'multiline')
         (PROPERTIES_BUILD_DISCARDER_DAYS_TO_KEEP)         : '',
         (PROPERTIES_BUILD_DISCARDER_NUM_TO_KEEP)          : ''
       ],
-      (PROPERTIES_DISABLE_CONCURRENT_BUILDS): false
+      (PROPERTIES_DISABLE_CONCURRENT_BUILDS): false,
+      (PROPERTIES_CUSTOM): [
+        [$class: 'BuildBlockerProperty', blockLevel: 'GLOBAL', blockingJobs: '.*blocking-job.*', scanQueueFor: 'DISABLED', useBuildBlocker: true]
+      ]
     ]
   ])
 }
