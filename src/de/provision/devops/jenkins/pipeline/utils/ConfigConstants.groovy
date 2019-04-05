@@ -36,6 +36,7 @@ class ConfigConstants {
   public static final String PROPERTIES_BUILD_DISCARDER_ARTIFACT_NUM_TO_KEEP = "artifactsNumToKeep"
   public static final String PROPERTIES_BUILD_DISCARDER_DAYS_TO_KEEP = "daysToKeep"
   public static final String PROPERTIES_BUILD_DISCARDER_NUM_TO_KEEP = "numToKeep"
+  public static final String PROPERTIES_CUSTOM = "customProperties"
   public static final String PROPERTIES_DISABLE_CONCURRENT_BUILDS = "disableConcurrentBuilds"
   public static final String PROPERTIES_PARAMETERS = "parameters"
   public static final String PROPERTIES_PIPELINE_TRIGGERS = "pipelineTriggers"
