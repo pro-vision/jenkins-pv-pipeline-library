@@ -71,6 +71,7 @@ void call(Map config = [:]) {
   }
 
   for (customProperty in customPropertiesCfg) {
+    log.debug("add custom property", customProperty)
     jobProperties.push(customProperty)
   }
 
