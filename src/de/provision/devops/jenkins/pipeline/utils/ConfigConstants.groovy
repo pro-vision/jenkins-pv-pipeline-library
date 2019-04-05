@@ -31,14 +31,14 @@ class ConfigConstants {
 
   public static final String PROPERTIES = "properties"
 
-  public static final String PROPERTIES_PIPELINE_TRIGGERS = "pipelineTriggers"
-  public static final String PROPERTIES_PARAMETERS = "parameters"
   public static final String PROPERTIES_BUILD_DISCARDER = "buildDiscarder"
   public static final String PROPERTIES_BUILD_DISCARDER_ARTIFACT_DAYS_TO_KEEP = "artifactDaysToKeep"
   public static final String PROPERTIES_BUILD_DISCARDER_ARTIFACT_NUM_TO_KEEP = "artifactsNumToKeep"
   public static final String PROPERTIES_BUILD_DISCARDER_DAYS_TO_KEEP = "daysToKeep"
   public static final String PROPERTIES_BUILD_DISCARDER_NUM_TO_KEEP = "numToKeep"
   public static final String PROPERTIES_DISABLE_CONCURRENT_BUILDS = "disableConcurrentBuilds"
+  public static final String PROPERTIES_PARAMETERS = "parameters"
+  public static final String PROPERTIES_PIPELINE_TRIGGERS = "pipelineTriggers"
 
   public static final String STAGE_COMPILE = "compile"
   public static final String STAGE_ANALYZE = "analyze"
