@@ -38,6 +38,10 @@ class SetJobPropertiesIT extends PVLibraryIntegrationTestBase {
   @Test
   void shouldSetDefaultJobProperties() {
     loadAndExecuteScript("vars/setJobProperties/jobs/setDefaultJobPropertiesTestJob.groovy")
+
+    List propertiesCall = assertOnce(StepConstants.PROPERTIES)
+    assertEquals(4, propertiesCall.size())
+
     assertNone(StepConstants.CRON)
     assertNone(StepConstants.UPSTREAM)
     assertNone(StepConstants.POLLSCM)
@@ -68,9 +72,9 @@ class SetJobPropertiesIT extends PVLibraryIntegrationTestBase {
     loadAndExecuteScript("vars/setJobProperties/jobs/setCustomJobPropertiesTestJob.groovy")
 
     List propertiesCall = assertOnce(StepConstants.PROPERTIES)
-    Map actualBuilddBlockerCall = propertiesCall[4]
+    Map actualBuildBlockerCall = propertiesCall[4]
 
-    assertEquals(actualBuilddBlockerCall, [$class: 'BuildBlockerProperty', blockLevel: 'GLOBAL', blockingJobs: '.*blocking-job.*', scanQueueFor: 'DISABLED', useBuildBlocker: true])
+    assertEquals(actualBuildBlockerCall, [$class: 'BuildBlockerProperty', blockLevel: 'GLOBAL', blockingJobs: '.*blocking-job.*', scanQueueFor: 'DISABLED', useBuildBlocker: true])
 
     Map upstreamConfig = assertOnce(StepConstants.UPSTREAM)
     String cronConfig = assertOnce(StepConstants.CRON)
