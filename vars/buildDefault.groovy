@@ -33,16 +33,16 @@ import io.wcm.devops.jenkins.pipeline.utils.maps.MapUtils
  * - call default results stage (e.g. processing junit results, pmd etc.)
  *
  * @param config Pipeline options for the used steps
- * @see <a href="../vars/defaultBuildWrapper.groovy">defaultBuildWrapper.groovy</a>
- * @see <a href="../vars/defaultBuildWrapper.md">defaultBuildWrapper.md</a>
- * @see <a href="../vars/defaultPreparationStage.groovy">defaultPreparationStage.groovy</a>
- * @see <a href="../vars/defaultPreparationStage.md">defaultPreparationStage.md</a>
- * @see <a href="../vars/defaultCompileStage.groovy">defaultCompileStage.groovy</a>
- * @see <a href="../vars/defaultCompileStage.md">defaultCompileStage.md</a>
- * @see <a href="../vars/defaultCompileStage.groovy">defaultAnalyzeStage.groovy</a>
- * @see <a href="../vars/defaultCompileStage.md">defaultAnalyzeStage.md</a>
- * @see <a href="../vars/defaultCompileStage.groovy">defaultResultsStage.groovy</a>
- * @see <a href="../vars/defaultCompileStage.md">defaultResultsStage.md</a>
+ * @see <ahref="../vars/defaultBuildWrapper.groovy" > defaultBuildWrapper.groovy</a>
+ * @see <ahref="../vars/defaultBuildWrapper.md" > defaultBuildWrapper.md</a>
+ * @see <ahref="../vars/defaultPreparationStage.groovy" > defaultPreparationStage.groovy</a>
+ * @see <ahref="../vars/defaultPreparationStage.md" > defaultPreparationStage.md</a>
+ * @see <ahref="../vars/defaultCompileStage.groovy" > defaultCompileStage.groovy</a>
+ * @see <ahref="../vars/defaultCompileStage.md" > defaultCompileStage.md</a>
+ * @see <ahref="../vars/defaultCompileStage.groovy" > defaultAnalyzeStage.groovy</a>
+ * @see <ahref="../vars/defaultCompileStage.md" > defaultAnalyzeStage.md</a>
+ * @see <ahref="../vars/defaultCompileStage.groovy" > defaultResultsStage.groovy</a>
+ * @see <ahref="../vars/defaultCompileStage.md" > defaultResultsStage.md</a>
  */
 void call(Map config = [:]) {
   wrap.color(config) {
@@ -64,10 +64,10 @@ void call(Map config = [:]) {
 
     log.debug("Calling defaultBuildWrapper with the following configuration: $config")
 
-    // call the default build wrapper
-    defaultBuildWrapper(config) {
-      // allocate node
-      node(config[NODE]) {
+    // allocate node
+    node(config[NODE]) {
+      // call the default build wrapper
+      defaultBuildWrapper(config) {
         // do the checkout, set build name etc
         log.trace("calling defaultPreparationStage")
         defaultPreparationStage(config)
