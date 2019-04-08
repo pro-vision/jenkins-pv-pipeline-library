@@ -60,21 +60,12 @@ void call(Map config = [:]) {
     Map scmConfig = (Map) config.get(SCM) ?: [:]
     String scmUrl = scmConfig.get(SCM_URL) ?: null
 
-
-    try {
-      // check wether to use configured scm or existing scm var
-      if (scmUrl == null) {
-        config[SCM] = config[SCM] ?: [:]
-        config[SCM][SCM_USE_SCM_VAR] = true
-      }
-      //calling buildDefault with scm configuration
-      buildDefault(config)
+    // check wether to use configured scm or existing scm var
+    if (scmUrl == null) {
+      config[SCM] = config[SCM] ?: [:]
+      config[SCM][SCM_USE_SCM_VAR] = true
     }
-
-    catch (Exception e) {
-      currentBuild.result = "FAILED"
-      notifyMail(config)
-      throw e
-    }
+    //calling buildDefault with scm configuration
+    buildDefault(config)
   }
 }
