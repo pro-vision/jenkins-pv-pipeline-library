@@ -25,7 +25,7 @@ Logger.init(this, LogLevel.INFO)
 Logger log = new Logger(this)
 
 integrationTestUtils.integrationTestUtils.runTestsOnPackage("jenkins") {
-  integrationTestUtils.runTest("load lib test") {
+  integrationTestUtils.runTest("JENKINS-56682 load lib test") {
     node() {
       checkout scm
       def rootDir = pwd()
