@@ -9,6 +9,7 @@
 
 import de.provision.devops.jenkins.pipeline.PipelineConfiguration
 import de.provision.devops.jenkins.pipeline.utils.ConfigConstants
+import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 import io.wcm.devops.jenkins.pipeline.utils.IntegrationTestHelper
 import io.wcm.devops.jenkins.pipeline.utils.logging.LogLevel
 import io.wcm.devops.jenkins.pipeline.utils.logging.Logger
@@ -22,6 +23,23 @@ properties([
 
 Logger.init(this, LogLevel.INFO)
 Logger log = new Logger(this)
+
+integrationTestUtils.integrationTestUtils.runTestsOnPackage("jenkins") {
+  integrationTestUtils.runTest("load lib test") {
+    node() {
+      checkout scm
+      def rootDir = pwd()
+      pipelineScript = load "${rootDir}/jenkinsfiles/integration-tests.lib.groovy"
+    }
+    pipelineScript.externalConfig = [
+      (PROPERTIES): [
+        (PROPERTIES_PIPELINE_TRIGGERS): [],
+      ],
+    ]
+    // run the pipeline
+    pipelineScript.executePipeline()
+  }
+}
 
 node() {
 
