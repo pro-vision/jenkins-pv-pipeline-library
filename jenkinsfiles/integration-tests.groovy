@@ -13,6 +13,7 @@ import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 import io.wcm.devops.jenkins.pipeline.utils.IntegrationTestHelper
 import io.wcm.devops.jenkins.pipeline.utils.logging.LogLevel
 import io.wcm.devops.jenkins.pipeline.utils.logging.Logger
+import org.jenkinsci.plugins.workflow.libs.Library
 
 // job properties
 
@@ -24,7 +25,7 @@ properties([
 Logger.init(this, LogLevel.INFO)
 Logger log = new Logger(this)
 
-integrationTestUtils.integrationTestUtils.runTestsOnPackage("jenkins") {
+integrationTestUtils.runTestsOnPackage("jenkins") {
   integrationTestUtils.runTest("JENKINS-56682 load lib test") {
     node() {
       checkout scm
