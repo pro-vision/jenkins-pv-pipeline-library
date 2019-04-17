@@ -19,6 +19,8 @@
  */
 package vars.defaultBuildWrapper.jobs
 
+import io.wcm.devops.jenkins.pipeline.utils.logging.LogLevel
+import io.wcm.devops.jenkins.pipeline.utils.logging.Logger
 
 import java.util.concurrent.TimeUnit
 
@@ -34,10 +36,13 @@ def execute() {
       (TIMEOUT_TIME): 10,
       (TIMEOUT_UNIT): TimeUnit.HOURS
     ],
-    (ANSI_COLOR): ANSI_COLOR_GNOME_TERMINAL
-
+    (ANSI_COLOR): ANSI_COLOR_GNOME_TERMINAL,
+    (LOGLEVEL)  : LogLevel.INFO
   ]
+
+  Logger.init(this, LogLevel.DEBUG)
   defaultBuildWrapper(config) {
+
     setupPVTools((TOOLS): [
       (TOOL_MAVEN): "customMaven",
       (TOOL_JDK)  : "customJDK"
