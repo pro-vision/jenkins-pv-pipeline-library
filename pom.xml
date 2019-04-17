@@ -218,6 +218,7 @@
           <includes>
             <include>**/*.groovy</include>
             <include>**/*.xml</include>
+            <include>**/*.gdsl</include>
           </includes>
         </configuration>
       </plugin>
@@ -456,7 +457,11 @@
             </excludes>
             <includes>
               <include>**/pom.xml</include>
+              <include>**/*.gdsl</include>
             </includes>
+            <extraExtensions>
+              <gdsl>java</gdsl>
+            </extraExtensions>
           </configuration>
         </plugin>
         <plugin>
