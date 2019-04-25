@@ -52,7 +52,11 @@ Map call(Closure body) {
  */
 Map call(Map config, Closure body) {
   wrap.color(config) {
-    Logger.init(this, config)
+    // Only initialize logger when not already initialized, to avoid LogLevel overwriting
+    if (!Logger.initialized) {
+      Logger.init(this, config)
+    }
+
     Logger log = new Logger(this)
 
     log.debug("config", config)

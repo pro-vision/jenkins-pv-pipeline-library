@@ -21,6 +21,8 @@ package vars.defaultBuildWrapper
 
 
 import de.provision.devops.testing.jenkins.pipeline.PVLibraryIntegrationTestBase
+import io.wcm.devops.jenkins.pipeline.utils.logging.LogLevel
+import io.wcm.devops.jenkins.pipeline.utils.logging.Logger
 import io.wcm.testing.jenkins.pipeline.StepConstants
 import org.junit.Test
 
@@ -49,6 +51,8 @@ class DefaultBuildWrapperIT extends PVLibraryIntegrationTestBase {
     assertEquals(10, timeoutCall.time)
     assertEquals(TimeUnit.HOURS, timeoutCall.unit)
     assertEquals(ANSI_COLOR_GNOME_TERMINAL, ansiColorCall)
+    // assert that loglevel was not changed again by defaultBuildWrapper
+    assertEquals(LogLevel.DEBUG, Logger.getLevel())
   }
 
   @Test
