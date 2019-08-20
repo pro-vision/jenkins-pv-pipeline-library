@@ -17,6 +17,8 @@
 # #L%
 #
 
+dist: trusty
+
 language: java
 
 jdk:
