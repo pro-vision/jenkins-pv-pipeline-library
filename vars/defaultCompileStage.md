@@ -87,7 +87,7 @@ Since the configuration is calculated inside the step the default would be
 [
     (MAVEN_GOALS) : ["clean", "deploy"],
     (MAVEN_ARGUMENTS) : ["-B", "-U"],
-    (MAVEN_DEFINES) : [continuousIntegration : true]
+    (MAVEN_DEFINES) : [continuous-integration : true]
 ]
 ```
 
