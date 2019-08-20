@@ -28,7 +28,7 @@ auto lookup mechanism.
 This step calls the
 [`getDefaultMavenDefines`](getDefaultMavenDefines.md) step first to enable
 defines like
-* `-DcontinuousIntegration=true` or
+* `-Dcontinuous-integration=true` or
 * `-Dnodejs.directory=${WORKSPACE}/target/.nodejs` (when a nodejs
   `package.json` was found in the project)
 
@@ -82,7 +82,7 @@ Since the configuration is calculated inside the step the default would be
 [
     (MAVEN_GOALS) : "checkstyle:checkstyle pmd:pmd spotbugs:spotbugs",
     (MAVEN_ARGUMENTS) : "-B",
-    (MAVEN_DEFINES) : [continuousIntegration : true]
+    (MAVEN_DEFINES) : ["continuous-integration" : true]
 ]
 ```
 
