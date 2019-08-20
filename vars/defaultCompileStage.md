@@ -27,7 +27,7 @@ and the arg
 This step calls the
 [`getDefaultMavenDefines`](getDefaultMavenDefines.md) step first to enable
 defines like
-* `-DcontinuousIntegration=true` or
+* `-Dcontinuous-integration=true` or
 * `-Dnodejs.directory=${WORKSPACE}/target/.nodejs` (when a nodejs
   `package.json` was found in the project)
 
