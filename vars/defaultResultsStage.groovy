@@ -242,7 +242,7 @@ void _checkStyle(Map config = [:]) {
     canComputeNew: false,
     defaultEncoding: '',
     healthy: '',
-    pattern: '**/target/checkstyle-result.xml',
+    pattern: '**/target/checkstyle-result*.xml',
     unHealthy: ''
   )
   currentBuildResult = currentBuild.result

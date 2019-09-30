@@ -97,7 +97,7 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
       canComputeNew  : false,
       defaultEncoding: '',
       healthy        : '',
-      pattern        : '**/target/checkstyle-result.xml',
+      pattern        : '**/target/checkstyle-result*.xml',
       unHealthy      : ''
     ]
     Map expectedAnalysisPublisherCall = [
