@@ -40,6 +40,7 @@ class DefaultPreparationStageIT extends PVLibraryIntegrationTestBase {
     List toolCalls = assertTwice(TOOL)
     assertOnce(MAVEN_PURGE_SNAPSHOTS)
     assertOnce(SET_BUILD_NAME)
+    assertOnce(STAGE)
 
     assertArrayEquals("error in executed tool commands", ["defaultMaven", "defaultJDK"].toArray(), toolCalls.toArray())
 
@@ -66,6 +67,7 @@ class DefaultPreparationStageIT extends PVLibraryIntegrationTestBase {
   void shouldRunWithCustomConfig() {
     loadAndExecuteScript("vars/defaultPreparationStage/jobs/defaultPreparationStageCustomTestJob.groovy")
 
+    assertNone(STAGE)
     Map actualCheckoutCall = (Map) assertOnce(CHECKOUT)
     List toolCalls = assertTwice(TOOL)
     assertOnce(MAVEN_PURGE_SNAPSHOTS)
@@ -95,6 +97,7 @@ class DefaultPreparationStageIT extends PVLibraryIntegrationTestBase {
   void shouldOnlySetBuildName() {
     loadAndExecuteScript("vars/defaultPreparationStage/jobs/shouldOnlySetBuildNameTestJob.groovy")
 
+    assertOnce(STAGE)
     assertNone(CHECKOUT)
     assertNone(TOOL)
     assertNone(MAVEN_PURGE_SNAPSHOTS)
@@ -105,6 +108,7 @@ class DefaultPreparationStageIT extends PVLibraryIntegrationTestBase {
   void shouldOnlySetupTools() {
     loadAndExecuteScript("vars/defaultPreparationStage/jobs/shouldOnlySetupToolsTestJob.groovy")
 
+    assertOnce(STAGE)
     assertNone(CHECKOUT)
     assertTwice(TOOL)
     assertNone(MAVEN_PURGE_SNAPSHOTS)
@@ -115,6 +119,7 @@ class DefaultPreparationStageIT extends PVLibraryIntegrationTestBase {
   void shouldOnlyPurgeRepositoryTestJob() {
     loadAndExecuteScript("vars/defaultPreparationStage/jobs/shouldOnlyPurgeRepositoryTestJob.groovy")
 
+    assertOnce(STAGE)
     assertNone(CHECKOUT)
     assertNone(TOOL)
     assertOnce(MAVEN_PURGE_SNAPSHOTS)
@@ -125,6 +130,7 @@ class DefaultPreparationStageIT extends PVLibraryIntegrationTestBase {
   void shouldOnlyCheckoutScmTestJob() {
     loadAndExecuteScript("vars/defaultPreparationStage/jobs/shouldOnlyCheckoutScmTestJob.groovy")
 
+    assertOnce(STAGE)
     assertOnce(CHECKOUT)
     assertNone(TOOL)
     assertNone(MAVEN_PURGE_SNAPSHOTS)
@@ -135,6 +141,7 @@ class DefaultPreparationStageIT extends PVLibraryIntegrationTestBase {
   void shouldDoNothingTestJob() {
     loadAndExecuteScript("vars/defaultPreparationStage/jobs/shouldDoNothingTestJob.groovy")
 
+    assertOnce(STAGE)
     assertNone(CHECKOUT)
     assertNone(TOOL)
     assertNone(MAVEN_PURGE_SNAPSHOTS)
