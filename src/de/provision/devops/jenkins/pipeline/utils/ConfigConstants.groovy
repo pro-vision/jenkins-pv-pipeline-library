@@ -52,7 +52,6 @@ class ConfigConstants {
   public static final String STAGE_PREPARATION_SETUP_TOOLS = "setupTools"
   public static final String STAGE_PREPARATION_STAGE_WRAP = "stageWrap"
 
-
   public static final String STAGE_RESULTS = "stageResults"
 
   public static final String STAGE_RESULTS_ANALYSIS_PUBLISHER = "analysisPublisher"
