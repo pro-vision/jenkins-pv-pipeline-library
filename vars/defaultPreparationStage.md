@@ -10,18 +10,19 @@ needed to build the project:
 
 # Table of contents
 * [Step sequence](#step-sequence)
-    * [Setup build tools](#setup-build-tools)
-    * [Checkout from scm](#checkout-from-scm)
-    * [Set build name](#set-build-name)
-    * [Delete project maven artifacts from local repository](#delete-project-maven-artifacts-from-local-repository)
+  * [Setup build tools](#setup-build-tools)
+  * [Checkout from scm](#checkout-from-scm)
+  * [Set build name](#set-build-name)
+  * [Delete project maven artifacts from local repository](#delete-project-maven-artifacts-from-local-repository)
 * [Examples](#examples)
-    * [Example 1: Use other maven and jdk version](#example-1-use-other-maven-and-jdk)
-    * [Example 2: Configure scm checkout](#example-2-configure-scm-checkout)
+  * [Example 1: Use other maven and jdk version](#example-1-use-other-maven-and-jdk)
+  * [Example 2: Configure scm checkout](#example-2-configure-scm-checkout)
 * [Configuration options](#configuration-options)
-    * [`checkoutScm` (optional)](#checkoutscm-optional)
-    * [`purgeSnapshots` (optional)](#purgesnapshots-optional)
-    * [`setBuildName` (optional)](#setbuildname-optional)
-    * [`setupTools` (optional)](#setuptools-optional)
+  * [`checkoutScm` (optional)](#checkoutscm-optional)
+  * [`purgeSnapshots` (optional)](#purgesnapshots-optional)
+  * [`setBuildName` (optional)](#setbuildname-optional)
+  * [`setupTools` (optional)](#setuptools-optional)
+  * [`stageWrap`  (optional)](#stagewrap-optional)
 
 ## Step sequence
 
@@ -111,9 +112,10 @@ import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 defaultPreparationStage( 
     (STAGE_PREPARATION) : [
         (STAGE_PREPARATION_CHECKOUT_SCM): true,
-        (STAGE_PREPARATION_SETUP_TOOLS): true,
         (STAGE_PREPARATION_PURGE_SHAPSHOTS): true,
-        (STAGE_PREPARATION_SET_BUILD_NAME): true
+        (STAGE_PREPARATION_SET_BUILD_NAME): true,
+        (STAGE_PREPARATION_SETUP_TOOLS): true,
+        (STAGE_PREPARATION_STAGE_WRAP): true
     ]
 )
 ```
@@ -127,15 +129,6 @@ defaultPreparationStage(
 
 Controls if checkout from scm is executed.
 
-### `setBuildName` (optional)
-|          |                                                                                                                                |
-|:---------|:-------------------------------------------------------------------------------------------------------------------------------|
-| Constant | [`ConfigConstants.STAGE_PREPARATION_SET_BUILD_NAME`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy) |
-| Type     | `Boolean`                                                                                                                      |
-| Default  | `true`                                                                                                                         |
-
-Controls if build name is updated.
-
 ### `purgeSnapshots` (optional)
 |          |                                                                                                                                 |
 |:---------|:--------------------------------------------------------------------------------------------------------------------------------|
@@ -145,6 +138,15 @@ Controls if build name is updated.
 
 Controls if maven snapshots are purged from the local repository.
 
+### `setBuildName` (optional)
+|          |                                                                                                                                |
+|:---------|:-------------------------------------------------------------------------------------------------------------------------------|
+| Constant | [`ConfigConstants.STAGE_PREPARATION_SET_BUILD_NAME`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy) |
+| Type     | `Boolean`                                                                                                                      |
+| Default  | `true`                                                                                                                         |
+
+Controls if build name is updated.
+
 ### `setupTools` (optional)
 |          |                                                                                                                             |
 |:---------|:----------------------------------------------------------------------------------------------------------------------------|
@@ -153,4 +155,17 @@ Controls if maven snapshots are purged from the local repository.
 | Default  | `true`                                                                                                                      |
 
 Controls if tool setup is executed.
+
+### `stageWrap` (optional)
+|          |                                                                                                                             |
+|:---------|:----------------------------------------------------------------------------------------------------------------------------|
+| Constant | [`ConfigConstants.STAGE_PREPARATION_STAGE_WRAP`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy) |
+| Type     | `Boolean`                                                                                                                   |
+| Default  | `true`                                                                                                                      |
+
+Controls if the steps are wrapped into a stage named "Preparation". Can
+be useful in declarative pipelines.
+
+
+
 

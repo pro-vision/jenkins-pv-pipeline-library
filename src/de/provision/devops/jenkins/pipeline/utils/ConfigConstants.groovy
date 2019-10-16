@@ -50,6 +50,7 @@ class ConfigConstants {
   public static final String STAGE_PREPARATION_PURGE_SHAPSHOTS = "purgeSnapshots"
   public static final String STAGE_PREPARATION_SET_BUILD_NAME = "setBuildName"
   public static final String STAGE_PREPARATION_SETUP_TOOLS = "setupTools"
+  public static final String STAGE_PREPARATION_STAGE_WRAP = "stageWrap"
 
   public static final String STAGE_RESULTS = "stageResults"
 

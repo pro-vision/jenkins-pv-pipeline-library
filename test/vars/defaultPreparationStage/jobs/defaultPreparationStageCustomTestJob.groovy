@@ -38,6 +38,9 @@ def execute() {
     (TOOLS): [
       (TOOL_MAVEN): "customMaven",
       (TOOL_JDK)  : "customJDK"
+    ],
+    (STAGE_PREPARATION): [
+      (STAGE_PREPARATION_STAGE_WRAP): false
     ]
   )
 }

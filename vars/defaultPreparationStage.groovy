@@ -30,50 +30,74 @@ import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
  *
  * @param config Configuration options for the used steps
  *
- * @see <a href="../vars/setupPVTools.groovy">setupPVTools.groovy</a>
- * @see <a href="../vars/setupPVTools.md">setupPVTools.md</a>
- * @see <a href="https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/checkoutScm.groovy">checkoutScm.groovy</a>
- * @see <a href="https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/checkoutScm.md">checkoutScm.md</a>
- * @see <a href="https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/setBuildName.groovy">setBuildName.groovy</a>
- * @see <a href="https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/setBuildName.md">setBuildName.md</a>
+ * @see ../vars/setupPVTools.groovy
+ * @see ../vars/setupPVTools.md
+ * @see https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/checkoutScm.groovy
+ * @see https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/checkoutScm.md
+ * @see https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/setBuildName.groovy
+ * @see https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/setBuildName.md
  */
 void call(Map config) {
   Logger log = new Logger(this)
-  stage('Preparation') {
-    Map preparationStageConfig = config[STAGE_PREPARATION] ?: [:]
-    Boolean doSetupTools = preparationStageConfig[STAGE_PREPARATION_SETUP_TOOLS] != null ? preparationStageConfig[STAGE_PREPARATION_SETUP_TOOLS] : true
-    Boolean doCheckoutScm = preparationStageConfig[STAGE_PREPARATION_CHECKOUT_SCM] != null ? preparationStageConfig[STAGE_PREPARATION_CHECKOUT_SCM] : true
-    Boolean doSetBuildName = preparationStageConfig[STAGE_PREPARATION_SET_BUILD_NAME] != null ? preparationStageConfig[STAGE_PREPARATION_SET_BUILD_NAME] : true
-    Boolean doPurgeSnapshots = preparationStageConfig[STAGE_PREPARATION_PURGE_SHAPSHOTS] != null ? preparationStageConfig[STAGE_PREPARATION_PURGE_SHAPSHOTS] : true
+  Map preparationStageConfig = (Map) config[STAGE_PREPARATION] ?: [:]
+  Boolean stageWrap = preparationStageConfig[STAGE_PREPARATION_STAGE_WRAP] != null ? preparationStageConfig[STAGE_PREPARATION_STAGE_WRAP] : true
+  log.debug("stageWrap", stageWrap)
+  if (stageWrap) {
+    stage('Preparation') {
+      _call(config)
+    }
+  } else {
+    _call(config)
+  }
+}
 
-    log.debug("doSetupTools", doSetupTools)
-    log.debug("doCheckoutScm", doCheckoutScm)
-    log.debug("doSetBuildName", doSetBuildName)
-    log.debug("doPurgeSnapshots", doPurgeSnapshots)
+/**
+ * Internal function that executes the preparation stage steps
+ *
+ * @param config Configuration options for the used steps
+ *
+ * @see ../vars/setupPVTools.groovy
+ * @see ../vars/setupPVTools.md
+ * @see https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/checkoutScm.groovy
+ * @see https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/checkoutScm.md
+ * @see https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/setBuildName.groovy
+ * @see https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/setBuildName.md
+ */
+void _call(Map config) {
+  Logger log = new Logger(this)
+  Map preparationStageConfig = (Map) config[STAGE_PREPARATION] ?: [:]
+  Boolean doSetupTools = preparationStageConfig[STAGE_PREPARATION_SETUP_TOOLS] != null ? preparationStageConfig[STAGE_PREPARATION_SETUP_TOOLS] : true
+  Boolean doCheckoutScm = preparationStageConfig[STAGE_PREPARATION_CHECKOUT_SCM] != null ? preparationStageConfig[STAGE_PREPARATION_CHECKOUT_SCM] : true
+  Boolean doSetBuildName = preparationStageConfig[STAGE_PREPARATION_SET_BUILD_NAME] != null ? preparationStageConfig[STAGE_PREPARATION_SET_BUILD_NAME] : true
+  Boolean doPurgeSnapshots = preparationStageConfig[STAGE_PREPARATION_PURGE_SHAPSHOTS] != null ? preparationStageConfig[STAGE_PREPARATION_PURGE_SHAPSHOTS] : true
 
-    if (doSetupTools) {
-      // setup basic tools, jdk, maven, etc
-      setupPVTools(config)
-    } else {
-      log.info("tool setup is disabled by provided configuration")
-    }
-    if (doCheckoutScm) {
-      // do the checkout
-      checkoutScm(config)
-    } else {
-      log.info("scm checkout is disabled by provided configuration")
-    }
-    if (doSetBuildName) {
-      // set the build name
-      setBuildName()
-    } else {
-      log.info("build name setting is disabled by provided configuration")
-    }
-    if (doPurgeSnapshots) {
-      // purge SNAPSHOTs from maven repository
-      maven.purgeSnapshots(config)
-    } else {
-      log.info("SNAPSHOT purging is disabled by provided configuration")
-    }
+  log.debug("doSetupTools", doSetupTools)
+  log.debug("doCheckoutScm", doCheckoutScm)
+  log.debug("doSetBuildName", doSetBuildName)
+  log.debug("doPurgeSnapshots", doPurgeSnapshots)
+
+  if (doSetupTools) {
+    // setup basic tools, jdk, maven, etc
+    setupPVTools(config)
+  } else {
+    log.info("tool setup is disabled by provided configuration")
+  }
+  if (doCheckoutScm) {
+    // do the checkout
+    checkoutScm(config)
+  } else {
+    log.info("scm checkout is disabled by provided configuration")
+  }
+  if (doSetBuildName) {
+    // set the build name
+    setBuildName()
+  } else {
+    log.info("build name setting is disabled by provided configuration")
+  }
+  if (doPurgeSnapshots) {
+    // purge SNAPSHOTs from maven repository
+    maven.purgeSnapshots(config)
+  } else {
+    log.info("SNAPSHOT purging is disabled by provided configuration")
   }
 }
