@@ -36,13 +36,15 @@ void call(Map config) {
 
   // only execute stage when job type is a feature branch
   if (jobType == ConfigConstants.JOB_TYPE_FEATURE) {
-    stage('Merge with origin/master') {
+    stage('Merge with parent branch') {
+      // get the parent branch
+      String parentBranch = "origin/${gitTools.getParentBranch()}"
       // build the command
       GitCommandBuilderImpl gitCommandBuilder = new GitCommandBuilderImpl((DSL) this.steps)
-      gitCommandBuilder.addArguments(["merge", "origin/master"])
+      gitCommandBuilder.addArguments(["merge", "${parentBranch}"])
       // execute with try catch to detect merge an execution errors
       try {
-        log.info("merge with origin/master")
+        log.info("merging with '${parentBranch}'")
         sh(gitCommandBuilder.build())
       } catch (Exception ex) {
         error("The branch '${env.getProperty(EnvironmentConstants.GIT_BRANCH)}' is not suitable for integration into master")
