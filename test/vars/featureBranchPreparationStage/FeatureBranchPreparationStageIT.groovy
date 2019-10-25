@@ -29,6 +29,11 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExpectedException
 
+import static de.provision.devops.testing.jenkins.pipeline.PVStepConstants.PURGE_SNAPSHOTS_FROM_REPOSITORY
+import static de.provision.devops.testing.jenkins.pipeline.PVStepConstants.PURGE_SNAPSHOTS_FROM_REPOSITORY
+import static io.wcm.testing.jenkins.pipeline.StepConstants.NODE
+import static io.wcm.testing.jenkins.pipeline.StepConstants.NODE
+
 class FeatureBranchPreparationStageIT extends PVLibraryIntegrationTestBase {
 
   @Rule
@@ -48,12 +53,12 @@ class FeatureBranchPreparationStageIT extends PVLibraryIntegrationTestBase {
   }
 
   @Test
-  void shouldIntegrateFeatureBranchWithMaster() {
+  void shouldIntegrateFeatureBranchWithParent() {
     loadAndExecuteScript("vars/featureBranchPreparationStage/jobs/featureBranchTestJob.groovy")
 
     StepRecorderAssert.assertOnce(StepConstants.STAGE)
     String mergeCall = StepRecorderAssert.assertOnce(StepConstants.SH)
-    Assert.assertEquals("git merge origin/master", mergeCall)
+    Assert.assertEquals("git merge origin/develop", mergeCall)
   }
 
   @Test
@@ -69,6 +74,17 @@ class FeatureBranchPreparationStageIT extends PVLibraryIntegrationTestBase {
 
     StepRecorderAssert.assertOnce(StepConstants.STAGE)
     String mergeCall = StepRecorderAssert.assertOnce(StepConstants.SH)
-    Assert.assertEquals("git merge origin/master", mergeCall)
+    Assert.assertEquals("git merge origin/develop", mergeCall)
+  }
+
+  @Override
+  protected void afterLoadingScript() {
+    super.afterLoadingScript()
+
+    // mock gitTools.getParentBranch call
+    helper.registerAllowedMethod("getParentBranch", [], { Closure closure ->
+      stepRecorder.record("getParentBranch", null)
+      return "origin/develop"
+    })
   }
 }

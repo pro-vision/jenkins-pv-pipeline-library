@@ -13,11 +13,11 @@ Since feature branches should integrate without merge conflicts into
 their parent branch the current feature branch is merged with this
 branch.
 
-
-
-:bulb: This was done by using the PreBuild Merge extension until version
-0.7 but due to refactoring of some of the plugins this is no longer
-possible for multibranch pipeline builds
+For determing the parent branch the function
+[`gitTools.getParentBranch()`](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/gitTools.md#string-getparentbranch)
+from the
+[wcm.io DevOps Jenkins Pipeline Library](https://github.com/wcm-io-devops/jenkins-pipeline-library)
+is used.
 
 ## Related Classes
 * [`GitCommandBuilderImpl`](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/src/io/wcm/devops/jenkins/pipeline/shell/GitCommandBuilderImpl.groovy)

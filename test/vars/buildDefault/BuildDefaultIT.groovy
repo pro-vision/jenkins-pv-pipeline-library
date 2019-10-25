@@ -212,7 +212,7 @@ class BuildDefaultIT extends PVLibraryIntegrationTestBase {
     assertArrayEquals("error in executed shell commands", [
       [returnStdout: true, script: "git branch"],
       [returnStdout: true, script: "git rev-parse HEAD"],
-      "git merge origin/master",
+      "git merge origin/develop",
       "mvn clean deploy -B -U -Dcontinuous-integration=true",
       "mvn checkstyle:checkstyle pmd:pmd spotbugs:spotbugs -B -Dcontinuous-integration=true"].toArray(),
       shellCalls.toArray()
@@ -237,6 +237,12 @@ class BuildDefaultIT extends PVLibraryIntegrationTestBase {
     helper.registerAllowedMethod(PURGE_SNAPSHOTS_FROM_REPOSITORY, [], {
       stepRecorder.record(PURGE_SNAPSHOTS_FROM_REPOSITORY, null)
     })
+    // mock gitTools.getParentBranch call
+    helper.registerAllowedMethod("getParentBranch", [], { Closure closure ->
+      stepRecorder.record("getParentBranch", null)
+      return "origin/develop"
+    })
+
     helper.registerAllowedMethod(NODE, [String.class, Closure.class], { String agent, Closure closure ->
       stepRecorder.record(NODE, agent)
       // execute the closure
