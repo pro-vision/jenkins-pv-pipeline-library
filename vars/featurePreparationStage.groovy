@@ -36,9 +36,8 @@ void call(Map config) {
 
   // only execute stage when job type is a feature branch
   if (jobType == ConfigConstants.JOB_TYPE_FEATURE) {
-    stage('Merge with parent branch') {
-      // get the parent branch
-      String parentBranch = "origin/${gitTools.getParentBranch()}"
+    String parentBranch = gitTools.getParentBranch()
+    stage("Merge with '${parentBranch}'") {
       // build the command
       GitCommandBuilderImpl gitCommandBuilder = new GitCommandBuilderImpl((DSL) this.steps)
       gitCommandBuilder.addArguments(["merge", "${parentBranch}"])

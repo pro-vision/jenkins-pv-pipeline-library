@@ -7,11 +7,13 @@ responsible for setting up a feature branch build during execution of
 
 ## Tasks
 
-### Merge with master
+### Merge with parent branch
 
 Since feature branches should integrate without merge conflicts into
-master the current feature branch is merged with the `master` branch of
-`origin`
+their parent branch the current feature branch is merged with this
+branch.
+
+
 
 :bulb: This was done by using the PreBuild Merge extension until version
 0.7 but due to refactoring of some of the plugins this is no longer
