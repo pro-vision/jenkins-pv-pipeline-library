@@ -35,7 +35,7 @@ import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
  * When running in untrusted mode (folder library) the scm configuration from the job page is used for checkout.
  * In this mode you have to configure
  * - Checkout to local branch Extension with empty value
- * - Merge before build with origin/master
+ * - Merge before build with parent branch
  *
  * @param config Configuration options for the used steps
  *
