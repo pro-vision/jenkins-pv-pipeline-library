@@ -46,7 +46,7 @@ void call(Map config) {
         log.info("merging with '${parentBranch}'")
         sh(gitCommandBuilder.build())
       } catch (Exception ex) {
-        error("The branch '${env.getProperty(EnvironmentConstants.GIT_BRANCH)}' is not suitable for integration into master")
+        error("The branch '${env.getProperty(EnvironmentConstants.GIT_BRANCH)}' is not suitable for integration into '${parentBranch}'")
       }
     }
   }

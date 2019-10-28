@@ -64,7 +64,7 @@ class FeatureBranchPreparationStageIT extends PVLibraryIntegrationTestBase {
   @Test
   void shouldFailOnFeatureBranchIntegration() {
     expectedEx.expect(AbortException.class)
-    expectedEx.expectMessage("The branch 'feature/test' is not suitable for integration into master")
+    expectedEx.expectMessage("The branch 'feature/test' is not suitable for integration into 'origin/develop'")
 
     helper.registerAllowedMethod(StepConstants.SH, [String.class], { String command ->
       throw new Exception("git merge exception")
