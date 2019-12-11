@@ -33,10 +33,10 @@ import org.jenkinsci.plugins.workflow.cps.DSL
  *
  * @param config Configuration options for the used steps
  *
- * @see <a href="../vars/buildDefault.groovy">buildDefault.groovy</a>
- * @see <a href="../vars/buildDefault.md">buildDefault.md</a>
- * @see <a href="../vars/buildFeature.groovy">buildFeature.groovy</a>
- * @see <a href="../vars/buildFeature.md">buildFeature.md</a>
+ * @see ../vars/buildDefault.groovy
+ * @see ../vars/buildDefault.md
+ * @see ../vars/buildFeature.groovy
+ * @see ../vars/buildFeature.md
  */
 void call(Map config = [:]) {
   wrap.color(config) {

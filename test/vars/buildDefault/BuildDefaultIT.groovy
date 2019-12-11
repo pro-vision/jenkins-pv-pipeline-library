@@ -90,6 +90,44 @@ class BuildDefaultIT extends PVLibraryIntegrationTestBase {
   void shouldRunWithDefaults() {
     loadAndExecuteScript("vars/buildDefault/jobs/buildDefaultTestJob.groovy")
 
+    assertDefaults()
+
+    List shellCalls = assertStepCalls(SH, 4)
+
+    assertArrayEquals("error in executed shell commands", [
+      [returnStdout: true, script: "git branch"],
+      [returnStdout: true, script: "git rev-parse HEAD"],
+      "mvn clean deploy -B -U -Dcontinuous-integration=true",
+      "mvn checkstyle:checkstyle pmd:pmd spotbugs:spotbugs -B -Dcontinuous-integration=true"].toArray(),
+      shellCalls.toArray()
+    )
+  }
+
+  @Test
+  void shouldRunWithExtensions() {
+    loadAndExecuteScript("vars/buildDefault/jobs/buildDefaultExtensionsTestJob.groovy")
+
+    assertDefaults()
+
+    List shellCalls = assertStepCalls(SH, 8)
+
+    assertArrayEquals("error in executed shell commands", [
+      "echo 'customPreExtension1'",
+      "echo 'customPreExtension2'",
+      [returnStdout: true, script: "git branch"],
+      [returnStdout: true, script: "git rev-parse HEAD"],
+      "mvn clean deploy -B -U -Dcontinuous-integration=true",
+      "mvn checkstyle:checkstyle pmd:pmd spotbugs:spotbugs -B -Dcontinuous-integration=true",
+      "echo 'customPostExtension1'",
+      "echo 'customPostExtension2'"].toArray(),
+      shellCalls.toArray()
+    )
+  }
+
+  void assertDefaults() {
+    Map steps = stepRecorder.recordedSteps
+
+
     // trigger assertions
     String pollScmCall = assertOnce(POLLSCM)
     assertEquals("defaultScmPolling", pollScmCall)
@@ -111,20 +149,12 @@ class BuildDefaultIT extends PVLibraryIntegrationTestBase {
 
     assertOnce(MAVEN_PURGE_SNAPSHOTS)
     assertTwice(CONFIGFILEPROVIDER)
-    List shellCalls = assertStepCalls(SH, 4)
 
     assertAnalyzeSteps()
 
     assertNone(EMAILEXT)
 
     assertArrayEquals("error in executed tool commands", ["defaultMaven", "defaultJDK"].toArray(), toolCalls.toArray())
-    assertArrayEquals("error in executed shell commands", [
-      [returnStdout: true, script: "git branch"],
-      [returnStdout: true, script: "git rev-parse HEAD"],
-      "mvn clean deploy -B -U -Dcontinuous-integration=true",
-      "mvn checkstyle:checkstyle pmd:pmd spotbugs:spotbugs -B -Dcontinuous-integration=true"].toArray(),
-      shellCalls.toArray()
-    )
 
     assertJobStatusSuccess()
   }
