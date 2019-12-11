@@ -42,11 +42,15 @@ class ConfigConstants {
   public static final String PROPERTIES_PIPELINE_TRIGGERS = "pipelineTriggers"
 
   public static final String STAGE_COMPILE = "compile"
+  public static final String STAGE_COMPILE_EXTEND = "_extend"
+
   public static final String STAGE_ANALYZE = "analyze"
+  public static final String STAGE_ANALYZE_EXTEND = "_extend"
 
   public static final String STAGE_PREPARATION = "preparationStage"
 
   public static final String STAGE_PREPARATION_CHECKOUT_SCM = "checkoutScm"
+  public static final String STAGE_PREPARATION_EXTEND = "_extend"
   public static final String STAGE_PREPARATION_PURGE_SHAPSHOTS = "purgeSnapshots"
   public static final String STAGE_PREPARATION_SET_BUILD_NAME = "setBuildName"
   public static final String STAGE_PREPARATION_SETUP_TOOLS = "setupTools"
@@ -59,6 +63,8 @@ class ConfigConstants {
 
   public static final String STAGE_RESULTS_CHECKSTYLE = "checkstyle"
   public static final String STAGE_RESULTS_CHECKSTYLE_ENABLED = "enabled"
+
+  public static final String STAGE_RESULTS_EXTEND = "_extend"
 
   public static final String STAGE_RESULTS_JACOCO = "jacoco"
   public static final String STAGE_RESULTS_JACOCO_ENABLED = "enabled"

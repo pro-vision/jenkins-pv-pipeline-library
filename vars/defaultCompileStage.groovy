@@ -17,6 +17,8 @@
  * limitations under the License.
  * #L%
  */
+
+import io.wcm.devops.jenkins.pipeline.utils.TypeUtils
 import io.wcm.devops.jenkins.pipeline.utils.logging.Logger
 import io.wcm.devops.jenkins.pipeline.utils.maps.MapUtils
 
@@ -29,33 +31,62 @@ import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
  *
  * @param config Configuration options for the used steps
  *
- * @see <a href="https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/execMaven.groovy">execMaven.groovy</a>
- * @see <a href="https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/execMaven.md">execMaven.md</a>
+ * @see https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/execMaven.groovy
+ * @see https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/execMaven.md
  */
 void call(Map config) {
-  Logger log = new Logger(this)
+  Logger log = new Logger("defaultCompileStage")
+  TypeUtils typeUtils = new TypeUtils()
+  Map compileStageCfg = (Map) config[STAGE_COMPILE] ?: [:]
+
+  def _extend = typeUtils.isClosure(compileStageCfg[STAGE_COMPILE_EXTEND]) ? compileStageCfg[STAGE_COMPILE_EXTEND] : null
+
   stage('Compile') {
-    // get maven defines based on project structure (e.g. nodejs.directory)
-    def defaultMavenDefines = getDefaultMavenDefines()
-    // merge config with maven defaults and incoming stage configuration
-    Map compileStageCfg = (Map) config[STAGE_COMPILE] ?: [:]
-    Map compileDefaultCgf = [(MAVEN): [
+    // no extends are configured, call the implementation
+    if (!_extend) {
+      log.debug("no extend configured, using default implementation")
+      _impl(config)
+    } else {
+      // call extend and provide a reference to the default implementation
+      _extend(config, this.&_impl)
+    }
+  }
+}
+
+/**
+ * Implementation of the compile stage
+ *
+ * @param config Configuration options for the used steps
+ *
+ * @see https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/execMaven.groovy
+ * @see https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/execMaven.md
+ */
+void _impl(Map config) {
+  Logger log = new Logger("defaultCompileStage._impl")
+
+  Map compileStageCfg = (Map) config[STAGE_COMPILE] ?: [:]
+
+  // get maven defines based on project structure (e.g. nodejs.directory)
+  def defaultMavenDefines = getDefaultMavenDefines()
+  // merge config with maven defaults and incoming stage configuration
+
+  Map compileDefaultCgf = [
+    (MAVEN): [
       (MAVEN_GOALS)    : ["clean", "deploy"],
       (MAVEN_ARGUMENTS): ["-B", "-U"]
     ]
-    ]
-    compileStageCfg = MapUtils.merge(config, compileDefaultCgf, compileStageCfg, defaultMavenDefines)
-    // execute maven build
-    execMaven(compileStageCfg)
+  ]
+  compileStageCfg = MapUtils.merge(config, compileDefaultCgf, compileStageCfg, defaultMavenDefines)
+  // execute maven build
+  execMaven(compileStageCfg)
 
-    // fingerprint artifacts
-    fingerprint('**/target/**/*.jar,**/target/**/*.zip')
+  // fingerprint artifacts
+  fingerprint('**/target/**/*.jar,**/target/**/*.zip')
 
-    // check if we have to stash the files for later use
-    if (compileStageCfg[STASH]) {
-      log.info("stashing compile files for later usage with name: '${STASH_COMPILE_FILES}'")
-      // stash the files for later usage
-      stash(name: STASH_COMPILE_FILES, includes: "**/*")
-    }
+  // check if we have to stash the files for later use
+  if (compileStageCfg[STASH]) {
+    log.info("stashing compile files for later usage with name: '${STASH_COMPILE_FILES}'")
+    // stash the files for later usage
+    stash(name: STASH_COMPILE_FILES, includes: "**/*")
   }
 }

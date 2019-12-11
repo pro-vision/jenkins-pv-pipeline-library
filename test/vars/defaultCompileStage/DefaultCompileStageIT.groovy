@@ -26,12 +26,13 @@ import org.junit.Test
 import static io.wcm.testing.jenkins.pipeline.StepConstants.*
 import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertNone
 import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertOnce
+import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertStepCalls
 import static org.junit.Assert.assertEquals
 
 class DefaultCompileStageIT extends PVLibraryIntegrationTestBase {
 
   @Test
-  void shouldRunWithDefault() {
+  void shouldRunWithDefaults() {
     loadAndExecuteScript("vars/defaultCompileStage/jobs/defaultCompileStageDefaultsTestJob.groovy")
 
     assertOnce(CONFIGFILEPROVIDER)
@@ -55,6 +56,21 @@ class DefaultCompileStageIT extends PVLibraryIntegrationTestBase {
 
     Map actualStashCall = (Map) assertOnce(STASH)
     assertEquals([name: ConfigConstants.STASH_COMPILE_FILES, includes: "**/*"], actualStashCall)
+  }
+
+  @Test
+  void shouldRunWithExtend() {
+    loadAndExecuteScript("vars/defaultCompileStage/jobs/defaultCompileStageExtendTestJob.groovy")
+
+    assertOnce(CONFIGFILEPROVIDER)
+    List shellCalls = assertStepCalls(SH, 3)
+    assertEquals("echo 'customCompileStage before'", shellCalls[0])
+    assertEquals("error in executed shell command", "mvn clean deploy -B -U -Dcontinuous-integration=true", shellCalls[1])
+    assertEquals("echo 'customCompileStage after'", shellCalls[shellCalls.size()-1])
+
+    assertOnce(FINGERPRINT)
+
+    assertNone(STASH)
   }
 
 }

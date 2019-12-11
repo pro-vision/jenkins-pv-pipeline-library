@@ -28,6 +28,7 @@ import static io.wcm.testing.jenkins.pipeline.StepConstants.SH
 import static io.wcm.testing.jenkins.pipeline.StepConstants.STASH
 import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertNone
 import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertOnce
+import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertStepCalls
 import static org.junit.Assert.assertEquals
 
 class DefaultAnalyzeStageIT extends PVLibraryIntegrationTestBase {
@@ -39,6 +40,19 @@ class DefaultAnalyzeStageIT extends PVLibraryIntegrationTestBase {
     assertOnce(CONFIGFILEPROVIDER)
     String shellCall = (String) assertOnce(SH)
     assertEquals("error in executed shell command", "mvn checkstyle:checkstyle pmd:pmd spotbugs:spotbugs -B -Dcontinuous-integration=true", shellCall)
+
+    assertNone(STASH)
+  }
+
+  @Test
+  void shouldRunWithExtend() {
+    loadAndExecuteScript("vars/defaultAnalyzeStage/jobs/defaultAnalyzeStageExtendTestJob.groovy")
+
+    assertOnce(CONFIGFILEPROVIDER)
+    List shellCalls = (List) assertStepCalls(SH, 3)
+    assertEquals("error in executed shell command", "echo 'customAnalyzeStage before'", shellCalls[0])
+    assertEquals("error in executed shell command", "mvn checkstyle:checkstyle pmd:pmd spotbugs:spotbugs -B -Dcontinuous-integration=true", shellCalls[1])
+    assertEquals("error in executed shell command", "echo 'customAnalyzeStage after'", shellCalls[2])
 
     assertNone(STASH)
   }
