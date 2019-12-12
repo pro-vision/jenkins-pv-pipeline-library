@@ -25,6 +25,7 @@ import org.junit.Test
 
 import static io.wcm.testing.jenkins.pipeline.StepConstants.CONFIGFILEPROVIDER
 import static io.wcm.testing.jenkins.pipeline.StepConstants.SH
+import static io.wcm.testing.jenkins.pipeline.StepConstants.STAGE
 import static io.wcm.testing.jenkins.pipeline.StepConstants.STASH
 import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertNone
 import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertOnce
@@ -67,6 +68,13 @@ class DefaultAnalyzeStageIT extends PVLibraryIntegrationTestBase {
 
     Map actualStashCall = (Map) assertOnce(STASH)
     assertEquals([name: ConfigConstants.STASH_ANALYZE_FILES, includes: "**/*"], actualStashCall)
+  }
+
+  @Test
+  void shouldNotRunWhenDisabled() {
+    loadAndExecuteScript("vars/defaultAnalyzeStage/jobs/defaultAnalyzeStageDisabledTestJob.groovy")
+
+    assertNone(STAGE)
   }
 
 }

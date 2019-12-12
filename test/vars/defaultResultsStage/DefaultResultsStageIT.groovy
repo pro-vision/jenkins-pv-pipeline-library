@@ -51,6 +51,13 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
     assertEquals("echo 'customResultsStage after'", shellCalls[shellCalls.size()-1])
   }
 
+  @Test
+  void shouldNotRunWhenDisabled() {
+    loadAndExecuteScript("vars/defaultResultsStage/jobs/defaultResultsStageDisabledTestJob.groovy")
+
+    assertNone(STAGE)
+  }
+
   void assertDefaults() {
     Map expectedJUnitCall = [
       allowEmptyResults: true,
