@@ -21,8 +21,11 @@ import de.provision.devops.jenkins.pipeline.utils.ConfigConstants
 import io.wcm.devops.jenkins.pipeline.utils.TypeUtils
 import io.wcm.devops.jenkins.pipeline.utils.logging.Logger
 
+import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.STAGE_ANALYZE_ENABLED
+import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.STAGE_ANALYZE_ENABLED
 import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.STAGE_ANALYZE_EXTEND
 import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.STAGE_ANALYZE_EXTEND
+import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.STAGE_RESULTS_ENABLED
 import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.STAGE_RESULTS_EXTEND
 
 /**
@@ -42,6 +45,12 @@ void call(Map config = [:]) {
   Logger log = new Logger("defaultResultsStage")
   TypeUtils typeUtils = new TypeUtils()
   Map resultStageConfig = config[ConfigConstants.STAGE_RESULTS] ?: [:]
+  Boolean resultsStageEnabled = resultStageConfig[STAGE_RESULTS_ENABLED] != null ? resultStageConfig[STAGE_RESULTS_ENABLED] : true
+
+  if (!resultsStageEnabled) {
+    log.debug("defaultResultsStage is disabled")
+    return
+  }
 
   def _extend = typeUtils.isClosure(resultStageConfig[STAGE_RESULTS_EXTEND]) ? resultStageConfig[STAGE_RESULTS_EXTEND] : null
 

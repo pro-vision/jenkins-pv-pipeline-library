@@ -22,11 +22,7 @@ import io.wcm.devops.jenkins.pipeline.utils.TypeUtils
 import io.wcm.devops.jenkins.pipeline.utils.logging.Logger
 import io.wcm.devops.jenkins.pipeline.utils.maps.MapUtils
 
-import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.STAGE_ANALYZE_EXTEND
-import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.STAGE_COMPILE_EXTEND
-import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.STAGE_COMPILE_EXTEND
-import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.STASH
-import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.STASH_ANALYZE_FILES
+import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
 
 /**
@@ -44,7 +40,13 @@ import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
 void call(Map config) {
   Logger log = new Logger("defaultAnalyzeStage")
   TypeUtils typeUtils = new TypeUtils()
-  Map analyzeStageConfig = (Map) config[ConfigConstants.STAGE_ANALYZE] ?: [:]
+  Map analyzeStageConfig = (Map) config[STAGE_ANALYZE] ?: [:]
+  Boolean analyzeStageEnabled = analyzeStageConfig[STAGE_ANALYZE_ENABLED] != null ? analyzeStageConfig[STAGE_ANALYZE_ENABLED] : true
+
+  if (!analyzeStageEnabled) {
+    log.debug("defaultAnalyzeStage is disabled")
+    return
+  }
 
   def _extend = typeUtils.isClosure(analyzeStageConfig[STAGE_ANALYZE_EXTEND]) ? analyzeStageConfig[STAGE_ANALYZE_EXTEND] : null
 
@@ -69,7 +71,7 @@ void _impl(Map config) {
   // get maven defines based on project structure (e.g. nodejs.directory)
   def defaultMavenDefines = getDefaultMavenDefines()
   // merge config with maven defaults and incoming stage configuration
-  Map analyzeStageConfig = (Map) config[ConfigConstants.STAGE_ANALYZE] ?: [:]
+  Map analyzeStageConfig = (Map) config[STAGE_ANALYZE] ?: [:]
   Map analyzeDefaultCgf = [
     (MAVEN): [
       (MAVEN_GOALS)    : ["checkstyle:checkstyle", "pmd:pmd", "spotbugs:spotbugs"],

@@ -50,6 +50,7 @@ class ConfigConstants {
 
   public static final String STAGE_ANALYZE = "analyze"
   public static final String STAGE_ANALYZE_EXTEND = "_extend"
+  public static final String STAGE_ANALYZE_ENABLED = "enabled"
 
   public static final String STAGE_PREPARATION = "preparationStage"
 
@@ -69,6 +70,7 @@ class ConfigConstants {
   public static final String STAGE_RESULTS_CHECKSTYLE_ENABLED = "enabled"
 
   public static final String STAGE_RESULTS_EXTEND = "_extend"
+  public static final String STAGE_RESULTS_ENABLED = "enabled"
 
   public static final String STAGE_RESULTS_JACOCO = "jacoco"
   public static final String STAGE_RESULTS_JACOCO_ENABLED = "enabled"
