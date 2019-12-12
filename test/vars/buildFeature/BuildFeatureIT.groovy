@@ -29,14 +29,16 @@ import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 
 import org.junit.Test
 
+import static io.wcm.testing.jenkins.pipeline.StepConstants.SH
 import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertOnce
+import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertStepCalls
 import static org.junit.Assert.*
 
 class BuildFeatureIT extends PVLibraryIntegrationTestBase {
 
   @Test
-  void shouldCallCommitStepWithoutScmConfig() {
-    loadAndExecuteScript("vars/buildFeature/jobs/shouldCallCommitStepWithoutScmConfigTestJob.groovy")
+  void shouldCallBuildDefaultStepWithoutScmConfig() {
+    loadAndExecuteScript("vars/buildFeature/jobs/buildFeatureWithScmConfigTestJob.groovy")
     Map config = assertOnce(PVStepConstants.BUILD_DEFAULT)
 
     // color wrapping
@@ -61,7 +63,7 @@ class BuildFeatureIT extends PVLibraryIntegrationTestBase {
 
   @Test
   void shoudCallDefaultBuildWithUseSCMVar() {
-    loadAndExecuteScript("vars/buildFeature/jobs/shoudCallDefaultBuildWithUseSCMVarTestJob.groovy")
+    loadAndExecuteScript("vars/buildFeature/jobs/buildFeatureWithScmVarTestJob.groovy")
     Map config = assertOnce(PVStepConstants.BUILD_DEFAULT)
 
     // color wrapping
@@ -82,6 +84,16 @@ class BuildFeatureIT extends PVLibraryIntegrationTestBase {
     // check build config
     Map analyzeStageCfg = (Map) config[STAGE_ANALYZE]
     assertNull("config should not contain a config for analyze stage", analyzeStageCfg)
+  }
+
+  @Test
+  void shoudCallDefaultBuildWithExtend() {
+    loadAndExecuteScript("vars/buildFeature/jobs/buildFeatureWithExtendTestJob.groovy")
+    List shCalls = assertStepCalls(SH, 2)
+    assertOnce(PVStepConstants.BUILD_DEFAULT)
+
+    // color wrapping
+    assertOnce(ANSI_COLOR)
   }
 
   // register callbacks to track calls

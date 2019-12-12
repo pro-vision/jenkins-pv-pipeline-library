@@ -28,6 +28,9 @@ class ConfigConstants {
   public static final String BUILD_DEFAULT_PRE_EXTENSIONS = "preExtensions"
   public static final String BUILD_DEFAULT_POST_EXTENSIONS = "postExtensions"
 
+  public static final String BUILD_FEATURE = "buildFeature"
+  public static final String BUILD_FEATURE_EXTEND = "_extend"
+
   public static final String JOB_TYPE = "jobType"
   public static final String JOB_TYPE_FEATURE = "feature"
 
