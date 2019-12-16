@@ -3,8 +3,8 @@
 With the version 1.2.0 extensions were introduced.
 There are basically two types of extensions.
 
-# [Extension points](#extension-points)
-# [Extend](#extend-mechanism)
+* [Extension points](#extension-points)
+* [Extend](#extend-mechanism)
 
 ## Extension points
 

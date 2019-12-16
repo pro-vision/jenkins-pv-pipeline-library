@@ -21,7 +21,7 @@ of the pipeline library.
   * [routeDefaultJenkinsFile](#routedefaultjenkinsfile)
   * [Configurability](#configurability)
   * [Provide default tools](#provide-default-tools)
-  * [Configurability](#configurability)
+  * [Extensibility](#extensibility)
 * [Requirements](#requirements)
 * [Steps](#steps)
 * [Tutorials](#tutorials)
