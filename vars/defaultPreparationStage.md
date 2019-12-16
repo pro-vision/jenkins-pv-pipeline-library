@@ -146,9 +146,9 @@ Use this configuration option to overwrite or extend the
 import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
 
-void customPreparationStage(Map config, superImpl) {
+def customPreparationStage(Map config, superImpl) {
   echo "before defaultPreparationStage stage"
-  superImpl()
+  superImpl(config)
   echo "after defaultPreparationStage stage"
 }
 

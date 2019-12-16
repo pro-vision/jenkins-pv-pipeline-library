@@ -100,9 +100,9 @@ Use this configuration option to overwrite or extend the
 import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
 
-void customCompileStage(Map config, superImpl) {
+def customCompileStage(Map config, superImpl) {
   echo "before defaultCompileStage stage"
-  superImpl()
+  superImpl(config)
   echo "after defaultCompileStage stage"
 }
 

@@ -26,7 +26,7 @@ import io.wcm.devops.jenkins.pipeline.utils.logging.Logger
 
 def customFeatureBuildExtend(Map config, superImpl) {
   sh("echo 'customFeatureBuildExtend before'")
-  superImpl()
+  superImpl(config)
   sh("echo 'customFeatureBuildExtend after'")
 }
 

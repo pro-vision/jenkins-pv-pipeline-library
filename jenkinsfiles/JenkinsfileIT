@@ -9,45 +9,60 @@ import org.jenkinsci.plugins.workflow.libs.Library
 import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
 import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 
-void customCompileStage(Map config, superImpl) {
+def customCompileStage(Map config, superImpl) {
   Logger log = new Logger("customCompileStage")
   log.info("before superImpl")
-  superImpl()
+  superImpl(config)
   log.info("after superImpl")
 }
 
-void customAnalyzeStage(Map config, superImpl) {
+def customPreparationStage(Map config, superImpl) {
+  Logger log = new Logger("customPreparationStage")
+  log.info("before superImpl")
+  superImpl(config)
+  log.info("after superImpl")
+}
+
+def customAnalyzeStage(Map config, superImpl) {
   Logger log = new Logger("customAnalyzeStage")
   log.info("before superImpl")
-  superImpl()
+  superImpl(config)
   log.info("after superImpl")
 }
 
-void customResultsStage(Map config, superImpl) {
+def customResultsStage(Map config, superImpl) {
   Logger log = new Logger("customResultsStage")
   log.info("before superImpl")
-  superImpl()
+  superImpl(config)
   log.info("after superImpl")
 }
 
 void preStage1(Map config) {
   Logger log = new Logger("preStage1")
-  log.info("Hello World!")
+  stage("preStage1") {
+    log.info("Hello World!")
+  }
 }
 
 void preStage2(Map config) {
   Logger log = new Logger("preStage2")
-  log.info("Hello World!")
+  stage("preStage2") {
+    log.info("Hello World!")
+  }
 }
 
 void postStage1(Map config) {
   Logger log = new Logger("postStage1")
-  log.info("Hello World!")
+  stage("postStage1") {
+    log.info("Hello World!")
+  }
 }
 
 void postStage2(Map config) {
   Logger log = new Logger("postStage2")
-  log.info("Hello World!")
+  stage("postStage2") {
+    log.info("Hello World!")
+  }
 }
 
 Map config = [
@@ -76,7 +91,10 @@ Map config = [
       (MAVEN_GOALS): "clean install"
     ]
   ],
-  (STAGE_RESULTS_EXTEND): [
+  (STAGE_PREPARATION) : [
+    (STAGE_PREPARATION_EXTEND) : this.&customPreparationStage
+  ],
+  (STAGE_RESULTS): [
     (STAGE_RESULTS_EXTEND): this.&customResultsStage,
   ],
 ]

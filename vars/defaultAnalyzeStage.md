@@ -107,9 +107,9 @@ Use this configuration option to overwrite or extend the
 import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
 
-void customAnalyzeStage(Map config, superImpl) {
+def customAnalyzeStage(Map config, superImpl) {
   echo "before defaultAnalyzeStage stage"
-  superImpl()
+  superImpl(config)
   echo "after defaultAnalyzeStage stage"
 }
 

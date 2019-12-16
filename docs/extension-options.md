@@ -89,17 +89,17 @@ So it is up to you to use the original implementation or replace it
 import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
 
-void customPreparationStage(Map config, superImpl) {
+def customPreparationStage(Map config, superImpl) {
   echo "i am executing code before the defaultPreparationStage"
-  superImpl()
+  superImpl(config)
 }
 
-void customCompileStage(Map config, superImpl) {
-  superImpl()
+def customCompileStage(Map config, superImpl) {
+  superImpl(config)
   echo "i am executing code before the customCompileStage"
 }
 
-void customResultsStage(Map config, superImpl) {
+def customResultsStage(Map config, superImpl) {
   echo "I am replacing the defaultResultsStage"
 }
 

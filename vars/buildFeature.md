@@ -135,9 +135,9 @@ step.
 import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
 
-void customFeatureStage(Map config, superImpl) {
+def customFeatureStage(Map config, superImpl) {
   echo "before defaultFeature stage"
-  superImpl()
+  superImpl(config)
   echo "after defaultFeature stage"
 }
 
