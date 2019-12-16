@@ -14,7 +14,9 @@ Basically the `buildFeature` step calls the
 * [Modes](#modes)
   * [Mode 1 (trusted)](#mode-1-trusted)
   * [Mode 2 (untrusted)](#mode-2-untrusted)
+* [Extension options](#extension-options)
 * [Configuration options](#configuration-options)
+  * [`_extend`](#_extend-optional)
 * [Related classes](#related-classes)
 
 ## Modes
@@ -97,13 +99,55 @@ Map config = [
 ]
 ```
 
+## Extension options
+
+This step supports the extension mechanism, so you are able to extend
+the step by executing code before and/or after the step is executed or
+even replacing the whole functionality.
+
+:bulb: See [`_extend`](#_extend-optional) for an example.
+
 ## Configuration options
 
-The `buildFeature` step has currently no own configuration options. For
-configuration options of the `buildDefault` step have a look at
+The `buildFeature` step reuses the `buildDefault` step with adjusted
+configuration so please have a look at
 [`buildDefault` configuration options](buildDefault.md#configuration-options)
 
 :bulb: [Documentation about configuration](../docs/config-structure.md)
+
+All configuration options for the `buildFeature` stage must be inside
+the
+[`ConfigConstants.BUILD_FEATURE`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy)
+map element to be evaluated and used by the step.
+
+### `_extend` (optional)
+|||
+|---|---|
+|Constant|[`ConfigConstants.BUILD_FEATURE_EXTEND`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy)|
+|Type|`Closure` with signature `(Map config, superImpl)`|
+|Default|`null`|
+
+Use this configuration option to overwrite or extend the `buildFeature`
+step.
+
+**Example:**
+```groovy
+import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
+import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
+
+void customFeatureStage(Map config, superImpl) {
+  echo "before defaultFeature stage"
+  superImpl()
+  echo "after defaultFeature stage"
+}
+
+buildFeature(
+  (BUILD_FEATURE) : [
+    (BUILD_FEATURE_EXTEND) : this.&customFeatureStage
+  ]
+)
+
+```
 
 ## Related classes
 * [`MapUtils`](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/src/io/wcm/devops/jenkins/pipeline/utils/maps/MapUtils.groovy)

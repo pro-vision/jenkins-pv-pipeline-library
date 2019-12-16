@@ -14,7 +14,10 @@ The step also
 * publishes the combined static analysis resuls
 
 # Table of contents
+* [Extension options](#extension-options)
 * [Configuration options](#configuration-options)
+  * [`_extend` (optional)](#_extend-optional)
+  * [`enabled` (optional)](#enabled-optional)
   * [`analysisPublisher` (optional)](#analysispublisher-optional)
     *  [`enabled` (optional)](#analysis-publisher-enabled-optional)
   * [`checkstyle` (optional)](#checkstyle-optional)
@@ -56,6 +59,14 @@ The step also
   * [`pmd` (optional)](#pmd-optional)
     *  [`enabled` (optional)](#pmd-enabled-optional)
 
+## Extension options
+
+This step supports the extension mechanism, so you are able to extend
+the step by executing code before and/or after the step is executed or
+even replacing the whole functionality.
+
+:bulb: See [`_extend`](#_extend-optional) for an example.
+
 ## Configuration options
 
 All configuration options must be inside the `stageResults`
@@ -67,6 +78,8 @@ import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 
 defaultPreparationStage( 
   (STAGE_RESULTS) : [
+    (STAGE_RESULTS_ENABLED) : true,
+    (STAGE_RESULTS_EXTEND) : null,
     (STAGE_RESULTS_ANALYSIS_PUBLISHER) : [
       (STAGE_RESULTS_ANALYSIS_PUBLISHER_ENABLED) : true
     ],
@@ -117,6 +130,45 @@ defaultPreparationStage(
   ]
 )
 ```
+
+### `_extend` (optional)
+|||
+|---|---|
+|Constant|[`ConfigConstants.STAGE_RESULTS_EXTEND`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy)|
+|Type|`Closure` with signature `(Map config, superImpl)`|
+|Default|`null`|
+
+Use this configuration option to overwrite or extend the
+`defaultResultsStage` step.
+
+**Example:**
+```groovy
+import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
+import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
+
+void customResultsStage(Map config, superImpl) {
+  echo "before defaultResultsStage stage"
+  superImpl()
+  echo "after defaultResultsStage stage"
+}
+
+defaultResultsStage(
+  (STAGE_RESULTS) : [
+    (STAGE_RESULTS_EXTEND) : this.&customResultsStage
+  ]
+)
+
+```
+
+### `enabled` (optional)
+|||
+|---|---|
+|Constant|[`ConfigConstants.STAGE_RESULTS_ENABLED`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy)|
+|Type|`Boolean`|
+|Default|`true`|
+
+Use this configuration option to enable (default) or disable the
+`defaultResultsStage` step.
 
 ### `analysisPublisher` (optional)
 |          |                                                                                                                              |

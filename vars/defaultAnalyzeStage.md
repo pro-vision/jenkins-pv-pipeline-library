@@ -11,15 +11,18 @@ pipeline
 auto lookup mechanism.
 
 # Table of contents
-* [Workflow]()
-    * [Get default maven defines]()
-    * [Configuration merge]()
-    * [Execute Maven]()
-    * [Stashing workspace files]()
-* [Configuration options]()
+* [Step sequence](#step-sequence)
+    * [Get default maven defines](#get-default-maven-defines)
+    * [Configuration merge](#configuration-merge)
+    * [Execute Maven](#execute-maven)
+    * [Stashing workspace files](#stashing-workspace-files)
+* [Extension options](#extension-options)
+* [Configuration options](#configuration-options)
+    * [`_extend`](#_extend-optional)
+    * [`enabled`](enabled-optional)
     * [`maven`](#maven-optional)
     * [`stash`](#stash-optional)
-* [Related classes]()
+* [Related classes](#related-classes)
 
 ## Step sequence
 
@@ -51,6 +54,14 @@ build on another node.
 
 :bulb: The files will be then available by using `unstash` the name `analyzeFiles` (`ConfigConstants.STASH_ANALYZE_FILES`).
 
+## Extension options
+
+This step supports the extension mechanism, so you are able to extend
+the step by executing code before and/or after the step is executed or
+even replacing the whole functionality.
+
+:bulb: See [`_extend`](#_extend-optional) for an example.
+
 ## Configuration options
 
 All configuration options must be inside the `analyze` ([`ConfigConstants.STAGE_ANALYZE`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy)) map element to be
@@ -60,13 +71,54 @@ evaluated and used by the step.
 import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
 defaultAnalyzeStage(
-    (STAGE_ANALYZE) : [
-        (MAVEN) : [
-            // config from execMaven step
-        ],
-        (STASH) : false
-    ]
+  (STAGE_ANALYZE) : [
+    (MAVEN) : [
+        // config from execMaven step
+    ],
+    (STAGE_ANALYZE_ENABLED) : true,
+    (STAGE_ANALYZE_EXTEND) : null,
+    (STASH) : false
+  ]
 )
+```
+
+### `enabled` (optional)
+|||
+|---|---|
+|Constant|[`ConfigConstants.STAGE_ANALYZE_ENABLED`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy)|
+|Type|`Boolean`|
+|Default|`true`|
+
+Use this configuration option to enable (default) or disable the
+`defaultAnalyzeStage` step.
+
+### `_extend` (optional)
+|||
+|---|---|
+|Constant|[`ConfigConstants.STAGE_ANALYZE_EXTEND`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy)|
+|Type|`Closure` with signature `(Map config, superImpl)`|
+|Default|`null`|
+
+Use this configuration option to overwrite or extend the
+`defaultAnalyzeStage` step.
+
+**Example:**
+```groovy
+import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
+import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
+
+void customAnalyzeStage(Map config, superImpl) {
+  echo "before defaultAnalyzeStage stage"
+  superImpl()
+  echo "after defaultAnalyzeStage stage"
+}
+
+defaultAnalyzeStage(
+  (STAGE_ANALYZE) : [
+    (STAGE_ANALYZE_EXTEND) : this.&customAnalyzeStage
+  ]
+)
+
 ```
 
 ### `maven` (optional)
