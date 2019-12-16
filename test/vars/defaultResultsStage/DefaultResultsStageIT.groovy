@@ -27,13 +27,38 @@ import org.junit.Test
 import static io.wcm.testing.jenkins.pipeline.StepConstants.*
 import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertNone
 import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertOnce
+import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertStepCalls
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertEquals
 
 class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
 
   @Test
-  void shouldExecuteDefaultSteps() {
+  void shouldRunWithDefaults() {
     loadAndExecuteScript("vars/defaultResultsStage/jobs/defaultResultsStageTestJob.groovy")
 
+    this.assertDefaults()
+  }
+
+  @Test
+  void shouldRunWithExtend() {
+    loadAndExecuteScript("vars/defaultResultsStage/jobs/defaultResultsStageExtendTestJob.groovy")
+
+    this.assertDefaults()
+
+    List shellCalls = assertStepCalls(SH, 2)
+    assertEquals("echo 'customResultsStage before'", shellCalls[0])
+    assertEquals("echo 'customResultsStage after'", shellCalls[shellCalls.size()-1])
+  }
+
+  @Test
+  void shouldNotRunWhenDisabled() {
+    loadAndExecuteScript("vars/defaultResultsStage/jobs/defaultResultsStageDisabledTestJob.groovy")
+
+    assertNone(STAGE)
+  }
+
+  void assertDefaults() {
     Map expectedJUnitCall = [
       allowEmptyResults: true,
       testResults      : '**/target/surefire-reports/*.xml,**/target/failsafe-reports/*.xml'

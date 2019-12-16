@@ -24,6 +24,13 @@ package de.provision.devops.jenkins.pipeline.utils
  */
 class ConfigConstants {
 
+  public static final String BUILD_DEFAULT = "buildDefault"
+  public static final String BUILD_DEFAULT_PRE_EXTENSIONS = "preExtensions"
+  public static final String BUILD_DEFAULT_POST_EXTENSIONS = "postExtensions"
+
+  public static final String BUILD_FEATURE = "buildFeature"
+  public static final String BUILD_FEATURE_EXTEND = "_extend"
+
   public static final String JOB_TYPE = "jobType"
   public static final String JOB_TYPE_FEATURE = "feature"
 
@@ -42,11 +49,16 @@ class ConfigConstants {
   public static final String PROPERTIES_PIPELINE_TRIGGERS = "pipelineTriggers"
 
   public static final String STAGE_COMPILE = "compile"
+  public static final String STAGE_COMPILE_EXTEND = "_extend"
+
   public static final String STAGE_ANALYZE = "analyze"
+  public static final String STAGE_ANALYZE_EXTEND = "_extend"
+  public static final String STAGE_ANALYZE_ENABLED = "enabled"
 
   public static final String STAGE_PREPARATION = "preparationStage"
 
   public static final String STAGE_PREPARATION_CHECKOUT_SCM = "checkoutScm"
+  public static final String STAGE_PREPARATION_EXTEND = "_extend"
   public static final String STAGE_PREPARATION_PURGE_SHAPSHOTS = "purgeSnapshots"
   public static final String STAGE_PREPARATION_SET_BUILD_NAME = "setBuildName"
   public static final String STAGE_PREPARATION_SETUP_TOOLS = "setupTools"
@@ -59,6 +71,9 @@ class ConfigConstants {
 
   public static final String STAGE_RESULTS_CHECKSTYLE = "checkstyle"
   public static final String STAGE_RESULTS_CHECKSTYLE_ENABLED = "enabled"
+
+  public static final String STAGE_RESULTS_EXTEND = "_extend"
+  public static final String STAGE_RESULTS_ENABLED = "enabled"
 
   public static final String STAGE_RESULTS_JACOCO = "jacoco"
   public static final String STAGE_RESULTS_JACOCO_ENABLED = "enabled"

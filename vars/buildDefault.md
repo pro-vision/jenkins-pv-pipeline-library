@@ -8,11 +8,15 @@ branch for maven projects with Jenkins pipeline.
 * [Step sequence](#step-sequence)
   * [Wrapping the build](#wrapping-the-build)
     * [Allocating node](#allocating-node)
+      * [Call pre-execution extensions](#call-pre-execution-extensions)
       * [Prepare the build](#prepare-the-build)
       * [Compile maven project](#compile-maven-project)
       * [Analyze maven project](#analyze-maven-project)
       * [Publish Results](#publish-results)
+      * [Call post-execution extensions](#call-post-execution-extensions)
 * [Configuration options](#configuration-options)
+  * [`preExtensions`](#preextensions-optional)
+  * [`postExtensions`](#postextensions-optional)
 * [Default Configuration](#default-configuration)
 * [Related classes](#related-classes)
 
@@ -37,7 +41,14 @@ more information.
 
 #### Allocating node
 
-Inside the `defaultBuildWrapper` a build node is allocated. and
+Inside the `defaultBuildWrapper` a build node is allocated.
+
+##### Call pre-execution Extensions
+
+Inside the `defaultBuildWrapper` and before the
+[`defaultPreparationStage`](defaultPreparationStage.md) it is possible
+to place custom functionality. See [`preExtension`](#preextensions-optional) for
+an example.
 
 ##### Prepare the build
 
@@ -103,12 +114,19 @@ This stage processes and publishes the following build artifacts:
 * checkstyle result
 * aggregate static analysis results
 
+##### Call post-execution Extensions
+
+Inside the `defaultBuildWrapper` and after the the
+[`defaultResultsStage](defaultResultsStage.md) it is possible
+to place custom functionality like deployment of the artifacts. See [`postExtensions`](#postextensions-optional)
+for an example.
+
 ## Configuration options
 
 The configuration of this step is mostly build out of the config options from
 the used steps.
 
-It just passes the config map to all config aware steps.
+It mostly passes the config map to all config aware steps.
 
 * [`checkoutScm`](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/checkoutScm.md#configuration-options)
   config options
@@ -145,6 +163,74 @@ See
 [Using Agents](https://github.com/jenkinsci/pipeline-plugin/blob/master/TUTORIAL.md#using-agents)
 from pipeline plugin tutorial for more information
 
+### `preExtensions` (optional)
+|||
+|---|---|
+|Constant|[`ConfigConstants.BUILD_DEFAULT_PRE_EXTENSIONS`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy)|
+|Type|`List` containing a list of closures|
+|Default|`[]`|
+
+Use this configuration option to define steps that should run before the
+`defaultPreparationStage`.
+
+:bulb: The passed function reference must have one parameter of type
+`Map`
+
+**Example:**
+```groovy
+import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
+import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
+
+def preStage1(Map config) {
+  stage("preStage1") {
+    echo "Hello World"  
+  }
+}
+
+buildDefault(
+  (BUILD_DEFAULT) : [
+    (BUILD_DEFAULT_PRE_EXTENSIONS) : [
+      this.&preStage1 
+    ]
+  ]
+)
+
+```
+
+### `postExtensions` (optional)
+|||
+|---|---|
+|Constant|[`ConfigConstants.BUILD_DEFAULT_POST_EXTENSIONS`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy)|
+|Type|`List` containing a list of closures|
+|Default|`[]`|
+
+Use this configuration option to define steps that should run after the
+`defaultResultsStage`.
+
+:bulb: The passed function reference must have one parameter of type
+`Map`
+
+**Example:**
+```groovy
+import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
+import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
+
+def postStage1(Map config) {
+  stage("postStage1") {
+    echo "Hello World"  
+  }  
+}
+
+buildDefault(
+  (BUILD_DEFAULT) : [
+    (BUILD_DEFAULT_POST_EXTENSIONS) : [
+      this.&postStage1 
+    ]
+  ]
+)
+
+```
+
 ## Configuration structure
 
 ```groovy
@@ -153,6 +239,10 @@ import io.wcm.devops.jenkins.pipeline.utils.logging.LogLevel
 import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
 import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 [
+    (BUILD_DEFAULT) : [
+        (BUILD_DEFAULT_PRE_EXTENSIONS) : [],
+        (BUILD_DEFAULT_POST_EXTENSIONS) : [],
+    ],
     (LOGLEVEL) : LogLevel.INFO,
     (NODE) : null, // node expression to specify the used agent/slave
     (NOTIFY) : [
@@ -188,45 +278,49 @@ import io.wcm.devops.jenkins.pipeline.utils.logging.LogLevel
 import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
 import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 Map config = [
-    (LOGLEVEL) : LogLevel.INFO,
-    (NODE) : null,
-    (NOTIFY) : [
-        // step uses notification defaults     
-    ],
-    (SCM) : [        
-        // scm is configured to use the existing scm var
-        (SCM_USE_SCM_VAR) : true
-    ],
-    (PROPERTIES) : [
-        (PROPERTIES_PIPELINE_TRIGGERS) : [
-            pollSCM('H/15 * * * 0-6')
-        ]
-    ],
-    (STAGE_COMPILE) : [
-        // maven settings for compile stage
-        (MAVEN) : [
-            (MAVEN_GOALS) : ["clean","deploy"],
-            (MAVEN_ARGUMENTS) : ["-B","-U"],
-            (MAVEN_DEFINES) : ["continuousIntegration" : true]
-        ],
-        (STASH) : false, 
-    ],
-    (STAGE_ANALYZE) : [
-        // maven settings for analyze stage
-        (MAVEN) : [
-            (MAVEN_GOALS) : ["checkstyle:checkstyle", "pmd:pmd", "spotbugs:spotbugs"],
-            (MAVEN_ARGUMENTS) : ["-B" ],
-            (MAVEN_DEFINES) : ["continuousIntegration" : true]
-        ],
-        (STASH) : false,        
-    ],
-    // default tools are retrieved from PipelineConfiguration
-    /*
-    (TOOLS) : [
-        (TOOL_JDK) : "...",
-        (TOOL_MAVEN) : "..."
+  (BUILD_DEFAULT) : [
+    (BUILD_DEFAULT_PRE_EXTENSIONS) : [],
+    (BUILD_DEFAULT_POST_EXTENSIONS) : [],
+  ],
+  (LOGLEVEL) : LogLevel.INFO,
+  (NODE) : null,
+  (NOTIFY) : [
+    // step uses notification defaults     
+  ],
+  (SCM) : [        
+    // scm is configured to use the existing scm var
+    (SCM_USE_SCM_VAR) : true
+  ],
+  (PROPERTIES) : [
+    (PROPERTIES_PIPELINE_TRIGGERS) : [
+      pollSCM('H/15 * * * 0-6')
     ]
-    */    
+  ],
+  (STAGE_COMPILE) : [
+    // maven settings for compile stage
+    (MAVEN) : [
+      (MAVEN_GOALS) : ["clean","deploy"],
+      (MAVEN_ARGUMENTS) : ["-B","-U"],
+      (MAVEN_DEFINES) : ["continuousIntegration" : true]
+    ],
+    (STASH) : false, 
+  ],
+  (STAGE_ANALYZE) : [
+    // maven settings for analyze stage
+    (MAVEN) : [
+      (MAVEN_GOALS) : ["checkstyle:checkstyle", "pmd:pmd", "spotbugs:spotbugs"],
+      (MAVEN_ARGUMENTS) : ["-B" ],
+      (MAVEN_DEFINES) : ["continuousIntegration" : true]
+    ],
+    (STASH) : false,        
+  ],
+  // default tools are retrieved from PipelineConfiguration
+  /*
+  (TOOLS) : [
+    (TOOL_JDK) : "...",
+    (TOOL_MAVEN) : "..."
+  ]
+  */    
 ]
 
 routeDefaultJenkinsFile(config)

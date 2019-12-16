@@ -43,6 +43,13 @@ import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 
 Map config = [
   (ANSI_COLOR) : ANSI_COLOR_XTERM,
+  (BUILD_DEFAULT) : [
+    (BUILD_DEFAULT_PRE_EXTENSIONS): [],
+    (BUILD_DEFAULT_POST_EXTENSIONS): [],
+  ],
+  (BUILD_FEATURE) : [
+    (BUILD_FEATURE_EXTEND) : null,
+  ],
   (LOGLEVEL) : LogLevel.INFO,
   (NODE) : null,
   (NOTIFY) : [ 
@@ -93,6 +100,8 @@ Map config = [
     (SCM_USE_SCM_VAR): true
   ],
   (STAGE_ANALYZE) : [
+    (STAGE_ANALYZE_ENABLED): true,
+    (STAGE_ANALYZE_EXTEND): null,
     (MAVEN) : [
       (MAVEN_ARGUMENTS): [ "-B" ],
       (MAVEN_DEFINES): ["continuousIntegration": true],
@@ -105,6 +114,7 @@ Map config = [
     (STASH) : false        
   ],
   (STAGE_COMPILE) : [
+    (STAGE_COMPILE_EXTEND): null,
     (MAVEN) : [
       (MAVEN_ARGUMENTS): [ "-B", "-U" ],
       (MAVEN_DEFINES): ["continuousIntegration": true],
@@ -120,11 +130,14 @@ Map config = [
   ],
   (STAGE_PREPARATION) : [
     (STAGE_PREPARATION_CHECKOUT_SCM): true,
+    (STAGE_PREPARATION_EXTEND): null,
     (STAGE_PREPARATION_SETUP_TOOLS): true,
     (STAGE_PREPARATION_PURGE_SHAPSHOTS): true,
     (STAGE_PREPARATION_SET_BUILD_NAME): true
   ],
   (STAGE_RESULTS) : [
+    (STAGE_RESULTS_ENABLED): true,
+    (STAGE_RESULTS_EXTEND): null,
     (STAGE_RESULTS_ANALYSIS_PUBLISHER) : [
       (STAGE_RESULTS_ANALYSIS_PUBLISHER_ENABLED) : true
     ],

@@ -17,7 +17,14 @@
  * limitations under the License.
  * #L%
  */
+
+
+import com.kenai.jffi.Closure
+import io.wcm.devops.jenkins.pipeline.utils.TypeUtils
 import io.wcm.devops.jenkins.pipeline.utils.logging.Logger
+
+import java.util.function.Function
+
 import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 
 /**
@@ -38,7 +45,7 @@ import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
  * @see https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/setBuildName.md
  */
 void call(Map config) {
-  Logger log = new Logger(this)
+  Logger log = new Logger("defaultPreparationStage")
   Map preparationStageConfig = (Map) config[STAGE_PREPARATION] ?: [:]
   Boolean stageWrap = preparationStageConfig[STAGE_PREPARATION_STAGE_WRAP] != null ? preparationStageConfig[STAGE_PREPARATION_STAGE_WRAP] : true
   log.debug("stageWrap", stageWrap)
@@ -48,6 +55,29 @@ void call(Map config) {
     }
   } else {
     _call(config)
+  }
+}
+
+/**
+ * Internal function that takes care of the extend mechanism defaultPreparationStage
+ *
+ * @param config Configuration options for the used steps
+ *
+ */
+void _call(Map config) {
+  Logger log = new Logger("defaultPreparationStage._call")
+  TypeUtils typeUtils = new TypeUtils()
+  Map preparationStageConfig = (Map) config[STAGE_PREPARATION] ?: [:]
+
+  def _extend = typeUtils.isClosure(preparationStageConfig[STAGE_PREPARATION_EXTEND]) ? preparationStageConfig[STAGE_PREPARATION_EXTEND] : null
+
+  // no extends are configured, call the implementation
+  if (!_extend) {
+    log.debug("no extend configured, using default implementation")
+    _impl(config)
+  } else {
+    // call extend and provide a reference to the default implementation
+    _extend(config, this.&_impl)
   }
 }
 
@@ -63,13 +93,15 @@ void call(Map config) {
  * @see https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/setBuildName.groovy
  * @see https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/setBuildName.md
  */
-void _call(Map config) {
-  Logger log = new Logger(this)
+void _impl(Map config) {
+  Logger log = new Logger("defaultPreparationStage._impl")
+
   Map preparationStageConfig = (Map) config[STAGE_PREPARATION] ?: [:]
   Boolean doSetupTools = preparationStageConfig[STAGE_PREPARATION_SETUP_TOOLS] != null ? preparationStageConfig[STAGE_PREPARATION_SETUP_TOOLS] : true
   Boolean doCheckoutScm = preparationStageConfig[STAGE_PREPARATION_CHECKOUT_SCM] != null ? preparationStageConfig[STAGE_PREPARATION_CHECKOUT_SCM] : true
   Boolean doSetBuildName = preparationStageConfig[STAGE_PREPARATION_SET_BUILD_NAME] != null ? preparationStageConfig[STAGE_PREPARATION_SET_BUILD_NAME] : true
   Boolean doPurgeSnapshots = preparationStageConfig[STAGE_PREPARATION_PURGE_SHAPSHOTS] != null ? preparationStageConfig[STAGE_PREPARATION_PURGE_SHAPSHOTS] : true
+
 
   log.debug("doSetupTools", doSetupTools)
   log.debug("doCheckoutScm", doCheckoutScm)

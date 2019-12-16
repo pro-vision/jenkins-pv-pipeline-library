@@ -17,6 +17,8 @@
  * limitations under the License.
  * #L%
  */
+
+import io.wcm.devops.jenkins.pipeline.utils.TypeUtils
 import io.wcm.devops.jenkins.pipeline.utils.logging.Logger
 
 import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
@@ -33,20 +35,21 @@ import io.wcm.devops.jenkins.pipeline.utils.maps.MapUtils
  * - call default results stage (e.g. processing junit results, pmd etc.)
  *
  * @param config Pipeline options for the used steps
- * @see <a href="../vars/defaultBuildWrapper.groovy" > defaultBuildWrapper.groovy</a>
- * @see <a href="../vars/defaultBuildWrapper.md" > defaultBuildWrapper.md</a>
- * @see <a href="../vars/defaultPreparationStage.groovy" > defaultPreparationStage.groovy</a>
- * @see <a href="../vars/defaultPreparationStage.md" > defaultPreparationStage.md</a>
- * @see <a href="../vars/defaultCompileStage.groovy" > defaultCompileStage.groovy</a>
- * @see <a href="../vars/defaultCompileStage.md" > defaultCompileStage.md</a>
- * @see <a href="../vars/defaultCompileStage.groovy" > defaultAnalyzeStage.groovy</a>
- * @see <a href="../vars/defaultCompileStage.md" > defaultAnalyzeStage.md</a>
- * @see <a href="../vars/defaultCompileStage.groovy" > defaultResultsStage.groovy</a>
- * @see <a href="../vars/defaultCompileStage.md" > defaultResultsStage.md</a>
+ * @see ../vars/defaultBuildWrapper.groovy
+ * @see ../vars/defaultBuildWrapper.md
+ * @see ../vars/defaultPreparationStage.groovy
+ * @see ../vars/defaultPreparationStage.md
+ * @see ../vars/defaultCompileStage.groovy
+ * @see ../vars/defaultCompileStage.md
+ * @see ../vars/defaultCompileStage.groovy
+ * @see ../vars/defaultCompileStage.md
+ * @see ../vars/defaultCompileStage.groovy
+ * @see ../vars/defaultCompileStage.md
  */
 void call(Map config = [:]) {
   wrap.color(config) {
-    Logger log = new Logger(this)
+    Logger log = new Logger("buildDefault")
+    TypeUtils typeUtils = new TypeUtils()
 
     Map propertyCfg = config[PROPERTIES] ?: [:]
     List triggerCfg = propertyCfg[PROPERTIES_PIPELINE_TRIGGERS] != null ? propertyCfg[PROPERTIES_PIPELINE_TRIGGERS] : null
@@ -62,12 +65,27 @@ void call(Map config = [:]) {
     ]
     config = MapUtils.merge(defaultConfig, config)
 
+    Map buildDefaultConfig = config[BUILD_DEFAULT] ?: [:]
+
+    List preExtensions = typeUtils.isList(buildDefaultConfig[BUILD_DEFAULT_PRE_EXTENSIONS]) ? (List) buildDefaultConfig[BUILD_DEFAULT_PRE_EXTENSIONS] : []
+    List postExtensions = typeUtils.isList(buildDefaultConfig[BUILD_DEFAULT_POST_EXTENSIONS]) ? (List) buildDefaultConfig[BUILD_DEFAULT_POST_EXTENSIONS] : []
+
     log.debug("Calling defaultBuildWrapper with the following configuration: $config")
 
     // allocate node
     node(config[NODE]) {
       // call the default build wrapper
       defaultBuildWrapper(config) {
+
+        // call post execution extends
+        for (preExtension in preExtensions) {
+          if (typeUtils.isClosure(preExtension)) {
+            preExtension(config)
+          } else {
+            log.warn("got an post extension that was not a closure! extension: ", preExtension )
+          }
+        }
+
         // do the checkout, set build name etc
         log.trace("calling defaultPreparationStage")
         defaultPreparationStage(config)
@@ -83,6 +101,15 @@ void call(Map config = [:]) {
         // analyze results
         log.trace("calling defaultResultsStage")
         defaultResultsStage(config)
+
+        // call post execution extends
+        for (postExtension in postExtensions) {
+          if (typeUtils.isClosure(postExtension)) {
+            postExtension(config)
+          } else {
+            log.warn("got an post extension that was not a closure! extension: ", postExtension )
+          }
+        }
       }
     }
   }

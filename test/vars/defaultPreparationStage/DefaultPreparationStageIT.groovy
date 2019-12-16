@@ -26,6 +26,7 @@ import static de.provision.devops.testing.jenkins.pipeline.PVStepConstants.*
 import static io.wcm.testing.jenkins.pipeline.StepConstants.*
 import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertNone
 import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertOnce
+import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertStepCalls
 import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertTwice
 import static org.junit.Assert.assertArrayEquals
 import static org.junit.Assert.assertEquals
@@ -36,6 +37,21 @@ class DefaultPreparationStageIT extends PVLibraryIntegrationTestBase {
   void shouldRunWithDefaults() {
     loadAndExecuteScript("vars/defaultPreparationStage/jobs/defaultPreparationStageDefaultsTestJob.groovy")
 
+    assertDefaults()
+  }
+
+  @Test
+  void shouldRunWithExtend() {
+    loadAndExecuteScript("vars/defaultPreparationStage/jobs/defaultPreparationStageExtendTestJob.groovy")
+
+    assertDefaults()
+
+    List shellCalls = assertStepCalls(SH, 4)
+    assertEquals("echo 'customPreparationStage before'", shellCalls[0])
+    assertEquals("echo 'customPreparationStage after'", shellCalls[shellCalls.size()-1])
+  }
+
+  void assertDefaults() {
     Map actualCheckoutCall = (Map) assertOnce(CHECKOUT)
     List toolCalls = assertTwice(TOOL)
     assertOnce(MAVEN_PURGE_SNAPSHOTS)

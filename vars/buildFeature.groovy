@@ -17,6 +17,8 @@
  * limitations under the License.
  * #L%
  */
+
+import io.wcm.devops.jenkins.pipeline.utils.TypeUtils
 import io.wcm.devops.jenkins.pipeline.utils.logging.Logger
 import io.wcm.devops.jenkins.pipeline.utils.maps.MapUtils
 import org.jenkinsci.plugins.workflow.cps.DSL
@@ -39,10 +41,32 @@ import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
  *
  * @param config Configuration options for the used steps
  *
- * @see <a href="../vars/buildDefault.groovy">buildDefault.groovy</a>
- * @see <a href="../vars/buildDefault.md">buildDefault.md</a>
+ * @see ../vars/buildDefault.groovy
+ * @see ../vars/buildDefault.md
  */
 void call(Map config = [:]) {
+  Logger log = new Logger("buildFeature")
+  TypeUtils typeUtils = new TypeUtils()
+  Map buildFeatureConfig = (Map) config[BUILD_FEATURE] ?: [:]
+
+  def _extend = typeUtils.isClosure(buildFeatureConfig[BUILD_FEATURE_EXTEND]) ? buildFeatureConfig[BUILD_FEATURE_EXTEND] : null
+
+  // no extends are configured, call the implementation
+  if (!_extend) {
+    log.debug("no extend configured, using default implementation")
+    _impl(config)
+  } else {
+    // call extend and provide a reference to the default implementation
+    _extend(config, this.&_impl)
+  }
+}
+
+/**
+ * Implementation of the step
+ *
+ * @param config Configuration options for the used steps
+ */
+void _impl(Map config = [:]) {
   wrap.color(config) {
     Logger.init(this, config)
     Logger log = new Logger(this)
@@ -65,6 +89,7 @@ void call(Map config = [:]) {
       config[SCM] = config[SCM] ?: [:]
       config[SCM][SCM_USE_SCM_VAR] = true
     }
+
     //calling buildDefault with scm configuration
     buildDefault(config)
   }

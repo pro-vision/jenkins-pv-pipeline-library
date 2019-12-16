@@ -16,16 +16,18 @@ of the pipeline library.
 
 # Table of contents
 * [Key concepts](#key-concepts)
-    * [Default maven build](#default-maven-build)
-    * [Feature maven build](#feature-maven-build)
-    * [routeDefaultJenkinsFile](#routedefaultjenkinsfile)
-    * [Provide default tools](#provide-default-tools)
+  * [Default maven build](#default-maven-build)
+  * [Feature maven build](#feature-maven-build)
+  * [routeDefaultJenkinsFile](#routedefaultjenkinsfile)
+  * [Configurability](#configurability)
+  * [Provide default tools](#provide-default-tools)
+  * [Configurability](#configurability)
 * [Requirements](#requirements)
 * [Steps](#steps)
 * [Tutorials](#tutorials)
 * [Documentation](#documentation)
 * [Building/Testing](#buildingtesting)
-    * [Building with maven](#building-with-maven)
+  * [Building with maven](#building-with-maven)
 
 ## Key concepts
 
@@ -96,6 +98,14 @@ information.
 :bulb: It is also recommended to read the
 [config structure](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/docs/config-structure.md)
 documentation from pipeline library.
+
+### Extensibility
+
+You can extend the pipelines / steps by providing custom
+callbacks/closures at specific points.
+
+:bulb: Have a look at [Extension options](docs/extension-options.md) for more
+information.
 
 ### Provide default tools
 

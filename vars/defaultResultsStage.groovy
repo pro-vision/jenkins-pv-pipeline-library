@@ -18,7 +18,15 @@
  * #L%
  */
 import de.provision.devops.jenkins.pipeline.utils.ConfigConstants
+import io.wcm.devops.jenkins.pipeline.utils.TypeUtils
 import io.wcm.devops.jenkins.pipeline.utils.logging.Logger
+
+import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.STAGE_ANALYZE_ENABLED
+import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.STAGE_ANALYZE_ENABLED
+import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.STAGE_ANALYZE_EXTEND
+import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.STAGE_ANALYZE_EXTEND
+import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.STAGE_RESULTS_ENABLED
+import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.STAGE_RESULTS_EXTEND
 
 /**
  * Default build step for analyzing the build results for maven based projects.
@@ -34,28 +42,51 @@ import io.wcm.devops.jenkins.pipeline.utils.logging.Logger
  * @param config Configuration options for the used steps
  */
 void call(Map config = [:]) {
-  stage('Results') {
-    // publish junit results
-    this._junit(config)
+  Logger log = new Logger("defaultResultsStage")
+  TypeUtils typeUtils = new TypeUtils()
+  Map resultStageConfig = config[ConfigConstants.STAGE_RESULTS] ?: [:]
+  Boolean resultsStageEnabled = resultStageConfig[STAGE_RESULTS_ENABLED] != null ? resultStageConfig[STAGE_RESULTS_ENABLED] : true
 
-    // publish code coverage
-    this._jacoco(config)
-
-    // publish findbugs
-    this._findBugs(config)
-
-    // publish pmd
-    this._pmd(config)
-
-    // publish open tasks
-    this._openTasks(config)
-
-    // publish checkstyle
-    this._checkStyle(config)
-
-    // published combined static analysis results
-    this._analysisPublisher(config)
+  if (!resultsStageEnabled) {
+    log.debug("defaultResultsStage is disabled")
+    return
   }
+
+  def _extend = typeUtils.isClosure(resultStageConfig[STAGE_RESULTS_EXTEND]) ? resultStageConfig[STAGE_RESULTS_EXTEND] : null
+
+  stage('Results') {
+    // no extends are configured, call the implementation
+    if (!_extend) {
+      log.debug("no extend configured, using default implementation")
+      _impl(config)
+    } else {
+      // call extend and provide a reference to the default implementation
+      _extend(config, this.&_impl)
+    }
+  }
+}
+
+void _impl(Map config = [:]) {
+  // publish junit results
+  this._junit(config)
+
+  // publish code coverage
+  this._jacoco(config)
+
+  // publish findbugs
+  this._findBugs(config)
+
+  // publish pmd
+  this._pmd(config)
+
+  // publish open tasks
+  this._openTasks(config)
+
+  // publish checkstyle
+  this._checkStyle(config)
+
+  // published combined static analysis results
+  this._analysisPublisher(config)
 }
 
 void _junit(Map config = [:]) {

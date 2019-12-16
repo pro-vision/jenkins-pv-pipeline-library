@@ -17,8 +17,10 @@ needed to build the project:
 * [Examples](#examples)
   * [Example 1: Use other maven and jdk version](#example-1-use-other-maven-and-jdk)
   * [Example 2: Configure scm checkout](#example-2-configure-scm-checkout)
+* [Extension options](#extension-options)
 * [Configuration options](#configuration-options)
   * [`checkoutScm` (optional)](#checkoutscm-optional)
+  * [`_extend`](#_extend-optional)
   * [`purgeSnapshots` (optional)](#purgesnapshots-optional)
   * [`setBuildName` (optional)](#setbuildname-optional)
   * [`setupTools` (optional)](#setuptools-optional)
@@ -92,6 +94,14 @@ Map config = [
 defaultPreparationStage(config)
 ```
 
+## Extension options
+
+This step supports the extension mechanism, so you are able to extend
+the step by executing code before and/or after the step is executed or
+even replacing the whole functionality.
+
+:bulb: See [`_extend`](#_extend-optional) for an example.
+
 ## Configuration options
 
 The provided configuration map object is passed to the steps that
@@ -112,12 +122,42 @@ import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 defaultPreparationStage( 
     (STAGE_PREPARATION) : [
         (STAGE_PREPARATION_CHECKOUT_SCM): true,
+        (STAGE_PREPARATION_EXTEND) : null,
         (STAGE_PREPARATION_PURGE_SHAPSHOTS): true,
         (STAGE_PREPARATION_SET_BUILD_NAME): true,
         (STAGE_PREPARATION_SETUP_TOOLS): true,
         (STAGE_PREPARATION_STAGE_WRAP): true
     ]
 )
+```
+
+### `_extend` (optional)
+|||
+|---|---|
+|Constant|[`ConfigConstants.STAGE_PREPARATION_EXTEND`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy)|
+|Type|`Closure` with signature `(Map config, superImpl)`|
+|Default|`null`|
+
+Use this configuration option to overwrite or extend the
+`defaultPreparationStage` step.
+
+**Example:**
+```groovy
+import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
+import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
+
+void customPreparationStage(Map config, superImpl) {
+  echo "before defaultPreparationStage stage"
+  superImpl()
+  echo "after defaultPreparationStage stage"
+}
+
+defaultCompileStage(
+  (STAGE_PREPARATION) : [
+    (STAGE_PREPARATION_EXTEND) : this.&customPreparationStage
+  ]
+)
+
 ```
 
 ### `checkoutScm` (optional)
