@@ -43,6 +43,13 @@ import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 
 Map config = [
   (ANSI_COLOR) : ANSI_COLOR_XTERM,
+  (BUILD_DEFAULT) : [
+    (BUILD_DEFAULT_PRE_EXTENSIONS): [],
+    (BUILD_DEFAULT_POST_EXTENSIONS): [],
+  ],
+  (BUILD_FEATURE) : [
+    (BUILD_FEATURE_EXTEND) : null,
+  ],
   (LOGLEVEL) : LogLevel.INFO,
   (NODE) : null,
   (NOTIFY) : [ 
