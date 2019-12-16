@@ -2,18 +2,82 @@
 @Library('pipeline-library') pipelineLibrary
 @Library('pv-pipeline-library') pvPipelineLibrary
 
+
+import io.wcm.devops.jenkins.pipeline.utils.logging.Logger
+import org.jenkinsci.plugins.workflow.libs.Library
+
 import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
 import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 
+void customCompileStage(Map config, superImpl) {
+  Logger log = new Logger("customCompileStage")
+  log.info("before superImpl")
+  superImpl()
+  log.info("after superImpl")
+}
+
+void customAnalyzeStage(Map config, superImpl) {
+  Logger log = new Logger("customAnalyzeStage")
+  log.info("before superImpl")
+  superImpl()
+  log.info("after superImpl")
+}
+
+void customResultsStage(Map config, superImpl) {
+  Logger log = new Logger("customResultsStage")
+  log.info("before superImpl")
+  superImpl()
+  log.info("after superImpl")
+}
+
+void preStage1(Map config) {
+  Logger log = new Logger("preStage1")
+  log.info("Hello World!")
+}
+
+void preStage2(Map config) {
+  Logger log = new Logger("preStage2")
+  log.info("Hello World!")
+}
+
+void postStage1(Map config) {
+  Logger log = new Logger("postStage1")
+  log.info("Hello World!")
+}
+
+void postStage2(Map config) {
+  Logger log = new Logger("postStage2")
+  log.info("Hello World!")
+}
+
 Map config = [
-  (PROPERTIES) : [
+  (BUILD_DEFAULT)       : [
+    (BUILD_DEFAULT_PRE_EXTENSIONS) : [
+      this.&preStage1,
+      this.&preStage2,
+    ],
+    (BUILD_DEFAULT_POST_EXTENSIONS): [
+      this.&postStage1,
+      this.&postStage2,
+    ],
+  ],
+  (PROPERTIES)          : [
     // disable triggers
-    (PROPERTIES_PIPELINE_TRIGGERS) : [
+    (PROPERTIES_PIPELINE_TRIGGERS): [
       pollSCM("H H * * *")
     ]
   ],
-  (STAGE_COMPILE): [
-    (MAVEN): [(MAVEN_GOALS): "clean install"]
+  (STAGE_ANALYZE)       : [
+    (STAGE_ANALYZE_EXTEND): this.&customAnalyzeStage,
+  ],
+  (STAGE_COMPILE)       : [
+    (STAGE_COMPILE_EXTEND): this.&customCompileStage,
+    (MAVEN)               : [
+      (MAVEN_GOALS): "clean install"
+    ]
+  ],
+  (STAGE_RESULTS_EXTEND): [
+    (STAGE_RESULTS_EXTEND): this.&customResultsStage,
   ],
 ]
 
