@@ -10,13 +10,13 @@
 
   <groupId>de.pro-vision.devops.jenkins</groupId>
   <artifactId>de.pro-vision.devops.jenkins.pv-pipeline-library</artifactId>
-  <version>1.1.1-SNAPSHOT</version>
+  <version>1.2.0</version>
 
   <scm>
     <connection>scm:git:git@github.com:pro-vision/jenkins-pv-pipeline-library.git</connection>
     <developerConnection>scm:git:git@github.com:pro-vision/jenkins-pv-pipeline-library.git</developerConnection>
     <url>https://github.com/pro-vision/jenkins-pv-pipeline-library</url>
-    <tag>HEAD</tag>
+    <tag>1.2.0</tag>
   </scm>
 
   <inceptionYear>2018</inceptionYear>
