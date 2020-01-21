@@ -56,7 +56,7 @@ class PipelineConfiguration implements Serializable {
   Map getConfig() {
     if (this.cfg == null) {
       YamlLibraryResource configResource = new YamlLibraryResource(this.script, this.configPath)
-      this.cfg = configResource.load()
+      this.cfg = (Map) configResource.load()
     }
     return this.cfg
   }
