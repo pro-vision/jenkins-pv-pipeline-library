@@ -87,7 +87,8 @@ Map call(Map config, Closure body) {
       currentBuild.result = "FAILED"
       throw e
     } finally {
-      notifyMail(config)
+      notify.mail(config)
+      notify.mattermost(config)
     }
   }
   return config
