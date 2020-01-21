@@ -38,6 +38,7 @@ import static org.junit.Assert.assertEquals
 
 class DefaultBuildWrapperIT extends PVLibraryIntegrationTestBase {
 
+
   @Test
   void shouldRunWithProvidedConfig() {
     loadAndExecuteScript("vars/defaultBuildWrapper/jobs/defaultBuildWrapperConfigTestJob.groovy")
@@ -68,5 +69,18 @@ class DefaultBuildWrapperIT extends PVLibraryIntegrationTestBase {
     assertEquals(30, timeoutCall.time)
     assertEquals(TimeUnit.MINUTES, timeoutCall.unit)
     assertEquals(ANSI_COLOR_XTERM, ansiColorCall)
+  }
+
+  @Override
+  protected void afterLoadingScript() {
+    super.afterLoadingScript()
+
+    // mock notify calls
+    helper.registerAllowedMethod("mail", [Map.class], { Map config ->
+      stepRecorder.record("mail", config)
+    })
+    helper.registerAllowedMethod("mattermost", [Map.class], { Map config ->
+      stepRecorder.record("mattermost", config)
+    })
   }
 }

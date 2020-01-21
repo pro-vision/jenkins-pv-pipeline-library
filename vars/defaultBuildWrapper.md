@@ -63,8 +63,11 @@ After the job properties are set the closure is called
 ### Notify
 
 Finally the wrapper calls the
-[`notifyMail`](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/notifyMail.md)
-step and depending on configuration and build result notifications are send.
+* [`notify.mail`](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/notify.md) and
+* [`notify.mattermost`](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/notify.md)
+
+steps and depending on configuration and build result notifications are
+send.
 
 ## Examples
 
