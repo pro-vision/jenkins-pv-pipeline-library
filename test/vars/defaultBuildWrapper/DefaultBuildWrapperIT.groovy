@@ -54,6 +54,9 @@ class DefaultBuildWrapperIT extends PVLibraryIntegrationTestBase {
     assertEquals(ANSI_COLOR_GNOME_TERMINAL, ansiColorCall)
     // assert that loglevel was not changed again by defaultBuildWrapper
     assertEquals(LogLevel.DEBUG, Logger.getLevel())
+    assertOnce("mail")
+    assertOnce("mattermost")
+    assertOnce("mqtt")
   }
 
   @Test
@@ -69,6 +72,9 @@ class DefaultBuildWrapperIT extends PVLibraryIntegrationTestBase {
     assertEquals(30, timeoutCall.time)
     assertEquals(TimeUnit.MINUTES, timeoutCall.unit)
     assertEquals(ANSI_COLOR_XTERM, ansiColorCall)
+    assertOnce("mail")
+    assertOnce("mattermost")
+    assertOnce("mqtt")
   }
 
   @Override
@@ -81,6 +87,9 @@ class DefaultBuildWrapperIT extends PVLibraryIntegrationTestBase {
     })
     helper.registerAllowedMethod("mattermost", [Map.class], { Map config ->
       stepRecorder.record("mattermost", config)
+    })
+    helper.registerAllowedMethod("mqtt", [Map.class], { Map config ->
+      stepRecorder.record("mqtt", config)
     })
   }
 }

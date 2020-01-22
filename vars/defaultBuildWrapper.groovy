@@ -89,6 +89,7 @@ Map call(Map config, Closure body) {
     } finally {
       notify.mail(config)
       notify.mattermost(config)
+      notify.mqtt(config)
     }
   }
   return config
