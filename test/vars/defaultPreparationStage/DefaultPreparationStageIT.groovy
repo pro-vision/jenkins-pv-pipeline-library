@@ -46,7 +46,7 @@ class DefaultPreparationStageIT extends PVLibraryIntegrationTestBase {
 
     assertDefaults()
 
-    List shellCalls = assertStepCalls(SH, 4)
+    List shellCalls = assertStepCalls(SH, 2)
     assertEquals("echo 'customPreparationStage before'", shellCalls[0])
     assertEquals("echo 'customPreparationStage after'", shellCalls[shellCalls.size()-1])
   }

@@ -20,6 +20,7 @@
 package vars.buildDefault
 
 import de.provision.devops.testing.jenkins.pipeline.PVLibraryIntegrationTestBase
+import io.wcm.devops.jenkins.pipeline.environment.EnvironmentConstants
 import org.jenkinsci.plugins.pipeline.utility.steps.fs.FileWrapper
 import org.junit.Test
 
@@ -71,14 +72,12 @@ class BuildDefaultIT extends PVLibraryIntegrationTestBase {
     List toolCalls = assertTwice(TOOL)
     assertOnce(MAVEN_PURGE_SNAPSHOTS)
     assertTwice(CONFIGFILEPROVIDER)
-    List shellCalls = assertStepCalls(SH, 4)
+    List shellCalls = assertStepCalls(SH, 2)
 
     assertAnalyzeSteps()
 
     assertArrayEquals("error in executed tool commands", ["defaultMaven", "defaultJDK"].toArray(), toolCalls.toArray())
     assertArrayEquals("error in executed shell commands", [
-      [returnStdout: true, script: "git branch"],
-      [returnStdout: true, script: "git rev-parse HEAD"],
       'mvn clean deploy -B -U -Dcontinuous-integration=true -Dnodejs.directory=${WORKSPACE}/target/.nodejs',
       'mvn checkstyle:checkstyle pmd:pmd spotbugs:spotbugs -B -Dcontinuous-integration=true -Dnodejs.directory=${WORKSPACE}/target/.nodejs'
     ].toArray(), shellCalls.toArray())
@@ -92,11 +91,9 @@ class BuildDefaultIT extends PVLibraryIntegrationTestBase {
 
     assertDefaults()
 
-    List shellCalls = assertStepCalls(SH, 4)
+    List shellCalls = assertStepCalls(SH, 2)
 
     assertArrayEquals("error in executed shell commands", [
-      [returnStdout: true, script: "git branch"],
-      [returnStdout: true, script: "git rev-parse HEAD"],
       "mvn clean deploy -B -U -Dcontinuous-integration=true",
       "mvn checkstyle:checkstyle pmd:pmd spotbugs:spotbugs -B -Dcontinuous-integration=true"].toArray(),
       shellCalls.toArray()
@@ -109,13 +106,11 @@ class BuildDefaultIT extends PVLibraryIntegrationTestBase {
 
     assertDefaults()
 
-    List shellCalls = assertStepCalls(SH, 8)
+    List shellCalls = assertStepCalls(SH, 6)
 
     assertArrayEquals("error in executed shell commands", [
       "echo 'customPreExtension1'",
       "echo 'customPreExtension2'",
-      [returnStdout: true, script: "git branch"],
-      [returnStdout: true, script: "git rev-parse HEAD"],
       "mvn clean deploy -B -U -Dcontinuous-integration=true",
       "mvn checkstyle:checkstyle pmd:pmd spotbugs:spotbugs -B -Dcontinuous-integration=true",
       "echo 'customPostExtension1'",
@@ -187,7 +182,7 @@ class BuildDefaultIT extends PVLibraryIntegrationTestBase {
     List toolCalls = assertTwice(TOOL)
     assertOnce(MAVEN_PURGE_SNAPSHOTS)
     assertTwice(CONFIGFILEPROVIDER)
-    List shellCalls = assertStepCalls(SH, 4)
+    List shellCalls = assertStepCalls(SH, 2)
 
     assertAnalyzeSteps()
 
@@ -195,8 +190,6 @@ class BuildDefaultIT extends PVLibraryIntegrationTestBase {
 
     assertArrayEquals("error in executed tool commands", ["defaultMaven", "defaultJDK"].toArray(), toolCalls.toArray())
     assertArrayEquals("error in executed shell commands", [
-      [returnStdout: true, script: "git branch"],
-      [returnStdout: true, script: "git rev-parse HEAD"],
       "mvn compileGoal1 compileGoal2 -B -U -Dcontinuous-integration=true",
       "mvn analyzeGoal1 analyzeGoal2 -B -Dcontinuous-integration=true"].toArray(),
       shellCalls.toArray()
@@ -232,7 +225,7 @@ class BuildDefaultIT extends PVLibraryIntegrationTestBase {
     List toolCalls = assertTwice(TOOL)
     assertOnce(MAVEN_PURGE_SNAPSHOTS)
     assertTwice(CONFIGFILEPROVIDER)
-    List shellCalls = assertStepCalls(SH, 5)
+    List shellCalls = assertStepCalls(SH, 3)
 
     assertAnalyzeSteps()
 
@@ -240,8 +233,6 @@ class BuildDefaultIT extends PVLibraryIntegrationTestBase {
 
     assertArrayEquals("error in executed tool commands", ["defaultMaven", "defaultJDK"].toArray(), toolCalls.toArray())
     assertArrayEquals("error in executed shell commands", [
-      [returnStdout: true, script: "git branch"],
-      [returnStdout: true, script: "git rev-parse HEAD"],
       "git merge origin/develop",
       "mvn clean deploy -B -U -Dcontinuous-integration=true",
       "mvn checkstyle:checkstyle pmd:pmd spotbugs:spotbugs -B -Dcontinuous-integration=true"].toArray(),
