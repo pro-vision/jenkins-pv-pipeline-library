@@ -110,6 +110,10 @@ class ConfigConstants {
   public static final String STAGE_RESULTS_FINDBUGS = "findbugs"
   public static final String STAGE_RESULTS_FINDBUGS_ENABLED = "enabled"
 
+  public static final String STAGE_RESULTS_FINGERPRINT = "fingerprint"
+  public static final String STAGE_RESULTS_FINGERPRINT_ENABLED = "enabled"
+  public static final String STAGE_RESULTS_FINGERPRINT_FILESET = "fileset"
+
   public static final String STAGE_RESULTS_JUNIT = "junit"
   public static final String STAGE_RESULTS_JUNIT_ENABLED = "enabled"
 
