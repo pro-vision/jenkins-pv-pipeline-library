@@ -132,7 +132,9 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
       healthy        : '',
       unHealthy      : ''
     ]
+    String expectedFingerprintCall = "**/target/**/*.zip,**/target/**/*.jar"
 
+    String actualFingerprintCall = assertOnce(FINGERPRINT)
     Map actualJUnitCall = assertOnce(JUNIT)
     Map actualJacocoCall = assertOnce(JACOCOPUBLISHER)
     Map actualFindBugsCall = assertOnce(FINDBUGS)
@@ -161,6 +163,7 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
     ])
     assertNone(JUNIT)
 
+    assertOnce(FINGERPRINT)
     assertOnce(JACOCOPUBLISHER)
     assertOnce(CHECKSTYLE)
     assertOnce(FINDBUGS)
@@ -180,6 +183,7 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
     ])
     assertNone(JACOCOPUBLISHER)
 
+    assertOnce(FINGERPRINT)
     assertOnce(JUNIT)
     assertOnce(CHECKSTYLE)
     assertOnce(FINDBUGS)
@@ -199,6 +203,27 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
     ])
     assertNone(CHECKSTYLE)
 
+    assertOnce(FINGERPRINT)
+    assertOnce(JUNIT)
+    assertOnce(JACOCOPUBLISHER)
+    assertOnce(FINDBUGS)
+    assertOnce(PMD)
+    assertOnce(OPENTASKS)
+    assertOnce(ANALYSISPUBLISHER)
+  }
+
+  @Test
+  void shouldNotFingerprint() {
+    loadAndExecuteScript("vars/defaultResultsStage/jobs/defaultResultsStageTestJob.groovy", [
+      (ConfigConstants.STAGE_RESULTS): [
+        (ConfigConstants.STAGE_RESULTS_FINGERPRINT): [
+          (ConfigConstants.STAGE_RESULTS_FINGERPRINT_ENABLED): false
+        ]
+      ]
+    ])
+    assertNone(FINGERPRINT)
+
+    assertOnce(CHECKSTYLE)
     assertOnce(JUNIT)
     assertOnce(JACOCOPUBLISHER)
     assertOnce(FINDBUGS)
@@ -218,6 +243,7 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
     ])
     assertNone(FINDBUGS)
 
+    assertOnce(FINGERPRINT)
     assertOnce(JUNIT)
     assertOnce(JACOCOPUBLISHER)
     assertOnce(CHECKSTYLE)
@@ -237,6 +263,7 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
     ])
     assertNone(PMD)
 
+    assertOnce(FINGERPRINT)
     assertOnce(JUNIT)
     assertOnce(JACOCOPUBLISHER)
     assertOnce(CHECKSTYLE)
@@ -256,6 +283,7 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
     ])
     assertNone(OPENTASKS)
 
+    assertOnce(FINGERPRINT)
     assertOnce(JUNIT)
     assertOnce(JACOCOPUBLISHER)
     assertOnce(CHECKSTYLE)
@@ -275,6 +303,7 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
     ])
     assertNone(ANALYSISPUBLISHER)
 
+    assertOnce(FINGERPRINT)
     assertOnce(JUNIT)
     assertOnce(JACOCOPUBLISHER)
     assertOnce(CHECKSTYLE)

@@ -22,6 +22,11 @@ The step also
     *  [`enabled` (optional)](#analysis-publisher-enabled-optional)
   * [`checkstyle` (optional)](#checkstyle-optional)
     *  [`enabled` (optional)](#checkstyle-enabled-optional)
+  * [`fingerprint` (optional)](#fingerprint-optional)
+    *  [`enabled` (optional)](#fingerprint-enabled-optional)
+    *  [`fileset` (optional)](#fingerprint-fileset-optional)
+  * [`findbugs` (optional)](#findbugs-optional)
+    *  [`enabled` (optional)](#findbugs-enabled-optional)
   * [`jacoco` (optional)](#jacoco-optional)
     *  [`enabled` (optional)](#jacoco-enabled-optional)
     *  [`buildOverBuild` (optional)](#jacoco-buildoverbuild-optional)
@@ -50,8 +55,6 @@ The step also
     *  [`minimumMethodCoverage` (optional)](#jacoco-minimummethodcoverage-optional)
     *  [`skipCopyOfSrcFiles` (optional)](#jacoco-skipcopyofsrcfiles-optional)
     *  [`sourcePattern` (optional)](#jacoco-sourcepattern-optional)
-  * [`findbugs` (optional)](#findbugs-optional)
-    *  [`enabled` (optional)](#findbugs-enabled-optional)
   * [`junit` (optional)](#junit-optional)
     *  [`enabled` (optional)](#junit-enabled-optional)
   * [`openTasks` (optional)](#opentasks-optional)
@@ -85,6 +88,10 @@ defaultPreparationStage(
     ],
     (STAGE_RESULTS_CHECKSTYLE) : [
       (STAGE_RESULTS_CHECKSTYLE_ENABLED) : true
+    ],
+    (STAGE_RESULTS_FINGERPRINT) : [
+      (STAGE_RESULTS_FINGERPRINT_ENABLED) : true,
+      (STAGE_RESULTS_FINGERPRINT_FILESET) : "**/target/**/*.zip,**/target/**/*.jar",
     ],
     (STAGE_RESULTS_JACOCO) : [
       (STAGE_RESULTS_JACOCO_ENABLED) : true,
@@ -190,7 +197,7 @@ Enables/Disables the [Analysis Collector Plugin](https://wiki.jenkins.io/display
 ### `checkstyle` (optional)
 |          |                                                                                                                              |
 |:---------|:-----------------------------------------------------------------------------------------------------------------------------|
-| Constant | [`ConfigConstants.STAGE_RESULTS_ANALYSIS_PUBLISHER`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy) |
+| Constant | [`ConfigConstants.STAGE_RESULTS_CHECKSTYLE`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy) |
 | Type     | `Map`                                                                                                                        |
 
 Configures the [Checkstyle Plugin](https://wiki.jenkins.io/display/JENKINS/Checkstyle+Plugin).
@@ -202,6 +209,49 @@ Configures the [Checkstyle Plugin](https://wiki.jenkins.io/display/JENKINS/Check
 | Type     | `Boolean`                                                                                                                    |
 
 Enables/disables [Checkstyle Plugin](https://wiki.jenkins.io/display/JENKINS/Checkstyle+Plugin).
+
+### `findbugs` (optional)
+|          |                                                                                                                    |
+|:---------|:-------------------------------------------------------------------------------------------------------------------|
+| Constant | [`ConfigConstants.STAGE_RESULTS_FINDBUGS`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy) |
+| Type     | `Map`                                                                                                              |
+
+Configures the [FindBugs Plugin](https://wiki.jenkins.io/display/JENKINS/FindBugs+Plugin).
+
+#### FindBugs: `enabled` (optional)
+|          |                                                                                                                            |
+|:---------|:---------------------------------------------------------------------------------------------------------------------------|
+| Constant | [`ConfigConstants.STAGE_RESULTS_FINDBUGS_ENABLED`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy) |
+| Type     | `Boolean`                                                                                                                  |
+| Default  | `true`                                                                                                                     |
+
+Enables/disables [FindBugs Plugin](https://wiki.jenkins.io/display/JENKINS/FindBugs+Plugin).
+
+### `fingerprint` (optional)
+|          |                                                                                                                  |
+|:---------|:-----------------------------------------------------------------------------------------------------------------|
+| Constant | [`ConfigConstants.STAGE_RESULTS_FINGERPRINT`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy) |
+| Type     | `Map`                                                                                                            |
+
+Configures the fingerprinting of artifacts.
+
+#### Fingerprint: `enabled` (optional)
+|          |                                                                                                                          |
+|:---------|:-------------------------------------------------------------------------------------------------------------------------|
+| Constant | [`ConfigConstants.STAGE_RESULTS_FINGERPRINT_ENABLED`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy) |
+| Type     | `Boolean`                                                                                                                |
+| Default  | `true`
+
+Enables/disables the fingerprinting of artifacts.
+
+#### Fingerprint: `fileset` (optional)
+|          |                                                                                                                          |
+|:---------|:-------------------------------------------------------------------------------------------------------------------------|
+| Constant | [`ConfigConstants.STAGE_RESULTS_FINGERPRINT_FILESET`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy) |
+| Type     | `String`                                                                                                                |
+| Default  | `**/target/**/*.zip,**/target/**/*.jar`
+
+Configures the ANT fileset for the artifacts that should be fingerprinted.
 
 ### `jacoco` (optional)
 |          |                                                                                                                  |
@@ -470,23 +520,6 @@ Configures the [JUnit Plugin](https://wiki.jenkins.io/display/JENKINS/JUnit+Plug
 | Default  | `true`                                                                                                                  |
 
 Enables/disables [JUnit Plugin](https://wiki.jenkins.io/display/JENKINS/JUnit+Plugin).
-
-### `findbugs` (optional)
-|          |                                                                                                                    |
-|:---------|:-------------------------------------------------------------------------------------------------------------------|
-| Constant | [`ConfigConstants.STAGE_RESULTS_FINDBUGS`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy) |
-| Type     | `Map`                                                                                                              |
-
-Configures the [FindBugs Plugin](https://wiki.jenkins.io/display/JENKINS/FindBugs+Plugin).
-
-#### FindBugs: `enabled` (optional)
-|          |                                                                                                                            |
-|:---------|:---------------------------------------------------------------------------------------------------------------------------|
-| Constant | [`ConfigConstants.STAGE_RESULTS_FINDBUGS_ENABLED`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy) |
-| Type     | `Boolean`                                                                                                                  |
-| Default  | `true`                                                                                                                     |
-
-Enables/disables [FindBugs Plugin](https://wiki.jenkins.io/display/JENKINS/FindBugs+Plugin).
 
 ### `openTasks` (optional)
 |          |                                                                                                                      |
