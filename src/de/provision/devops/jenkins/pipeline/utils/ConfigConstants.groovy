@@ -31,6 +31,9 @@ class ConfigConstants {
   public static final String BUILD_FEATURE = "buildFeature"
   public static final String BUILD_FEATURE_EXTEND = "_extend"
 
+  public static final String BUILD_WRAPPER = "buildWrapper"
+  public static final String BUILD_WRAPPER_SSH_TARGETS = "sshTargets"
+
   public static final String JOB_TYPE = "jobType"
   public static final String JOB_TYPE_FEATURE = "feature"
 

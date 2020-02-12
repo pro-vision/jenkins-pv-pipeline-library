@@ -54,7 +54,7 @@ class BuildFeatureIT extends PVLibraryIntegrationTestBase {
     // check build config
     Map compileStageCfg = (Map) config[STAGE_COMPILE]
     assertNotNull("config should contain a config for compile stage", compileStageCfg)
-    assertEquals("[maven:[goals:clean install]]", compileStageCfg.toString())
+    assertEquals("[maven:[goals:[clean, install], mapMergeMode:REPLACE]]", compileStageCfg.toString())
 
     // check build config
     Map analyzeStageCfg = (Map) config[STAGE_ANALYZE]
@@ -62,7 +62,7 @@ class BuildFeatureIT extends PVLibraryIntegrationTestBase {
   }
 
   @Test
-  void shoudCallDefaultBuildWithUseSCMVar() {
+  void shouldCallDefaultBuildWithUseSCMVar() {
     loadAndExecuteScript("vars/buildFeature/jobs/buildFeatureWithScmVarTestJob.groovy")
     Map config = assertOnce(PVStepConstants.BUILD_DEFAULT)
 
@@ -79,7 +79,7 @@ class BuildFeatureIT extends PVLibraryIntegrationTestBase {
     // check build config
     Map compileStageCfg = (Map) config[STAGE_COMPILE]
     assertNotNull("config should contain a config for compile stage", compileStageCfg)
-    assertEquals("[maven:[goals:clean install]]", compileStageCfg.toString())
+    assertEquals("[maven:[goals:[clean, install], mapMergeMode:REPLACE]]", compileStageCfg.toString())
 
     // check build config
     Map analyzeStageCfg = (Map) config[STAGE_ANALYZE]
@@ -87,7 +87,32 @@ class BuildFeatureIT extends PVLibraryIntegrationTestBase {
   }
 
   @Test
-  void shoudCallDefaultBuildWithExtend() {
+  void shouldRunWithCustomMavenGoals() {
+    loadAndExecuteScript("vars/buildFeature/jobs/buildFeatureCustomMavenGoals.groovy")
+    Map config = assertOnce(PVStepConstants.BUILD_DEFAULT)
+
+    // color wrapping
+    assertOnce(ANSI_COLOR)
+
+    // check scm config
+    Map scmConfig = (Map) config.scm ?: null
+    assertNotNull("config for commit step should contain 'scm' key", scmConfig)
+    assertTrue("scm config should contain 'useScmVar' with value true when access was rejected by sandbox", (Boolean) scmConfig[SCM_USE_SCM_VAR] ?: false)
+
+    assertEquals(JOB_TYPE_FEATURE, config.get(JOB_TYPE))
+
+    // check build config
+    Map compileStageCfg = (Map) config[STAGE_COMPILE]
+    assertNotNull("config should contain a config for compile stage", compileStageCfg)
+    assertEquals("[maven:[goals:[goal1, goal2], mapMergeMode:REPLACE]]", compileStageCfg.toString())
+
+    // check build config
+    Map analyzeStageCfg = (Map) config[STAGE_ANALYZE]
+    assertNull("config should not contain a config for analyze stage", analyzeStageCfg)
+  }
+
+  @Test
+  void shouldCallDefaultBuildWithExtend() {
     loadAndExecuteScript("vars/buildFeature/jobs/buildFeatureWithExtendTestJob.groovy")
     List shCalls = assertStepCalls(SH, 2)
     assertOnce(PVStepConstants.BUILD_DEFAULT)

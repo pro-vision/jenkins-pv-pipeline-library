@@ -17,12 +17,10 @@
  * limitations under the License.
  * #L%
  */
+
 import io.wcm.devops.jenkins.pipeline.environment.EnvironmentConstants
-import io.wcm.devops.jenkins.pipeline.shell.GitCommandBuilderImpl
 import io.wcm.devops.jenkins.pipeline.utils.ConfigConstants
-import io.wcm.devops.jenkins.pipeline.utils.logging.LogLevel
 import io.wcm.devops.jenkins.pipeline.utils.logging.Logger
-import org.jenkinsci.plugins.workflow.cps.DSL
 
 /**
  * This is the default step used in Jenkinsfiles lying in the project root.

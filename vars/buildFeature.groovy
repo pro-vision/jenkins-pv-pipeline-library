@@ -20,6 +20,7 @@
 
 import io.wcm.devops.jenkins.pipeline.utils.TypeUtils
 import io.wcm.devops.jenkins.pipeline.utils.logging.Logger
+import io.wcm.devops.jenkins.pipeline.utils.maps.MapMergeMode
 import io.wcm.devops.jenkins.pipeline.utils.maps.MapUtils
 import org.jenkinsci.plugins.workflow.cps.DSL
 
@@ -71,15 +72,24 @@ void _impl(Map config = [:]) {
     Logger.init(this, config)
     Logger log = new Logger(this)
 
-    // add maven configuration for compile step (no deploy to artifact manager for feature branches)
-    Map featureBranchConfig = [
-      (STAGE_COMPILE): [
-        (MAVEN): [(MAVEN_GOALS): "clean install"]
+    Map defaultFeatureBranchConfig = [
+      (JOB_TYPE)     : JOB_TYPE_FEATURE,
+      (BUILD_FEATURE): [
+        (STAGE_COMPILE): [
+          (MAVEN): [
+            (MAVEN_GOALS)   : ["clean", "install"],
+            (MAP_MERGE_MODE): MapMergeMode.REPLACE
+          ]
+        ]
       ],
-      (JOB_TYPE)     : JOB_TYPE_FEATURE
     ]
 
-    config = MapUtils.merge(config, featureBranchConfig)
+    // merge with default config
+    config = MapUtils.merge(defaultFeatureBranchConfig, config)
+
+    // get the feature branch config
+    Map buildFeatureConfig = (Map) config[BUILD_FEATURE] ?: [:]
+    config = MapUtils.merge(config, buildFeatureConfig)
 
     Map scmConfig = (Map) config.get(SCM) ?: [:]
     String scmUrl = scmConfig.get(SCM_URL) ?: null

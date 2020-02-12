@@ -17,6 +17,13 @@
  * limitations under the License.
  * #L%
  */
+
+
+import io.wcm.devops.jenkins.pipeline.utils.maps.MapMergeMode
+import io.wcm.devops.jenkins.pipeline.utils.maps.MapUtils
+
+import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
+
 import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
 import io.wcm.devops.jenkins.pipeline.utils.logging.Logger
 import org.jenkinsci.plugins.workflow.cps.DSL
@@ -45,12 +52,33 @@ Map call(Closure body) {
  * @param body The steps/code that has to be executed by this step
  * @return The configuration used and processed by this step
  *
- * @see <a href="../vars/setJobProperties.groovy">setJobProperties.groovy</a>
- * @see <a href="../vars/setJobProperties.md">setJobProperties.md</a>
- * @see <a href="https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/notifyMail.groovy">notifyMail.groovy</a>
- * @see <a href="https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/notifyMail.md">notifyMail.md</a>
+ * @see <ahref="../vars/setJobProperties.groovy" > setJobProperties.groovy</a>
+ * @see <ahref="../vars/setJobProperties.md" > setJobProperties.md</a>
+ * @see <ahref="https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/notifyMail.groovy" > notifyMail.groovy</a>
+ * @see <ahref="https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/notifyMail.md" > notifyMail.md</a>
  */
 Map call(Map config, Closure body) {
+  Map defaultWrapperConfig = [
+    (BUILD_WRAPPER): [
+      (BUILD_WRAPPER_SSH_TARGETS): [],
+      (MAP_MERGE_MODE)           : MapMergeMode.REPLACE
+    ],
+    (TIMEOUT)      : [
+      (TIMEOUT_TIME)  : 30,
+      (TIMEOUT_UNIT)  : TimeUnit.MINUTES,
+      (MAP_MERGE_MODE): MapMergeMode.REPLACE
+    ]
+  ]
+  config = MapUtils.merge(defaultWrapperConfig, config)
+
+  Map buildWrapperConfig = config[BUILD_WRAPPER]
+  List sshTargets = buildWrapperConfig[BUILD_WRAPPER_SSH_TARGETS]
+
+  // set the build timeout, default is 30 minutes
+  Map timeoutConfig = (Map) config[TIMEOUT]
+  int timeoutTime = (int) timeoutConfig[TIMEOUT_TIME]
+  TimeUnit timeoutUnit = (TimeUnit) timeoutConfig[TIMEOUT_UNIT]
+
   wrap.color(config) {
     // Only initialize logger when not already initialized, to avoid LogLevel overwriting
     if (!Logger.initialized) {
@@ -61,11 +89,6 @@ Map call(Map config, Closure body) {
 
     log.debug("config", config)
 
-    // set the build timeout, default is 30 minutes
-    Map timeoutConfig = (Map) config[TIMEOUT] ?: [:]
-    int timeoutTime = timeoutConfig[TIMEOUT_TIME] != null ? (int) timeoutConfig[TIMEOUT_TIME] : 30
-    TimeUnit timeoutUnit = timeoutConfig[TIMEOUT_UNIT] != null ? (TimeUnit) timeoutConfig[TIMEOUT_UNIT] : TimeUnit.MINUTES
-
     // surround build by try catch for e-mail notification
     try {
       log.trace("set timeout to ${timeoutTime} unit: ${timeoutUnit}")
@@ -75,8 +98,11 @@ Map call(Map config, Closure body) {
         timestamps {
           // set the default job properties
           setJobProperties(config)
-          // call the provided closure
-          body()
+          // wrap with ssh agent
+          sshAgentWrapper(sshTargets) {
+            // call the provided closure
+            body()
+          }
         }
       }
       // job is successful when this line is reached

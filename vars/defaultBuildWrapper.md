@@ -5,6 +5,7 @@ reduce the amount of code to write in pipeline to get
 * timestamps in console
 * email notification
 * build timeouts
+* ssh agents
 * scm polling
 * log discarding
 
@@ -18,6 +19,7 @@ This step is also used by the [`buildDefault`](buildDefault.md) step
     * [Set build timeout](#set-build-timeout)
     * [Enable timestamps on console](#enable-timestamps-on-console)
     * [Set default job properties](#set-default-job-properties)
+    * [Provide ssh-agent](#provide-ssh-agent)
     * [Execute the provided closure](#execute-the-provided-closure)
     * [Notify](#notify)
 * [Examples](#examples)
@@ -27,6 +29,7 @@ This step is also used by the [`buildDefault`](buildDefault.md) step
 * [Configuration options](#configuration-options)
     * [`timeoutTime`](#timeouttime)
     * [`timeoutUnit`](#timeoutunit)
+  *   [`sshTargets`](#sshtargets)
 * [Related classes](#related-classes)
 
 ## Step sequence
@@ -56,6 +59,27 @@ Then the default job properties are set by calling the
 
 See [setJobProperties](setJobProperties.md) for configuration options.
 
+### Provide ssh-agent
+
+The `defaultBuildWrapper` is able to wrap the closure with an ssh-agent.
+
+```groovy
+import io.wcm.devops.jenkins.pipeline.ssh.SSHTarget 
+
+import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
+import static io.wcm.devops.jenkins.pipeline.utils.ConfigConstants.*
+
+Map config = [
+  (BUILD_WRAPPER) : [
+    (BUILD_WRAPPER_SSH_TARGETS) : [ new SSHTarget("ssh-host.company.tld") ]
+  ]
+]
+
+routeDefaultJenkinsFile(config)
+```
+
+See jenkins-pipeline-library [sshAgentWrapper](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/sshAgentWrapper.md) for details.
+
 ### Execute the provided closure
 
 After the job properties are set the closure is called
@@ -65,6 +89,7 @@ After the job properties are set the closure is called
 Finally the wrapper calls the
 * [`notify.mail`](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/notify.md) and
 * [`notify.mattermost`](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/notify.md)
+* [`notify.mqtt`](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/notify.md)
 
 steps and depending on configuration and build result notifications are
 send.
@@ -133,10 +158,15 @@ defaultBuildWrapper(config) {
 ## Configuration options
 
 All configuration options must be inside the `timeout`
-(['ConfigConstants.TIMEOUT'](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy))
+([`ConfigConstants.TIMEOUT`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy))
+or `buildWrapper`
+([`ConfigConstants.BUILD_WRAPPER`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy))
 map element to be evaluated and used by the step.
 
 ```groovy
+
+
+import io.wcm.devops.jenkins.pipeline.ssh.SSHTarget
 
 import java.util.concurrent.TimeUnit
 import static de.provision.devops.jenkins.pipeline.utils.ConfigConstants.*
@@ -146,6 +176,9 @@ defaultBuildWrapper(
     (TIMEOUT) : [
         (TIMEOUT_TIME) : 30,
         (TIMEOUT_UNIT) : TimeUnit.MINUTES
+    ],
+    (BUILD_WRAPPER) : [
+      (BUILD_WRAPPER_SSH_TARGETS) : [ new SSHTarget("ssh-host.company.tld") ]
     ]
 ) {
     // closure content
@@ -174,6 +207,19 @@ Use this configuration option to specify the integer component of the build time
 | Default  | `TimeUnit.MINUTES`                                                                                         |
 
 Use this configuration option to specify the TimeUnit component of the build timeout.
+
+### `sshTargets`
+|          |                                                                                                                         |    |
+|:---------|:------------------------------------------------------------------------------------------------------------------------|:---|
+| Constant | [`ConfigConstants.BUILD_WRAPPER_SSH_TARGETS`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy) |    |
+| Type     | List of `io.wcm.devops.jenkins.pipeline.ssh.SSHTarget`                                                                  |    |
+| Default  | `[]`                                                                                                                    |    |
+
+Use this configuration option to specify a list of sshTarget to prepare
+an ssh-agent for.  
+See jenkins-pipeline-library
+[sshAgentWrapper](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/sshAgentWrapper.md)
+for details (especially for the autolookup)
 
 ## Related classes
 * [`LogLevel`](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/src/io/wcm/devops/jenkins/pipeline/utils/logging/LogLevel.groovy)
