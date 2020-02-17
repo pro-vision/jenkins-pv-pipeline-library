@@ -49,6 +49,15 @@ Map config = [
   ],
   (BUILD_FEATURE) : [
     (BUILD_FEATURE_EXTEND) : null,
+    (STAGE_COMPILE): [
+      (MAVEN): [
+        (MAVEN_GOALS)   : ["clean", "install"],
+        (MAP_MERGE_MODE): MapMergeMode.REPLACE
+      ]
+    ]
+  ],
+  (BUILD_WRAPPER) : [
+    (BUILD_WRAPPER_SSH_TARGETS): []    
   ],
   (LOGLEVEL) : LogLevel.INFO,
   (NODE) : null,
