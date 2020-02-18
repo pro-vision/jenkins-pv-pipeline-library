@@ -53,6 +53,13 @@ class FeatureBranchPreparationStageIT extends PVLibraryIntegrationTestBase {
   }
 
   @Test
+  void shouldNotMergeWhenDisabled() {
+    loadAndExecuteScript("vars/featureBranchPreparationStage/jobs/mergeDisabledTestJob.groovy")
+    StepRecorderAssert.assertNone(StepConstants.STAGE)
+    StepRecorderAssert.assertNone(StepConstants.SH)
+  }
+
+  @Test
   void shouldIntegrateFeatureBranchWithParent() {
     loadAndExecuteScript("vars/featureBranchPreparationStage/jobs/featureBranchTestJob.groovy")
 
