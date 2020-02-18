@@ -176,3 +176,7 @@ with jUnit/Failsafe. All integration tests have the naming format
 ### Building with maven
 
     mvn clean install
+
+### Add license file headers
+
+    mvn license:update-file-header

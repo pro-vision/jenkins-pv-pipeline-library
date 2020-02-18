@@ -58,6 +58,11 @@ class ConfigConstants {
   public static final String STAGE_ANALYZE_EXTEND = "_extend"
   public static final String STAGE_ANALYZE_ENABLED = "enabled"
 
+  public static final String STAGE_FEATURE_PREPARATION = "featurePreparationStage"
+
+  public static final String STAGE_FEATURE_PREPARATION_MERGE = "merge"
+  public static final String STAGE_FEATURE_PREPARATION_MERGE_ENABLED = "enabled"
+
   public static final String STAGE_PREPARATION = "preparationStage"
 
   public static final String STAGE_PREPARATION_CHECKOUT_SCM = "checkoutScm"
