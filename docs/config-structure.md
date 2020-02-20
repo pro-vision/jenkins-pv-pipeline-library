@@ -137,6 +137,12 @@ Map config = [
     ],
     (STASH) : false
   ],
+  (STAGE_FEATURE_PREPARATION): [
+    (STAGE_FEATURE_PREPARATION_MERGE): [
+      (STAGE_FEATURE_PREPARATION_MERGE_ENABLED): true,
+      (MAP_MERGE_MODE): MapMergeMode.REPLACE
+    ]
+  ],
   (STAGE_PREPARATION) : [
     (STAGE_PREPARATION_CHECKOUT_SCM): true,
     (STAGE_PREPARATION_EXTEND): null,
@@ -152,6 +158,10 @@ Map config = [
     ],
     (STAGE_RESULTS_CHECKSTYLE) : [
       (STAGE_RESULTS_CHECKSTYLE_ENABLED) : true
+    ],
+    (STAGE_RESULTS_FINGERPRINT) : [
+      (STAGE_RESULTS_FINGERPRINT_ENABLED) : true,
+      (STAGE_RESULTS_FINGERPRINT_FILESET) : "**/target/**/*.zip,**/target/**/*.jar",
     ],
     (STAGE_RESULTS_JACOCO) : [
       (STAGE_RESULTS_JACOCO_ENABLED) : true,
