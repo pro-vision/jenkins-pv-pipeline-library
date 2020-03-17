@@ -39,9 +39,12 @@ class FeatureBranchPreparationStageIT extends PVLibraryIntegrationTestBase {
   @Rule
   public ExpectedException expectedEx = ExpectedException.none()
 
+  String mockedParentBranch
+
   @Override
   void setUp() throws Exception {
     super.setUp()
+    mockedParentBranch = "origin/develop"
     this.setEnv(EnvironmentConstants.GIT_BRANCH, 'feature/test')
   }
 
@@ -69,6 +72,15 @@ class FeatureBranchPreparationStageIT extends PVLibraryIntegrationTestBase {
   }
 
   @Test
+  void shouldNotMergeWithWhenParentBranchWasNotDetected() {
+    mockedParentBranch = null
+    loadAndExecuteScript("vars/featureBranchPreparationStage/jobs/featureBranchTestJob.groovy")
+
+    StepRecorderAssert.assertNone(StepConstants.STAGE)
+    StepRecorderAssert.assertNone(StepConstants.SH)
+  }
+
+  @Test
   void shouldFailOnFeatureBranchIntegration() {
     expectedEx.expect(AbortException.class)
     expectedEx.expectMessage("The branch 'feature/test' is not suitable for integration into 'origin/develop'")
@@ -91,7 +103,7 @@ class FeatureBranchPreparationStageIT extends PVLibraryIntegrationTestBase {
     // mock gitTools.getParentBranch call
     helper.registerAllowedMethod("getParentBranch", [], { Closure closure ->
       stepRecorder.record("getParentBranch", null)
-      return "origin/develop"
+      return mockedParentBranch
     })
   }
 }
