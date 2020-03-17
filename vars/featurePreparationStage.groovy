@@ -60,18 +60,25 @@ void call(Map config) {
     log.debug("merging with parent branch enabled", mergeEnabled)
     if (mergeEnabled) {
       String parentBranch = gitTools.getParentBranch()
-      stage("Merge with '${parentBranch}'") {
-        // build the command
-        GitCommandBuilderImpl gitCommandBuilder = new GitCommandBuilderImpl((DSL) this.steps)
-        gitCommandBuilder.addArguments(["merge", "${parentBranch}"])
-        // execute with try catch to detect merge an execution errors
-        try {
-          log.info("merging with '${parentBranch}'")
-          sh(gitCommandBuilder.build())
-        } catch (Exception ex) {
-          error("The branch '${env.getProperty(EnvironmentConstants.GIT_BRANCH)}' is not suitable for integration into '${parentBranch}'")
+
+      if (parentBranch != null) {
+        stage("Merge with '${parentBranch}'") {
+          // build the command
+          GitCommandBuilderImpl gitCommandBuilder = new GitCommandBuilderImpl((DSL) this.steps)
+          gitCommandBuilder.addArguments(["merge", "${parentBranch}"])
+          // execute with try catch to detect merge an execution errors
+          try {
+            log.info("merging with '${parentBranch}'")
+            sh(gitCommandBuilder.build())
+          } catch (Exception ex) {
+            error("The branch '${env.getProperty(EnvironmentConstants.GIT_BRANCH)}' is not suitable for integration into '${parentBranch}'")
+          }
         }
+      } else {
+        log.info("unable to determine parent branch, skipping merge.")
       }
+
+
     } else {
       log.debug("merge with parent branch is disabled by configuration")
     }
