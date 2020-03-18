@@ -68,12 +68,12 @@
     <dependency>
       <groupId>io.wcm.devops.jenkins</groupId>
       <artifactId>io.wcm.devops.jenkins.pipeline-library</artifactId>
-      <version>1.8.1-SNAPSHOT</version>
+      <version>1.8.2</version>
     </dependency>
     <dependency>
       <groupId>io.wcm.devops.jenkins</groupId>
       <artifactId>io.wcm.devops.jenkins.pipeline-library</artifactId>
-      <version>1.8.1-SNAPSHOT</version>
+      <version>1.8.2</version>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
