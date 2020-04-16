@@ -75,6 +75,7 @@ class DefaultBuildWrapperIT extends PVLibraryIntegrationTestBase {
     assertOnce("mail")
     assertOnce("mattermost")
     assertOnce("mqtt")
+    assertOnce("teams")
   }
 
   @Override
@@ -90,6 +91,9 @@ class DefaultBuildWrapperIT extends PVLibraryIntegrationTestBase {
     })
     helper.registerAllowedMethod("mqtt", [Map.class], { Map config ->
       stepRecorder.record("mqtt", config)
+    })
+    helper.registerAllowedMethod("teams", [Map.class], { Map config ->
+      stepRecorder.record("teams", config)
     })
   }
 }
