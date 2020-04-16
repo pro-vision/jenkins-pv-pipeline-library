@@ -3,7 +3,7 @@
 The default build wrapper was introduced to increase reusability and
 reduce the amount of code to write in pipeline to get
 * timestamps in console
-* email notification
+* email- or instant messenger notifications
 * build timeouts
 * ssh agents
 * scm polling
@@ -90,6 +90,7 @@ Finally the wrapper calls the
 * [`notify.mail`](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/notify.md) and
 * [`notify.mattermost`](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/notify.md)
 * [`notify.mqtt`](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/notify.md)
+* [`notify.teams`](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/notify.md)
 
 steps and depending on configuration and build result notifications are
 send.

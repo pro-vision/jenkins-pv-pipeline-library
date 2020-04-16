@@ -116,6 +116,7 @@ Map call(Map config, Closure body) {
       notify.mail(config)
       notify.mattermost(config)
       notify.mqtt(config)
+      notify.teams(config)
     }
   }
   return config
