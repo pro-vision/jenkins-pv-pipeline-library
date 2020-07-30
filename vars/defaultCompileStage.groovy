@@ -66,6 +66,8 @@ void _impl(Map config) {
 
   Map compileStageCfg = (Map) config[STAGE_COMPILE] ?: [:]
 
+  log.debug("compileStageCfg from config[STAGE_COMPILE]", compileStageCfg)
+
   // get maven defines based on project structure (e.g. nodejs.directory)
   def defaultMavenDefines = getDefaultMavenDefines()
   // merge config with maven defaults and incoming stage configuration
@@ -76,7 +78,10 @@ void _impl(Map config) {
       (MAVEN_ARGUMENTS): ["-B", "-U"]
     ]
   ]
-  compileStageCfg = MapUtils.merge(config, compileDefaultCgf, compileStageCfg, defaultMavenDefines)
+  compileStageCfg = MapUtils.merge(config, compileDefaultCgf, defaultMavenDefines, compileStageCfg)
+
+  log.debug("compileStageCfg after merging, before execute", compileStageCfg)
+
   // execute maven build
   execMaven(compileStageCfg)
 

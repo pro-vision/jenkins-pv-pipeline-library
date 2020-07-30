@@ -31,6 +31,9 @@ def execute() {
       (STAGE_COMPILE): [
         (MAVEN): [
           (MAVEN_GOALS): ["goal1", "goal2"],
+          (MAVEN_DEFINES): [
+            customDefine: "value"
+          ]
         ]
       ]
     ]

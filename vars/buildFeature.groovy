@@ -100,6 +100,8 @@ void _impl(Map config = [:]) {
       config[SCM][SCM_USE_SCM_VAR] = true
     }
 
+    log.debug("config", config)
+
     //calling buildDefault with scm configuration
     buildDefault(config)
   }
