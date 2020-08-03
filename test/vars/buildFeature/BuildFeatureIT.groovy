@@ -87,8 +87,8 @@ class BuildFeatureIT extends PVLibraryIntegrationTestBase {
   }
 
   @Test
-  void shouldRunWithCustomMavenGoals() {
-    loadAndExecuteScript("vars/buildFeature/jobs/buildFeatureCustomMavenGoals.groovy")
+  void shouldRunWithCustomConfig() {
+    loadAndExecuteScript("vars/buildFeature/jobs/buildFeatureCustomTestJob.groovy")
     Map config = assertOnce(PVStepConstants.BUILD_DEFAULT)
 
     // color wrapping
@@ -104,7 +104,7 @@ class BuildFeatureIT extends PVLibraryIntegrationTestBase {
     // check build config
     Map compileStageCfg = (Map) config[STAGE_COMPILE]
     assertNotNull("config should contain a config for compile stage", compileStageCfg)
-    assertEquals("[maven:[goals:[goal1, goal2], mapMergeMode:REPLACE]]", compileStageCfg.toString())
+    assertEquals("[maven:[goals:[goal1, goal2], mapMergeMode:REPLACE, defines:[customDefine:value]]]", compileStageCfg.toString())
 
     // check build config
     Map analyzeStageCfg = (Map) config[STAGE_ANALYZE]

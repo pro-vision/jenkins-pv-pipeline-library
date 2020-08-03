@@ -48,7 +48,7 @@ class DefaultCompileStageIT extends PVLibraryIntegrationTestBase {
 
     assertOnce(CONFIGFILEPROVIDER)
     String shellCall = (String) assertOnce(SH)
-    assertEquals("error in executed shell command", "mvn -f path/to/custom/pom.xml customGoal1 customGoal2 -CustomARG1 -DcustomDefine1=true -DcustomDefine2=value -Dcontinuous-integration=true", shellCall)
+    assertEquals("error in executed shell command", "mvn -f path/to/custom/pom.xml customGoal1 customGoal2 -CustomARG1 -Dcontinuous-integration=true -DcustomDefine1=true -DcustomDefine2=value", shellCall)
 
     Map actualStashCall = (Map) assertOnce(STASH)
     assertEquals([name: ConfigConstants.STASH_COMPILE_FILES, includes: "**/*"], actualStashCall)
