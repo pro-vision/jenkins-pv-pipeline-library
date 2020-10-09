@@ -283,6 +283,11 @@ void _checkStyle(Map config = [:]) {
 
   Map cfg = _getResultPluginConfig(config, STAGE_RESULTS_CHECKSTYLE)
   Boolean enabled = cfg[STAGE_RESULTS_CHECKSTYLE_ENABLED] != null ? cfg[STAGE_RESULTS_CHECKSTYLE_ENABLED] : true
+  Boolean canComputeNew = cfg[STAGE_RESULTS_CHECKSTYLE_CAN_COMPUTE_NEW] != null ? cfg[STAGE_RESULTS_CHECKSTYLE_CAN_COMPUTE_NEW] : false
+  String defaultEncoding = cfg[STAGE_RESULTS_CHECKSTYLE_DEFAULT_ENCODING] != null ? cfg[STAGE_RESULTS_CHECKSTYLE_DEFAULT_ENCODING] : ""
+  String healthy = cfg[STAGE_RESULTS_CHECKSTYLE_HEALTHY] != null ? cfg[STAGE_RESULTS_CHECKSTYLE_HEALTHY] : ""
+  String pattern = cfg[STAGE_RESULTS_CHECKSTYLE_PATTERN] != null ? cfg[STAGE_RESULTS_CHECKSTYLE_PATTERN] : "**/target/checkstyle-result*.xml"
+  String unHealthy = cfg[STAGE_RESULTS_CHECKSTYLE_UNHEALTHY] != null ? cfg[STAGE_RESULTS_CHECKSTYLE_UNHEALTHY] : ""
 
   if (!enabled) {
     return
@@ -291,11 +296,11 @@ void _checkStyle(Map config = [:]) {
   def previousBuildResult = currentBuild.result
 
   checkstyle(
-    canComputeNew: false,
-    defaultEncoding: '',
-    healthy: '',
-    pattern: '**/target/checkstyle-result*.xml',
-    unHealthy: ''
+    canComputeNew: canComputeNew,
+    defaultEncoding: defaultEncoding,
+    healthy: healthy,
+    pattern: pattern,
+    unHealthy: unHealthy
   )
   currentBuildResult = currentBuild.result
   if (currentBuildResult != previousBuildResult) {

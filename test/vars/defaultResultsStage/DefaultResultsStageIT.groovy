@@ -380,4 +380,29 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
     Map actualJacocoCall = assertOnce(JACOCOPUBLISHER)
     Assert.assertEquals("assertion failure in jacoco call", expectedJacocoCall, actualJacocoCall)
   }
+
+  @Test
+  void shouldExecuteCheckstyleWithCustomSettings() {
+    Map expectedCheckstyleCall = [
+        canComputeNew             : true,
+        defaultEncoding           : 'customEncoding',
+        healthy                   : 'customHealthy',
+        pattern                   : 'customPattern',
+        unHealthy                 : 'customUnHealthy'
+    ]
+    loadAndExecuteScript("vars/defaultResultsStage/jobs/defaultResultsStageTestJob.groovy", [
+        (ConfigConstants.STAGE_RESULTS): [
+            (ConfigConstants.STAGE_RESULTS_CHECKSTYLE): [
+                (ConfigConstants.STAGE_RESULTS_CHECKSTYLE_CAN_COMPUTE_NEW)                     : true,
+                (ConfigConstants.STAGE_RESULTS_CHECKSTYLE_DEFAULT_ENCODING)                    : "customEncoding",
+                (ConfigConstants.STAGE_RESULTS_CHECKSTYLE_HEALTHY)                             : "customHealthy",
+                (ConfigConstants.STAGE_RESULTS_CHECKSTYLE_PATTERN)                             : "customPattern",
+                (ConfigConstants.STAGE_RESULTS_CHECKSTYLE_UNHEALTHY)                           : "customUnHealthy",
+            ]
+        ]
+    ])
+
+    Map actualCheckstyleCall = assertOnce(CHECKSTYLE)
+    Assert.assertEquals("assertion failure in checkstyle call", expectedCheckstyleCall, actualCheckstyleCall)
+  }
 }
