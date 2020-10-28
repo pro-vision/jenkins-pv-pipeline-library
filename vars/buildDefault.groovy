@@ -47,7 +47,7 @@ import io.wcm.devops.jenkins.pipeline.utils.maps.MapUtils
  * @see ../vars/defaultCompileStage.md
  */
 void call(Map config = [:]) {
-  wrap.color(config) {
+  wrappers.color(config) {
     Logger log = new Logger("buildDefault")
     TypeUtils typeUtils = new TypeUtils()
 

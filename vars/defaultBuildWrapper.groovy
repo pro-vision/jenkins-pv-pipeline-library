@@ -79,7 +79,7 @@ Map call(Map config, Closure body) {
   int timeoutTime = (int) timeoutConfig[TIMEOUT_TIME]
   TimeUnit timeoutUnit = (TimeUnit) timeoutConfig[TIMEOUT_UNIT]
 
-  wrap.color(config) {
+  wrappers.color(config) {
     // Only initialize logger when not already initialized, to avoid LogLevel overwriting
     if (!Logger.initialized) {
       Logger.init(this, config)

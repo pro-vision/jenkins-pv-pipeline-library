@@ -37,7 +37,7 @@ import io.wcm.devops.jenkins.pipeline.utils.logging.Logger
  * @see ../vars/buildFeature.md
  */
 void call(Map config = [:]) {
-  wrap.color(config) {
+  wrappers.color(config) {
     Logger.init(this, config)
     Logger log = new Logger(this)
 

@@ -68,7 +68,7 @@ void call(Map config = [:]) {
  * @param config Configuration options for the used steps
  */
 void _impl(Map config = [:]) {
-  wrap.color(config) {
+  wrappers.color(config) {
     Logger.init(this, config)
     Logger log = new Logger(this)
 
