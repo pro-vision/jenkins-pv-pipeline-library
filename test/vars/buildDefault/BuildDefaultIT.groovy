@@ -120,8 +120,6 @@ class BuildDefaultIT extends PVLibraryIntegrationTestBase {
   }
 
   void assertDefaults() {
-    Map steps = stepRecorder.recordedSteps
-
 
     // trigger assertions
     String pollScmCall = assertOnce(POLLSCM)
@@ -210,8 +208,6 @@ class BuildDefaultIT extends PVLibraryIntegrationTestBase {
     assertNone(CRON)
     assertNone(UPSTREAM)
 
-    Map steps = this.stepRecorder.getRecordedSteps()
-
     // color wrapping
     assertOnce(ANSI_COLOR)
 
@@ -256,16 +252,16 @@ class BuildDefaultIT extends PVLibraryIntegrationTestBase {
   protected void afterLoadingScript() {
     super.afterLoadingScript()
     helper.registerAllowedMethod(PURGE_SNAPSHOTS_FROM_REPOSITORY, [], {
-      stepRecorder.record(PURGE_SNAPSHOTS_FROM_REPOSITORY, null)
+      this.context.getStepRecorder().record(PURGE_SNAPSHOTS_FROM_REPOSITORY, null)
     })
     // mock gitTools.getParentBranch call
     helper.registerAllowedMethod("getParentBranch", [], { Closure closure ->
-      stepRecorder.record("getParentBranch", null)
+      this.context.getStepRecorder().record("getParentBranch", null)
       return "origin/develop"
     })
 
     helper.registerAllowedMethod(NODE, [String.class, Closure.class], { String agent, Closure closure ->
-      stepRecorder.record(NODE, agent)
+      this.context.getStepRecorder().record(NODE, agent)
       // execute the closure
       closure.call()
     })

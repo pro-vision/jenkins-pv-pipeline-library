@@ -22,9 +22,9 @@ package vars.routeDefaultJenkinsFile
 import de.provision.devops.testing.jenkins.pipeline.PVLibraryIntegrationTestBase
 import de.provision.devops.testing.jenkins.pipeline.PVStepConstants
 import hudson.AbortException
+import io.wcm.devops.jenkins.pipeline.environment.EnvironmentConstants
 import io.wcm.testing.jenkins.pipeline.RunWrapperMock
 import io.wcm.testing.jenkins.pipeline.StepConstants
-import io.wcm.devops.jenkins.pipeline.environment.EnvironmentConstants
 import org.junit.Test
 
 import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertNone
@@ -73,18 +73,18 @@ class RouteDefaultJenkinsFileIT extends PVLibraryIntegrationTestBase {
     // catch buildFeature calls
     this.helper.registerAllowedMethod(PVStepConstants.BUILD_FEATURE, [Map.class], {
       config ->
-        this.stepRecorder.record(PVStepConstants.BUILD_FEATURE, config)
+        this.context.getStepRecorder().record(PVStepConstants.BUILD_FEATURE, config)
     })
     this.helper.registerAllowedMethod(PVStepConstants.BUILD_FEATURE, [], {
-      this.stepRecorder.record(PVStepConstants.BUILD_FEATURE, null)
+      this.context.getStepRecorder().record(PVStepConstants.BUILD_FEATURE, null)
     })
 
     this.helper.registerAllowedMethod(PVStepConstants.BUILD_DEFAULT, [Map.class], {
       config ->
-        this.stepRecorder.record(PVStepConstants.BUILD_DEFAULT, config)
+        this.context.getStepRecorder().record(PVStepConstants.BUILD_DEFAULT, config)
     })
     this.helper.registerAllowedMethod(PVStepConstants.BUILD_DEFAULT, [], {
-      this.stepRecorder.record(PVStepConstants.BUILD_DEFAULT, null)
+      this.context.getStepRecorder().record(PVStepConstants.BUILD_DEFAULT, null)
     })
   }
 }

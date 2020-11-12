@@ -70,13 +70,13 @@ class PVLibraryIntegrationTestBase extends LibraryIntegrationTestBase {
   protected void afterLoadingScript() {
     super.afterLoadingScript()
     helper.registerAllowedMethod(EXEC_MANAGED_SHELL_SCRIPT, [String.class, String.class], { String fileId, String argLine ->
-      stepRecorder.record(EXEC_MANAGED_SHELL_SCRIPT, [fileId: fileId, args: argLine])
+      this.context.getStepRecorder().record(EXEC_MANAGED_SHELL_SCRIPT, [fileId: fileId, args: argLine])
     })
     helper.registerAllowedMethod(EXEC_MANAGED_SHELL_SCRIPT, [String.class, List.class], { String fileId, List args ->
-      stepRecorder.record(EXEC_MANAGED_SHELL_SCRIPT, [fileId: fileId, args: args])
+      this.context.getStepRecorder().record(EXEC_MANAGED_SHELL_SCRIPT, [fileId: fileId, args: args])
     })
     helper.registerAllowedMethod(MAVEN_PURGE_SNAPSHOTS, [Map.class], { Map config ->
-      stepRecorder.record(MAVEN_PURGE_SNAPSHOTS, config)
+      this.context.getStepRecorder().record(MAVEN_PURGE_SNAPSHOTS, config)
     }
     )
   }
@@ -87,7 +87,7 @@ class PVLibraryIntegrationTestBase extends LibraryIntegrationTestBase {
    * @return mocked tool path
    */
   def toolCallback = { String tool ->
-    stepRecorder.record(TOOL, tool)
+    this.context.getStepRecorder().record(TOOL, tool)
     if (tool.matches(/(?i).*maven.*/)) {
       return LibraryIntegrationTestContext.TOOL_MAVEN_PREFIX.concat(tool)
     }
