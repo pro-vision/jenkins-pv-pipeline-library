@@ -52,7 +52,7 @@ class RouteDefaultJenkinsFileIT extends PVLibraryIntegrationTestBase {
     super.binding.setVariable('scm', true)
     this.setEnv(EnvironmentConstants.BRANCH_NAME, "feature/i-am-correct")
     this.runWrapper = new RunWrapperMock(null)
-    this.binding.setVariable("currentBuild", runWrapper)
+    this.binding.setVariable("currentBuild", this.context.getRunWrapperMock())
     loadAndExecuteScript("vars/routeDefaultJenkinsFile/jobs/routeDefaultJenkinsFileJob.groovy")
     assertOnce(PVStepConstants.BUILD_FEATURE)
     assertNone(PVStepConstants.BUILD_DEFAULT)
