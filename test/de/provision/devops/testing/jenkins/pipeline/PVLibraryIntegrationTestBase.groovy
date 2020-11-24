@@ -25,7 +25,7 @@ import io.wcm.testing.jenkins.pipeline.global.lib.SubmoduleSourceRetriever
 import org.jenkinsci.plugins.pipeline.utility.steps.fs.FileWrapper
 
 import static com.lesfurets.jenkins.unit.global.lib.LibraryConfiguration.library
-import static io.wcm.testing.jenkins.pipeline.StepConstants.EXEC_MANAGED_SHELL_SCRIPT
+import static io.wcm.testing.jenkins.pipeline.StepConstants.MANAGED_SCRIPTS_EXEC_JENKINS_SHELL_SCRIPT
 import static io.wcm.testing.jenkins.pipeline.StepConstants.FIND_FILES
 import static io.wcm.testing.jenkins.pipeline.StepConstants.MAVEN_PURGE_SNAPSHOTS
 import static io.wcm.testing.jenkins.pipeline.StepConstants.TOOL
@@ -69,11 +69,11 @@ class PVLibraryIntegrationTestBase extends LibraryIntegrationTestBase {
   @Override
   protected void afterLoadingScript() {
     super.afterLoadingScript()
-    helper.registerAllowedMethod(EXEC_MANAGED_SHELL_SCRIPT, [String.class, String.class], { String fileId, String argLine ->
-      this.context.getStepRecorder().record(EXEC_MANAGED_SHELL_SCRIPT, [fileId: fileId, args: argLine])
+    helper.registerAllowedMethod(MANAGED_SCRIPTS_EXEC_JENKINS_SHELL_SCRIPT, [String.class, String.class], { String fileId, String argLine ->
+      this.context.getStepRecorder().record(MANAGED_SCRIPTS_EXEC_JENKINS_SHELL_SCRIPT, [fileId: fileId, args: argLine])
     })
-    helper.registerAllowedMethod(EXEC_MANAGED_SHELL_SCRIPT, [String.class, List.class], { String fileId, List args ->
-      this.context.getStepRecorder().record(EXEC_MANAGED_SHELL_SCRIPT, [fileId: fileId, args: args])
+    helper.registerAllowedMethod(MANAGED_SCRIPTS_EXEC_JENKINS_SHELL_SCRIPT, [String.class, List.class], { String fileId, List args ->
+      this.context.getStepRecorder().record(MANAGED_SCRIPTS_EXEC_JENKINS_SHELL_SCRIPT, [fileId: fileId, args: args])
     })
     helper.registerAllowedMethod(MAVEN_PURGE_SNAPSHOTS, [Map.class], { Map config ->
       this.context.getStepRecorder().record(MAVEN_PURGE_SNAPSHOTS, config)
