@@ -21,6 +21,7 @@ package de.provision.devops.testing.jenkins.pipeline
 
 import io.wcm.testing.jenkins.pipeline.LibraryIntegrationTestBase
 import io.wcm.testing.jenkins.pipeline.LibraryIntegrationTestContext
+import io.wcm.testing.jenkins.pipeline.global.lib.SelfSourceRetriever
 import io.wcm.testing.jenkins.pipeline.global.lib.SubmoduleSourceRetriever
 import org.jenkinsci.plugins.pipeline.utility.steps.fs.FileWrapper
 
@@ -51,10 +52,10 @@ class PVLibraryIntegrationTestBase extends LibraryIntegrationTestBase {
     // redirect tool step to own callback
     helper.registerAllowedMethod(TOOL, [String.class], toolCallback)
 
-    // load the pipeline-library from git submodule
+    // load the pipeline-library from extracted folder in pipeline-library
     def library = library()
       .name('pipeline-library')
-      .retriever(SubmoduleSourceRetriever.submoduleSourceRetriever(("submodules")))
+      .retriever(SelfSourceRetriever.localSourceRetriever("target/jenkins-pipeline-library"))
       .targetPath('jenkins-pipeline-library')
       .defaultVersion("master")
       .allowOverride(true)
