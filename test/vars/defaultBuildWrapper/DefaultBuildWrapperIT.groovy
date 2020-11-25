@@ -84,16 +84,16 @@ class DefaultBuildWrapperIT extends PVLibraryIntegrationTestBase {
 
     // mock notify calls
     helper.registerAllowedMethod("mail", [Map.class], { Map config ->
-      stepRecorder.record("mail", config)
+      this.context.getStepRecorder().record("mail", config)
     })
     helper.registerAllowedMethod("mattermost", [Map.class], { Map config ->
-      stepRecorder.record("mattermost", config)
+      this.context.getStepRecorder().record("mattermost", config)
     })
     helper.registerAllowedMethod("mqtt", [Map.class], { Map config ->
-      stepRecorder.record("mqtt", config)
+      this.context.getStepRecorder().record("mqtt", config)
     })
     helper.registerAllowedMethod("teams", [Map.class], { Map config ->
-      stepRecorder.record("teams", config)
+      this.context.getStepRecorder().record("teams", config)
     })
   }
 }

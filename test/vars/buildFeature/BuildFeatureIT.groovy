@@ -129,10 +129,10 @@ class BuildFeatureIT extends PVLibraryIntegrationTestBase {
     // catch buildDefault step calls
     this.helper.registerAllowedMethod(PVStepConstants.BUILD_DEFAULT, [Map.class], {
       config ->
-        this.stepRecorder.record(PVStepConstants.BUILD_DEFAULT, config)
+        this.context.getStepRecorder().record(PVStepConstants.BUILD_DEFAULT, config)
     })
     this.helper.registerAllowedMethod(PVStepConstants.BUILD_DEFAULT, [], {
-      this.stepRecorder.record(PVStepConstants.BUILD_DEFAULT, null)
+      this.context.getStepRecorder().record(PVStepConstants.BUILD_DEFAULT, null)
     })
   }
 

@@ -102,7 +102,7 @@ class FeatureBranchPreparationStageIT extends PVLibraryIntegrationTestBase {
 
     // mock gitTools.getParentBranch call
     helper.registerAllowedMethod("getParentBranch", [], { Closure closure ->
-      stepRecorder.record("getParentBranch", null)
+      this.context.getStepRecorder().record("getParentBranch", null)
       return mockedParentBranch
     })
   }

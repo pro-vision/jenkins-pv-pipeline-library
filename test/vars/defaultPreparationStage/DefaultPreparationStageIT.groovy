@@ -168,10 +168,10 @@ class DefaultPreparationStageIT extends PVLibraryIntegrationTestBase {
   protected void afterLoadingScript() {
     super.afterLoadingScript()
     helper.registerAllowedMethod(PURGE_SNAPSHOTS_FROM_REPOSITORY, [], {
-      stepRecorder.record(PURGE_SNAPSHOTS_FROM_REPOSITORY, null)
+      this.context.getStepRecorder().record(PURGE_SNAPSHOTS_FROM_REPOSITORY, null)
     })
     helper.registerAllowedMethod(SET_BUILD_NAME, [], {
-      stepRecorder.record(SET_BUILD_NAME, null)
+      this.context.getStepRecorder().record(SET_BUILD_NAME, null)
     })
   }
 }

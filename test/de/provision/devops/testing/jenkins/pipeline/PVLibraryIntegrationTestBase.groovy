@@ -21,11 +21,12 @@ package de.provision.devops.testing.jenkins.pipeline
 
 import io.wcm.testing.jenkins.pipeline.LibraryIntegrationTestBase
 import io.wcm.testing.jenkins.pipeline.LibraryIntegrationTestContext
+import io.wcm.testing.jenkins.pipeline.global.lib.SelfSourceRetriever
 import io.wcm.testing.jenkins.pipeline.global.lib.SubmoduleSourceRetriever
 import org.jenkinsci.plugins.pipeline.utility.steps.fs.FileWrapper
 
 import static com.lesfurets.jenkins.unit.global.lib.LibraryConfiguration.library
-import static io.wcm.testing.jenkins.pipeline.StepConstants.EXEC_MANAGED_SHELL_SCRIPT
+import static io.wcm.testing.jenkins.pipeline.StepConstants.MANAGED_SCRIPTS_EXEC_JENKINS_SHELL_SCRIPT
 import static io.wcm.testing.jenkins.pipeline.StepConstants.FIND_FILES
 import static io.wcm.testing.jenkins.pipeline.StepConstants.MAVEN_PURGE_SNAPSHOTS
 import static io.wcm.testing.jenkins.pipeline.StepConstants.TOOL
@@ -51,10 +52,10 @@ class PVLibraryIntegrationTestBase extends LibraryIntegrationTestBase {
     // redirect tool step to own callback
     helper.registerAllowedMethod(TOOL, [String.class], toolCallback)
 
-    // load the pipeline-library from git submodule
+    // load the pipeline-library from extracted folder in pipeline-library
     def library = library()
       .name('pipeline-library')
-      .retriever(SubmoduleSourceRetriever.submoduleSourceRetriever(("submodules")))
+      .retriever(SelfSourceRetriever.localSourceRetriever("target/jenkins-pipeline-library"))
       .targetPath('jenkins-pipeline-library')
       .defaultVersion("master")
       .allowOverride(true)
@@ -69,14 +70,14 @@ class PVLibraryIntegrationTestBase extends LibraryIntegrationTestBase {
   @Override
   protected void afterLoadingScript() {
     super.afterLoadingScript()
-    helper.registerAllowedMethod(EXEC_MANAGED_SHELL_SCRIPT, [String.class, String.class], { String fileId, String argLine ->
-      stepRecorder.record(EXEC_MANAGED_SHELL_SCRIPT, [fileId: fileId, args: argLine])
+    helper.registerAllowedMethod(MANAGED_SCRIPTS_EXEC_JENKINS_SHELL_SCRIPT, [String.class, String.class], { String fileId, String argLine ->
+      this.context.getStepRecorder().record(MANAGED_SCRIPTS_EXEC_JENKINS_SHELL_SCRIPT, [fileId: fileId, args: argLine])
     })
-    helper.registerAllowedMethod(EXEC_MANAGED_SHELL_SCRIPT, [String.class, List.class], { String fileId, List args ->
-      stepRecorder.record(EXEC_MANAGED_SHELL_SCRIPT, [fileId: fileId, args: args])
+    helper.registerAllowedMethod(MANAGED_SCRIPTS_EXEC_JENKINS_SHELL_SCRIPT, [String.class, List.class], { String fileId, List args ->
+      this.context.getStepRecorder().record(MANAGED_SCRIPTS_EXEC_JENKINS_SHELL_SCRIPT, [fileId: fileId, args: args])
     })
     helper.registerAllowedMethod(MAVEN_PURGE_SNAPSHOTS, [Map.class], { Map config ->
-      stepRecorder.record(MAVEN_PURGE_SNAPSHOTS, config)
+      this.context.getStepRecorder().record(MAVEN_PURGE_SNAPSHOTS, config)
     }
     )
   }
@@ -87,7 +88,7 @@ class PVLibraryIntegrationTestBase extends LibraryIntegrationTestBase {
    * @return mocked tool path
    */
   def toolCallback = { String tool ->
-    stepRecorder.record(TOOL, tool)
+    this.context.getStepRecorder().record(TOOL, tool)
     if (tool.matches(/(?i).*maven.*/)) {
       return LibraryIntegrationTestContext.TOOL_MAVEN_PREFIX.concat(tool)
     }

@@ -19,7 +19,7 @@ auto lookup mechanism.
 * [Extension options](#extension-options)
 * [Configuration options](#configuration-options)
     * [`_extend`](#_extend-optional)
-    * [`enabled`](enabled-optional)
+    * [`enabled`](#enabled-optional)
     * [`maven`](#maven-optional)
     * [`stash`](#stash-optional)
 * [Related classes](#related-classes)
