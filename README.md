@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/pro-vision/jenkins-pv-pipeline-library.svg?branch=master)](https://travis-ci.com/pro-vision/jenkins-pv-pipeline-library)
+[![Build](https://github.com/pro-vision/jenkins-pv-pipeline-library/workflows/Build/badge.svg)](https://github.com/pro-vision/jenkins-pv-pipeline-library/actions?query=workflow%3ABuild)
 [![Code Coverage](https://codecov.io/gh/pro-vision/jenkins-pv-pipeline-library/branch/master/graph/badge.svg)](https://codecov.io/gh/pro-vision/jenkins-pv-pipeline-library)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.pro-vision.devops.jenkins/de.pro-vision.devops.jenkins.pv-pipeline-library/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.pro-vision.devops.jenkins/de.pro-vision.devops.jenkins.pv-pipeline-library)
 [![Sonatype Snapshots](https://img.shields.io/nexus/s/https/oss.sonatype.org/de.pro-vision.devops.jenkins/de.pro-vision.devops.jenkins.pv-pipeline-library.svg)](https://oss.sonatype.org/content/repositories/snapshots/de/pro-vision/devops/jenkins/de.pro-vision.devops.jenkins.pv-pipeline-library/)
