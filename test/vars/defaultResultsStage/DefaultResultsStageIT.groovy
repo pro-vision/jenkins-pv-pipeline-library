@@ -357,7 +357,7 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
       ]
     ])
 
-    Map actualJacocoCall = assertOnce(StepConstants.JACOCOPUBLISHER) as Map
+    Map actualJacocoCall = assertOnce(JACOCOPUBLISHER)
     Assert.assertEquals("assertion failure in jacoco call", expectedJacocoCall, actualJacocoCall)
   }
 
