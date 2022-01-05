@@ -25,10 +25,7 @@ import org.junit.Assert
 import org.junit.Test
 
 import static io.wcm.testing.jenkins.pipeline.StepConstants.*
-import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertNone
-import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertOnce
-import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertStepCalls
-import static org.junit.Assert.assertEquals
+import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.*
 import static org.junit.Assert.assertEquals
 
 class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
@@ -48,7 +45,7 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
 
     List shellCalls = assertStepCalls(SH, 2)
     assertEquals("echo 'customResultsStage before'", shellCalls[0])
-    assertEquals("echo 'customResultsStage after'", shellCalls[shellCalls.size()-1])
+    assertEquals("echo 'customResultsStage after'", shellCalls[shellCalls.size() - 1])
   }
 
   @Test
@@ -93,37 +90,19 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
       minimumMethodCoverage     : "0",
     ]
     Map expectedFindBugsCall = [
-      canComputeNew  : false,
-      defaultEncoding: '',
-      excludePattern : '',
-      healthy        : '',
-      includePattern : '',
-      pattern        : '**/target/findbugs.xml,**/target/findbugsXml.xml,**/target/spotbugsXml.xml',
-      unHealthy      : ''
+      pattern: '**/target/findbugs.xml,**/target/findbugsXml.xml,**/target/spotbugsXml.xml',
     ]
     Map expectedPmdCall = [
-      canComputeNew  : false,
-      defaultEncoding: '',
-      healthy        : '',
-      pattern        : '**/target/pmd.xml',
-      unHealthy      : ''
+      pattern: '**/target/pmd.xml',
     ]
     Map expectedOpenTasksCall = [
-      canComputeNew  : false,
-      defaultEncoding: '',
-      excludePattern : '**/node_modules/**,**/target/**,**/.nodejs/**,**/.rubygems/**',
-      healthy        : '',
-      high           : '',
-      low            : '',
-      normal         : 'TODO, FIXME, XXX',
-      pattern        : '**/*.java,**/*.js,**/*.scss,**/*.hbs,**/*.html,**/*.groovy,**/*.gspec,**/*.sh', unHealthy: ''
+      excludePattern: '**/node_modules/**,**/target/**,**/.nodejs/**,**/.rubygems/**',
+      normal        : 'TODO, FIXME, XXX',
+      pattern       : '**/*.java,**/*.js,**/*.scss,**/*.hbs,**/*.html,**/*.groovy,**/*.gspec,**/*.sh', unHealthy: ''
     ]
     Map expectedCheckstyleCall = [
-      canComputeNew  : false,
       defaultEncoding: '',
-      healthy        : '',
       pattern        : '**/target/checkstyle-result*.xml',
-      unHealthy      : ''
     ]
     Map expectedAnalysisPublisherCall = [
       $class         : 'AnalysisPublisher',
@@ -143,6 +122,7 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
     Map actualChecktypeCall = assertOnce(CHECKSTYLE)
     Map actualAnalysisPublisherCall = assertOnce(ANALYSISPUBLISHER)
 
+    Assert.assertEquals("assertion failure in fingerprint call", expectedFingerprintCall, actualFingerprintCall)
     Assert.assertEquals("assertion failure in junit call", expectedJUnitCall, actualJUnitCall)
     Assert.assertEquals("assertion failure in jacoco call", expectedJacocoCall, actualJacocoCall)
     Assert.assertEquals("assertion failure in findbugs call", expectedFindBugsCall, actualFindBugsCall)
@@ -377,29 +357,23 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
       ]
     ])
 
-    Map actualJacocoCall = assertOnce(JACOCOPUBLISHER)
+    Map actualJacocoCall = assertOnce(StepConstants.JACOCOPUBLISHER) as Map
     Assert.assertEquals("assertion failure in jacoco call", expectedJacocoCall, actualJacocoCall)
   }
 
   @Test
   void shouldExecuteCheckstyleWithCustomSettings() {
     Map expectedCheckstyleCall = [
-        canComputeNew             : true,
-        defaultEncoding           : 'customEncoding',
-        healthy                   : 'customHealthy',
-        pattern                   : 'customPattern',
-        unHealthy                 : 'customUnHealthy'
+      defaultEncoding: 'customEncoding',
+      pattern        : 'customPattern',
     ]
     loadAndExecuteScript("vars/defaultResultsStage/jobs/defaultResultsStageTestJob.groovy", [
-        (ConfigConstants.STAGE_RESULTS): [
-            (ConfigConstants.STAGE_RESULTS_CHECKSTYLE): [
-                (ConfigConstants.STAGE_RESULTS_CHECKSTYLE_CAN_COMPUTE_NEW)                     : true,
-                (ConfigConstants.STAGE_RESULTS_CHECKSTYLE_DEFAULT_ENCODING)                    : "customEncoding",
-                (ConfigConstants.STAGE_RESULTS_CHECKSTYLE_HEALTHY)                             : "customHealthy",
-                (ConfigConstants.STAGE_RESULTS_CHECKSTYLE_PATTERN)                             : "customPattern",
-                (ConfigConstants.STAGE_RESULTS_CHECKSTYLE_UNHEALTHY)                           : "customUnHealthy",
-            ]
+      (ConfigConstants.STAGE_RESULTS): [
+        (ConfigConstants.STAGE_RESULTS_CHECKSTYLE): [
+          (ConfigConstants.STAGE_RESULTS_CHECKSTYLE_DEFAULT_ENCODING): "customEncoding",
+          (ConfigConstants.STAGE_RESULTS_CHECKSTYLE_PATTERN)         : "customPattern",
         ]
+      ]
     ])
 
     Map actualCheckstyleCall = assertOnce(CHECKSTYLE)

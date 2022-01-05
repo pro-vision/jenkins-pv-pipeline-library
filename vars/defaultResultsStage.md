@@ -211,15 +211,6 @@ Configures the [Checkstyle Plugin](https://wiki.jenkins.io/display/JENKINS/Check
 
 Enables/disables [Checkstyle Plugin](https://wiki.jenkins.io/display/JENKINS/Checkstyle+Plugin).
 
-#### Checkstyle: `canComputeNew` (optional)
-|          |                                                                                                                              |
-|:---------|:-----------------------------------------------------------------------------------------------------------------------------|
-| Constant | [`ConfigConstants.STAGE_RESULTS_CHECKSTYLE_CAN_COMPUTE_NEW`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy) |
-| Type     | `Boolean`                                                                                                                    |
-| Default  | `false` 
-
-Configure the canComputeNew value [Checkstyle Plugin](https://wiki.jenkins.io/display/JENKINS/Checkstyle+Plugin).
-
 #### Checkstyle: `defaultEncoding` (optional)
 |          |                                                                                                                              |
 |:---------|:-----------------------------------------------------------------------------------------------------------------------------|
@@ -227,14 +218,6 @@ Configure the canComputeNew value [Checkstyle Plugin](https://wiki.jenkins.io/di
 | Type     | `String`                                                                                                                    |
 
 Configure the defaultEncoding value [Checkstyle Plugin](https://wiki.jenkins.io/display/JENKINS/Checkstyle+Plugin).
-
-#### Checkstyle: `healthy` (optional)
-|          |                                                                                                                              |
-|:---------|:-----------------------------------------------------------------------------------------------------------------------------|
-| Constant | [`ConfigConstants.STAGE_RESULTS_CHECKSTYLE_HEALTHY`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy) |
-| Type     | `String`                                                                                                                    |
-
-Configure the healthy value [Checkstyle Plugin](https://wiki.jenkins.io/display/JENKINS/Checkstyle+Plugin).
 
 #### Checkstyle: `pattern` (optional)
 |          |                                                                                                                              |
@@ -244,14 +227,6 @@ Configure the healthy value [Checkstyle Plugin](https://wiki.jenkins.io/display/
 | Default  | `**/target/checkstyle-result*.xml` 
 
 Configure the pattern value [Checkstyle Plugin](https://wiki.jenkins.io/display/JENKINS/Checkstyle+Plugin).
-
-#### Checkstyle: `unhealthy` (optional)
-|          |                                                                                                                              |
-|:---------|:-----------------------------------------------------------------------------------------------------------------------------|
-| Constant | [`ConfigConstants.STAGE_RESULTS_CHECKSTYLE_UNHEALTHY`](../src/de/provision/devops/jenkins/pipeline/utils/ConfigConstants.groovy) |
-| Type     | `String`                                                                                                                    |
-
-Configure the unhealthy value [Checkstyle Plugin](https://wiki.jenkins.io/display/JENKINS/Checkstyle+Plugin).
 
 ### `findbugs` (optional)
 |          |                                                                                                                    |

@@ -97,9 +97,9 @@ void _fingerprint(Map config = [:]) {
 
   Map cfg = _getResultPluginConfig(config, STAGE_RESULTS_FINGERPRINT)
   Map defaultConfig = [
-    (STAGE_RESULTS_FINGERPRINT_ENABLED) : true,
-    (STAGE_RESULTS_FINGERPRINT_FILESET) : "**/target/**/*.zip,**/target/**/*.jar",
-    (MAP_MERGE_MODE): MapMergeMode.REPLACE,
+    (STAGE_RESULTS_FINGERPRINT_ENABLED): true,
+    (STAGE_RESULTS_FINGERPRINT_FILESET): "**/target/**/*.zip,**/target/**/*.jar",
+    (MAP_MERGE_MODE)                   : MapMergeMode.REPLACE,
   ]
   cfg = MapUtils.merge(defaultConfig, cfg)
   Boolean enabled = cfg[STAGE_RESULTS_FINGERPRINT_ENABLED]
@@ -212,15 +212,7 @@ void _findBugs(Map config = [:]) {
   }
 
   def previousBuildResult = currentBuild.result
-  findbugs(
-    canComputeNew: false,
-    defaultEncoding: '',
-    excludePattern: '',
-    healthy: '',
-    includePattern: '',
-    pattern: '**/target/findbugs.xml,**/target/findbugsXml.xml,**/target/spotbugsXml.xml',
-    unHealthy: ''
-  )
+  recordIssues(tool: findbugs(pattern: '**/target/findbugs.xml,**/target/findbugsXml.xml,**/target/spotbugsXml.xml'))
   currentBuildResult = currentBuild.result
   if (currentBuildResult != previousBuildResult) {
     log.warn("findbugs step changed build result from '$previousBuildResult' to '$currentBuildResult'")
@@ -238,13 +230,7 @@ void _pmd(Map config = [:]) {
   }
 
   def previousBuildResult = currentBuild.result
-  pmd(
-    canComputeNew: false,
-    defaultEncoding: '',
-    healthy: '',
-    pattern: '**/target/pmd.xml',
-    unHealthy: ''
-  )
+  recordIssues(tool: pmdParser(pattern: '**/target/pmd.xml'))
   currentBuildResult = currentBuild.result
   if (currentBuildResult != previousBuildResult) {
     log.warn("PMD step changed build result from '$previousBuildResult' to '$currentBuildResult'")
@@ -262,15 +248,12 @@ void _openTasks(Map config = [:]) {
   }
 
   def previousBuildResult = currentBuild.result
-  openTasks(
-    canComputeNew: false,
-    defaultEncoding: '',
-    excludePattern: '**/node_modules/**,**/target/**,**/.nodejs/**,**/.rubygems/**',
-    healthy: '',
-    high: '',
-    low: '',
-    normal: 'TODO, FIXME, XXX',
-    pattern: '**/*.java,**/*.js,**/*.scss,**/*.hbs,**/*.html,**/*.groovy,**/*.gspec,**/*.sh', unHealthy: ''
+  recordIssues(
+    tool: taskScanner(
+      excludePattern: '**/node_modules/**,**/target/**,**/.nodejs/**,**/.rubygems/**',
+      includePattern: '**/*.java,**/*.js,**/*.scss,**/*.hbs,**/*.html,**/*.groovy,**/*.gspec,**/*.sh',
+      normalTags: 'TODO, FIXME, XXX'
+    )
   )
   currentBuildResult = currentBuild.result
   if (currentBuildResult != previousBuildResult) {
@@ -283,11 +266,8 @@ void _checkStyle(Map config = [:]) {
 
   Map cfg = _getResultPluginConfig(config, STAGE_RESULTS_CHECKSTYLE)
   Boolean enabled = cfg[STAGE_RESULTS_CHECKSTYLE_ENABLED] != null ? cfg[STAGE_RESULTS_CHECKSTYLE_ENABLED] : true
-  Boolean canComputeNew = cfg[STAGE_RESULTS_CHECKSTYLE_CAN_COMPUTE_NEW] != null ? cfg[STAGE_RESULTS_CHECKSTYLE_CAN_COMPUTE_NEW] : false
   String defaultEncoding = cfg[STAGE_RESULTS_CHECKSTYLE_DEFAULT_ENCODING] != null ? cfg[STAGE_RESULTS_CHECKSTYLE_DEFAULT_ENCODING] : ""
-  String healthy = cfg[STAGE_RESULTS_CHECKSTYLE_HEALTHY] != null ? cfg[STAGE_RESULTS_CHECKSTYLE_HEALTHY] : ""
   String pattern = cfg[STAGE_RESULTS_CHECKSTYLE_PATTERN] != null ? cfg[STAGE_RESULTS_CHECKSTYLE_PATTERN] : "**/target/checkstyle-result*.xml"
-  String unHealthy = cfg[STAGE_RESULTS_CHECKSTYLE_UNHEALTHY] != null ? cfg[STAGE_RESULTS_CHECKSTYLE_UNHEALTHY] : ""
 
   if (!enabled) {
     return
@@ -295,13 +275,7 @@ void _checkStyle(Map config = [:]) {
 
   def previousBuildResult = currentBuild.result
 
-  checkstyle(
-    canComputeNew: canComputeNew,
-    defaultEncoding: defaultEncoding,
-    healthy: healthy,
-    pattern: pattern,
-    unHealthy: unHealthy
-  )
+  recordIssues(tool: checkStyle(pattern: pattern, reportEncoding: defaultEncoding))
   currentBuildResult = currentBuild.result
   if (currentBuildResult != previousBuildResult) {
     log.warn("Checkstyle step changed build result from '$previousBuildResult' to '$currentBuildResult'")
