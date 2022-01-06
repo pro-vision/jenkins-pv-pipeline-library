@@ -49,6 +49,13 @@ class PVLibraryIntegrationTestBase extends LibraryIntegrationTestBase {
       return res
     })
 
+    // Add mocks for warnings-ng plugin
+    helper.registerAllowedMethod("recordIssues", [Map.class], null)
+    helper.registerAllowedMethod("pmdParser", [Map.class], null)
+    helper.registerAllowedMethod("taskScanner", [Map.class], null)
+    helper.registerAllowedMethod("checkStyle", [Map.class], null)
+    helper.registerAllowedMethod("findbugs", [Map.class], null)
+
     // redirect tool step to own callback
     helper.registerAllowedMethod(TOOL, [String.class], toolCallback)
 

@@ -202,11 +202,6 @@
       <artifactId>mailer</artifactId>
       <version>1.23</version>
     </dependency>
-    <dependency>
-      <groupId>io.jenkins.plugins</groupId>
-      <artifactId>warnings-ng</artifactId>
-      <version>9.10.2</version>
-    </dependency>
   </dependencies>
 
 
