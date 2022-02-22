@@ -76,20 +76,9 @@ void _impl(Map config = [:]) {
   // publish code coverage
   this._jacoco(config)
 
-  // publish findbugs
-  this._findBugs(config)
+  // record issues using warning-ng
+  this._recordIssues(config)
 
-  // publish pmd
-  this._pmd(config)
-
-  // publish open tasks
-  this._openTasks(config)
-
-  // publish checkstyle
-  this._checkStyle(config)
-
-  // published combined static analysis results
-  this._analysisPublisher(config)
 }
 
 void _fingerprint(Map config = [:]) {
@@ -201,31 +190,38 @@ void _jacoco(Map config = [:]) {
   }
 }
 
-void _findBugs(Map config = [:]) {
+void _recordIssues(Map config = [:]) {
+  Logger log = new Logger("defaultResultStage.recordIssues")
+  def previousBuildResult = currentBuild.result
+
+  List recordTools = []
+
+  recordTools.push(_findBugs(config))
+  /*recordTools.push(_pmd(config))
+  recordTools.push(_openTasks(config))
+  recordTools.push(_checkStyle(config))
+  recordTools.push(_analysisPublisher(config))*/
+
+  currentBuildResult = currentBuild.result
+
+  recordIssues(tools: [recordTools])
+
+  if (currentBuildResult != previousBuildResult) {
+    log.warn("recordIssues step changed build result from '$previousBuildResult' to '$currentBuildResult'")
+  }
+}
+
+Object _findBugs(Map config = [:]) {
   Logger log = new Logger("defaultResultStage.findBugs")
 
   Map cfg = _getResultPluginConfig(config, STAGE_RESULTS_FINDBUGS)
   Boolean enabled = cfg[STAGE_RESULTS_FINDBUGS_ENABLED] != null ? cfg[STAGE_RESULTS_FINDBUGS_ENABLED] : true
 
   if (!enabled) {
-    return
+    return null
   }
 
-  def previousBuildResult = currentBuild.result
-  findbugs(
-    canComputeNew: false,
-    defaultEncoding: '',
-    excludePattern: '',
-    healthy: '',
-    includePattern: '',
-    pattern: '**/target/findbugs.xml,**/target/findbugsXml.xml,**/target/spotbugsXml.xml',
-    unHealthy: ''
-  )
-  currentBuildResult = currentBuild.result
-  if (currentBuildResult != previousBuildResult) {
-    log.warn("findbugs step changed build result from '$previousBuildResult' to '$currentBuildResult'")
-  }
-
+  return findBugs(pattern: '**/target/findbugs.xml,**/target/findbugsXml.xml,**/target/spotbugsXml.xml', reportEncoding: 'UTF-8', useRankAsPriority: true)
 }
 
 void _pmd(Map config = [:]) {
