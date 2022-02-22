@@ -10,7 +10,7 @@
 
   <groupId>de.pro-vision.devops.jenkins</groupId>
   <artifactId>de.pro-vision.devops.jenkins.pv-pipeline-library</artifactId>
-  <version>2.0.1-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
 
   <scm>
     <connection>scm:git:git@github.com:pro-vision/jenkins-pv-pipeline-library.git</connection>
@@ -68,12 +68,12 @@
     <dependency>
       <groupId>io.wcm.devops.jenkins</groupId>
       <artifactId>io.wcm.devops.jenkins.pipeline-library</artifactId>
-      <version>2.0.1-SNAPSHOT</version>
+      <version>3.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>io.wcm.devops.jenkins</groupId>
       <artifactId>io.wcm.devops.jenkins.pipeline-library</artifactId>
-      <version>2.0.1-SNAPSHOT</version>
+      <version>3.0.0-SNAPSHOT</version>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
