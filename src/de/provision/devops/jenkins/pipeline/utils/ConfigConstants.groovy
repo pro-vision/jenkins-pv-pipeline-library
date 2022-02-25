@@ -74,16 +74,10 @@ class ConfigConstants {
 
   public static final String STAGE_RESULTS = "stageResults"
 
-  public static final String STAGE_RESULTS_ANALYSIS_PUBLISHER = "analysisPublisher"
-  public static final String STAGE_RESULTS_ANALYSIS_PUBLISHER_ENABLED = "enabled"
-
   public static final String STAGE_RESULTS_CHECKSTYLE = "checkstyle"
   public static final String STAGE_RESULTS_CHECKSTYLE_ENABLED = "enabled"
-  public static final String STAGE_RESULTS_CHECKSTYLE_CAN_COMPUTE_NEW = "canComputeNew"
-  public static final String STAGE_RESULTS_CHECKSTYLE_DEFAULT_ENCODING = "defaultEncoding"
-  public static final String STAGE_RESULTS_CHECKSTYLE_HEALTHY = "healthy"
+  public static final String STAGE_RESULTS_CHECKSTYLE_REPORT_ENCODING = "reportEncoding"
   public static final String STAGE_RESULTS_CHECKSTYLE_PATTERN = "pattern"
-  public static final String STAGE_RESULTS_CHECKSTYLE_UNHEALTHY = "unhealthy"
 
   public static final String STAGE_RESULTS_EXTEND = "_extend"
   public static final String STAGE_RESULTS_ENABLED = "enabled"

@@ -76,20 +76,8 @@ void _impl(Map config = [:]) {
   // publish code coverage
   this._jacoco(config)
 
-  // publish findbugs
-  this._findBugs(config)
-
-  // publish pmd
-  this._pmd(config)
-
-  // publish open tasks
-  this._openTasks(config)
-
-  // publish checkstyle
-  this._checkStyle(config)
-
-  // published combined static analysis results
-  this._analysisPublisher(config)
+  // record issues using warning-ng
+  this._recordIssues(config)
 }
 
 void _fingerprint(Map config = [:]) {
@@ -126,6 +114,20 @@ void _junit(Map config = [:]) {
   if (currentBuildResult != previousBuildResult) {
     log.warn("JUNIT step changed build result from '$previousBuildResult' to '$currentBuildResult'")
   }
+}
+
+Object _junitParser(Map config = [:]) {
+  Map cfg = _getResultPluginConfig(config, STAGE_RESULTS_JUNIT)
+  Boolean enabled = cfg[STAGE_RESULTS_JUNIT_ENABLED] != null ? cfg[STAGE_RESULTS_JUNIT_ENABLED] : true
+
+  if (!enabled) {
+    return null
+  }
+
+  return junitParser(
+    pattern: '**/target/surefire-reports/*.xml,**/target/failsafe-reports/*.xml',
+    reportEncoding: 'UTF-8'
+  )
 }
 
 void _jacoco(Map config = [:]) {
@@ -201,139 +203,104 @@ void _jacoco(Map config = [:]) {
   }
 }
 
-void _findBugs(Map config = [:]) {
+void _recordIssues(Map config = [:]) {
+  Logger log = new Logger("defaultResultStage.recordIssues")
+  def previousBuildResult = currentBuild.result
+
+  List recordTools = []
+
+  _addEnabledTool(recordTools, _junitParser(config))
+  _addEnabledTool(recordTools, _findBugs(config))
+  _addEnabledTool(recordTools, _pmdParser(config))
+  _addEnabledTool(recordTools, _checkStyle(config))
+  _addEnabledTool(recordTools, _taskScanner(config))
+
+  currentBuildResult = currentBuild.result
+
+  recordIssues(tools: recordTools)
+
+  if (currentBuildResult != previousBuildResult) {
+    log.warn("recordIssues step changed build result from '$previousBuildResult' to '$currentBuildResult'")
+  }
+}
+
+Object _findBugs(Map config = [:]) {
   Logger log = new Logger("defaultResultStage.findBugs")
 
   Map cfg = _getResultPluginConfig(config, STAGE_RESULTS_FINDBUGS)
   Boolean enabled = cfg[STAGE_RESULTS_FINDBUGS_ENABLED] != null ? cfg[STAGE_RESULTS_FINDBUGS_ENABLED] : true
 
   if (!enabled) {
-    return
+    return null
   }
 
-  def previousBuildResult = currentBuild.result
-  findbugs(
-    canComputeNew: false,
-    defaultEncoding: '',
-    excludePattern: '',
-    healthy: '',
-    includePattern: '',
-    pattern: '**/target/findbugs.xml,**/target/findbugsXml.xml,**/target/spotbugsXml.xml',
-    unHealthy: ''
-  )
-  currentBuildResult = currentBuild.result
-  if (currentBuildResult != previousBuildResult) {
-    log.warn("findbugs step changed build result from '$previousBuildResult' to '$currentBuildResult'")
-  }
-
+  return findBugs(pattern: '**/target/findbugs.xml,**/target/findbugsXml.xml,**/target/spotbugsXml.xml', reportEncoding: 'UTF-8', useRankAsPriority: true)
 }
 
-void _pmd(Map config = [:]) {
-  Logger log = new Logger("defaultResultStage.pmd")
+Object _pmdParser(Map config = [:]) {
+  Logger log = new Logger("defaultResultStage.pmdParser")
+
   Map cfg = _getResultPluginConfig(config, STAGE_RESULTS_PMD)
   Boolean enabled = cfg[STAGE_RESULTS_PMD_ENABLED] != null ? cfg[STAGE_RESULTS_PMD_ENABLED] : true
 
   if (!enabled) {
-    return
+    return null
   }
 
-  def previousBuildResult = currentBuild.result
-  pmd(
-    canComputeNew: false,
-    defaultEncoding: '',
-    healthy: '',
+  return pmdParser(
     pattern: '**/target/pmd.xml',
-    unHealthy: ''
+    reportEncoding: 'UTF-8'
   )
-  currentBuildResult = currentBuild.result
-  if (currentBuildResult != previousBuildResult) {
-    log.warn("PMD step changed build result from '$previousBuildResult' to '$currentBuildResult'")
-  }
 }
 
-void _openTasks(Map config = [:]) {
+Object _taskScanner(Map config = [:]) {
   Logger log = new Logger("defaultResultStage.openTasks")
 
   Map cfg = _getResultPluginConfig(config, STAGE_RESULTS_OPEN_TASKS)
   Boolean enabled = cfg[STAGE_RESULTS_OPEN_TASKS_ENABLED] != null ? cfg[STAGE_RESULTS_OPEN_TASKS_ENABLED] : true
 
   if (!enabled) {
-    return
+    return null
   }
 
-  def previousBuildResult = currentBuild.result
-  openTasks(
-    canComputeNew: false,
-    defaultEncoding: '',
+  return taskScanner(
     excludePattern: '**/node_modules/**,**/target/**,**/.nodejs/**,**/.rubygems/**',
-    healthy: '',
-    high: '',
-    low: '',
-    normal: 'TODO, FIXME, XXX',
-    pattern: '**/*.java,**/*.js,**/*.scss,**/*.hbs,**/*.html,**/*.groovy,**/*.gspec,**/*.sh', unHealthy: ''
+    includePattern: '**/*.java,**/*.js,**/*.scss,**/*.hbs,**/*.html,**/*.groovy,**/*.gspec,**/*.sh',
+    normalTags: 'TODO. FIXME, XXX'
   )
-  currentBuildResult = currentBuild.result
-  if (currentBuildResult != previousBuildResult) {
-    log.warn("OpenTasks step changed build result from '$previousBuildResult' to '$currentBuildResult'")
-  }
 }
 
-void _checkStyle(Map config = [:]) {
+Object _checkStyle(Map config = [:]) {
   Logger log = new Logger("defaultResultStage.checkStyle")
 
   Map cfg = _getResultPluginConfig(config, STAGE_RESULTS_CHECKSTYLE)
   Boolean enabled = cfg[STAGE_RESULTS_CHECKSTYLE_ENABLED] != null ? cfg[STAGE_RESULTS_CHECKSTYLE_ENABLED] : true
-  Boolean canComputeNew = cfg[STAGE_RESULTS_CHECKSTYLE_CAN_COMPUTE_NEW] != null ? cfg[STAGE_RESULTS_CHECKSTYLE_CAN_COMPUTE_NEW] : false
-  String defaultEncoding = cfg[STAGE_RESULTS_CHECKSTYLE_DEFAULT_ENCODING] != null ? cfg[STAGE_RESULTS_CHECKSTYLE_DEFAULT_ENCODING] : ""
-  String healthy = cfg[STAGE_RESULTS_CHECKSTYLE_HEALTHY] != null ? cfg[STAGE_RESULTS_CHECKSTYLE_HEALTHY] : ""
+  String reportEncoding = cfg[STAGE_RESULTS_CHECKSTYLE_REPORT_ENCODING] != null ? cfg[STAGE_RESULTS_CHECKSTYLE_REPORT_ENCODING] : "UTF-8"
   String pattern = cfg[STAGE_RESULTS_CHECKSTYLE_PATTERN] != null ? cfg[STAGE_RESULTS_CHECKSTYLE_PATTERN] : "**/target/checkstyle-result*.xml"
-  String unHealthy = cfg[STAGE_RESULTS_CHECKSTYLE_UNHEALTHY] != null ? cfg[STAGE_RESULTS_CHECKSTYLE_UNHEALTHY] : ""
 
   if (!enabled) {
-    return
+    return null
   }
 
-  def previousBuildResult = currentBuild.result
-
-  checkstyle(
-    canComputeNew: canComputeNew,
-    defaultEncoding: defaultEncoding,
-    healthy: healthy,
+  return checkStyle(
     pattern: pattern,
-    unHealthy: unHealthy
+    reportEncoding: reportEncoding
   )
-  currentBuildResult = currentBuild.result
-  if (currentBuildResult != previousBuildResult) {
-    log.warn("Checkstyle step changed build result from '$previousBuildResult' to '$currentBuildResult'")
-  }
-}
-
-void _analysisPublisher(Map config = [:]) {
-  Logger log = new Logger("defaultResultStage.analysisPublisher")
-
-  Map cfg = _getResultPluginConfig(config, STAGE_RESULTS_ANALYSIS_PUBLISHER)
-  Boolean enabled = cfg[STAGE_RESULTS_ANALYSIS_PUBLISHER_ENABLED] != null ? cfg[STAGE_RESULTS_ANALYSIS_PUBLISHER_ENABLED] : true
-
-  if (!enabled) {
-    return
-  }
-
-  def previousBuildResult = currentBuild.result
-
-  step([
-    $class         : 'AnalysisPublisher',
-    canComputeNew  : false,
-    defaultEncoding: '',
-    healthy        : '',
-    unHealthy      : ''
-  ])
-  currentBuildResult = currentBuild.result
-  if (currentBuildResult != previousBuildResult) {
-    log.warn("AnalysisPublisher step changed build result from '$previousBuildResult' to '$currentBuildResult'")
-  }
 }
 
 Map _getResultPluginConfig(Map config = [:], String pluginName) {
   Map resultStageConfig = config[STAGE_RESULTS] ?: [:]
   return resultStageConfig[pluginName] ?: [:]
+}
+
+/**
+ * Utility function to add tool to the record list if not null, e.g. enabled
+ *
+ * @param toolList The list the tool to add to
+ * @param tool The tool to add to the list
+ */
+void _addEnabledTool(List toolList, Object tool) {
+  if (tool != null) {
+    toolList.push(tool)
+  }
 }

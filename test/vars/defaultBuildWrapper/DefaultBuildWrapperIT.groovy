@@ -55,7 +55,6 @@ class DefaultBuildWrapperIT extends PVLibraryIntegrationTestBase {
     // assert that loglevel was not changed again by defaultBuildWrapper
     assertEquals(LogLevel.DEBUG, Logger.getLevel())
     assertOnce("mail")
-    assertOnce("mattermost")
     assertOnce("mqtt")
   }
 
@@ -73,7 +72,6 @@ class DefaultBuildWrapperIT extends PVLibraryIntegrationTestBase {
     assertEquals(TimeUnit.MINUTES, timeoutCall.unit)
     assertEquals(ANSI_COLOR_XTERM, ansiColorCall)
     assertOnce("mail")
-    assertOnce("mattermost")
     assertOnce("mqtt")
     assertOnce("teams")
   }
