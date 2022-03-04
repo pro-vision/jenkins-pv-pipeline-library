@@ -29,7 +29,6 @@ import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assert
 import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertOnce
 import static io.wcm.testing.jenkins.pipeline.recorder.StepRecorderAssert.assertStepCalls
 import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertEquals
 
 class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
 
@@ -93,63 +92,47 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
       minimumMethodCoverage     : "0",
     ]
     Map expectedFindBugsCall = [
-      canComputeNew  : false,
-      defaultEncoding: '',
-      excludePattern : '',
-      healthy        : '',
-      includePattern : '',
-      pattern        : '**/target/findbugs.xml,**/target/findbugsXml.xml,**/target/spotbugsXml.xml',
-      unHealthy      : ''
+      pattern          : '**/target/findbugs.xml,**/target/findbugsXml.xml,**/target/spotbugsXml.xml',
+      reportEncoding   : 'UTF-8',
+      useRankAsPriority: true
     ]
     Map expectedPmdCall = [
-      canComputeNew  : false,
-      defaultEncoding: '',
-      healthy        : '',
-      pattern        : '**/target/pmd.xml',
-      unHealthy      : ''
+      pattern: '**/target/pmd.xml',
+      reportEncoding: 'UTF-8'
     ]
-    Map expectedOpenTasksCall = [
-      canComputeNew  : false,
-      defaultEncoding: '',
-      excludePattern : '**/node_modules/**,**/target/**,**/.nodejs/**,**/.rubygems/**',
-      healthy        : '',
-      high           : '',
-      low            : '',
-      normal         : 'TODO, FIXME, XXX',
-      pattern        : '**/*.java,**/*.js,**/*.scss,**/*.hbs,**/*.html,**/*.groovy,**/*.gspec,**/*.sh', unHealthy: ''
+    Map expectedTaskScannerCall = [
+      excludePattern: '**/node_modules/**,**/target/**,**/.nodejs/**,**/.rubygems/**',
+      includePattern: '**/*.java,**/*.js,**/*.scss,**/*.hbs,**/*.html,**/*.groovy,**/*.gspec,**/*.sh',
+      normalTags    : 'TODO. FIXME, XXX'
     ]
-    Map expectedCheckstyleCall = [
-      canComputeNew  : false,
-      defaultEncoding: '',
-      healthy        : '',
-      pattern        : '**/target/checkstyle-result*.xml',
-      unHealthy      : ''
+    Map expectedCheckStyleCall = [
+      pattern       : "**/target/checkstyle-result*.xml",
+      reportEncoding: "UTF-8"
     ]
-    Map expectedAnalysisPublisherCall = [
-      $class         : 'AnalysisPublisher',
-      canComputeNew  : false,
-      defaultEncoding: '',
-      healthy        : '',
-      unHealthy      : ''
+    Map expectedRecordIssuesCall = [
+      "tools": [ JUNIT_PARSER, FIND_BUGS, PMD_PARSER, CHECK_STYLE, TASK_SCANNER  ]
     ]
+
     String expectedFingerprintCall = "**/target/**/*.zip,**/target/**/*.jar"
 
     String actualFingerprintCall = assertOnce(FINGERPRINT)
     Map actualJUnitCall = assertOnce(JUNIT)
     Map actualJacocoCall = assertOnce(JACOCOPUBLISHER)
-    Map actualFindBugsCall = assertOnce(FINDBUGS)
-    Map actualPmdCall = assertOnce(PMD)
-    Map actualOpenTasksCall = assertOnce(OPENTASKS)
-    Map actualChecktypeCall = assertOnce(CHECKSTYLE)
-    Map actualAnalysisPublisherCall = assertOnce(ANALYSISPUBLISHER)
+    Map actualFindBugsCall = assertOnce(FIND_BUGS)
+    Map actualPmdParserCall = assertOnce(PMD_PARSER)
+    Map actualTaskScannerCall = assertOnce(TASK_SCANNER)
+    Map actualCheckStyleCall = assertOnce(CHECK_STYLE)
+    Map actualRecordIssuesCall = assertOnce(RECORD_ISSUES)
+
+    Assert.assertEquals("assertion failure in junit call", expectedFingerprintCall, actualFingerprintCall)
 
     Assert.assertEquals("assertion failure in junit call", expectedJUnitCall, actualJUnitCall)
     Assert.assertEquals("assertion failure in jacoco call", expectedJacocoCall, actualJacocoCall)
     Assert.assertEquals("assertion failure in findbugs call", expectedFindBugsCall, actualFindBugsCall)
-    Assert.assertEquals("assertion failure in pmd call", expectedPmdCall, actualPmdCall)
-    Assert.assertEquals("assertion failure in open tasks call", expectedOpenTasksCall, actualOpenTasksCall)
-    Assert.assertEquals("assertion failure in checkstyle call", expectedCheckstyleCall, actualChecktypeCall)
-    Assert.assertEquals("assertion failure in analysis publisher call", expectedAnalysisPublisherCall, actualAnalysisPublisherCall)
+    Assert.assertEquals("assertion failure in pmdParser call", expectedPmdCall, actualPmdParserCall)
+    Assert.assertEquals("assertion failure in open tasks call", expectedTaskScannerCall, actualTaskScannerCall)
+    Assert.assertEquals("assertion failure in checkstyle call", expectedCheckStyleCall, actualCheckStyleCall)
+    Assert.assertEquals("assertion failure in resutls call", expectedRecordIssuesCall, actualRecordIssuesCall)
   }
 
   @Test
@@ -162,14 +145,14 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
       ]
     ])
     assertNone(JUNIT)
-
+    assertNone(JUNIT_PARSER)
     assertOnce(FINGERPRINT)
     assertOnce(JACOCOPUBLISHER)
-    assertOnce(CHECKSTYLE)
-    assertOnce(FINDBUGS)
-    assertOnce(PMD)
-    assertOnce(OPENTASKS)
-    assertOnce(ANALYSISPUBLISHER)
+    assertOnce(FIND_BUGS)
+    assertOnce(PMD_PARSER)
+    assertOnce(TASK_SCANNER)
+    assertOnce(CHECK_STYLE)
+    assertOnce(RECORD_ISSUES)
   }
 
   @Test
@@ -185,11 +168,12 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
 
     assertOnce(FINGERPRINT)
     assertOnce(JUNIT)
-    assertOnce(CHECKSTYLE)
-    assertOnce(FINDBUGS)
-    assertOnce(PMD)
-    assertOnce(OPENTASKS)
-    assertOnce(ANALYSISPUBLISHER)
+    assertOnce(JUNIT_PARSER)
+    assertOnce(FIND_BUGS)
+    assertOnce(PMD_PARSER)
+    assertOnce(TASK_SCANNER)
+    assertOnce(CHECK_STYLE)
+    assertOnce(RECORD_ISSUES)
   }
 
   @Test
@@ -201,15 +185,15 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
         ]
       ]
     ])
-    assertNone(CHECKSTYLE)
+    assertNone(CHECK_STYLE)
 
     assertOnce(FINGERPRINT)
     assertOnce(JUNIT)
     assertOnce(JACOCOPUBLISHER)
-    assertOnce(FINDBUGS)
-    assertOnce(PMD)
-    assertOnce(OPENTASKS)
-    assertOnce(ANALYSISPUBLISHER)
+    assertOnce(FIND_BUGS)
+    assertOnce(PMD_PARSER)
+    assertOnce(TASK_SCANNER)
+    assertOnce(RECORD_ISSUES)
   }
 
   @Test
@@ -223,13 +207,14 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
     ])
     assertNone(FINGERPRINT)
 
-    assertOnce(CHECKSTYLE)
     assertOnce(JUNIT)
+    assertOnce(JUNIT_PARSER)
     assertOnce(JACOCOPUBLISHER)
-    assertOnce(FINDBUGS)
-    assertOnce(PMD)
-    assertOnce(OPENTASKS)
-    assertOnce(ANALYSISPUBLISHER)
+    assertOnce(FIND_BUGS)
+    assertOnce(PMD_PARSER)
+    assertOnce(TASK_SCANNER)
+    assertOnce(CHECK_STYLE)
+    assertOnce(RECORD_ISSUES)
   }
 
   @Test
@@ -241,19 +226,20 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
         ]
       ]
     ])
-    assertNone(FINDBUGS)
+    assertNone(FIND_BUGS)
 
     assertOnce(FINGERPRINT)
     assertOnce(JUNIT)
+    assertOnce(JUNIT_PARSER)
     assertOnce(JACOCOPUBLISHER)
-    assertOnce(CHECKSTYLE)
-    assertOnce(PMD)
-    assertOnce(OPENTASKS)
-    assertOnce(ANALYSISPUBLISHER)
+    assertOnce(PMD_PARSER)
+    assertOnce(TASK_SCANNER)
+    assertOnce(CHECK_STYLE)
+    assertOnce(RECORD_ISSUES)
   }
 
   @Test
-  void shouldNotExecutePmd() {
+  void shouldNotExecutePmdParser() {
     loadAndExecuteScript("vars/defaultResultsStage/jobs/defaultResultsStageTestJob.groovy", [
       (ConfigConstants.STAGE_RESULTS): [
         (ConfigConstants.STAGE_RESULTS_PMD): [
@@ -261,19 +247,20 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
         ]
       ]
     ])
-    assertNone(PMD)
+    assertNone(PMD_PARSER)
 
     assertOnce(FINGERPRINT)
     assertOnce(JUNIT)
+    assertOnce(JUNIT_PARSER)
     assertOnce(JACOCOPUBLISHER)
-    assertOnce(CHECKSTYLE)
-    assertOnce(FINDBUGS)
-    assertOnce(OPENTASKS)
-    assertOnce(ANALYSISPUBLISHER)
+    assertOnce(FIND_BUGS)
+    assertOnce(TASK_SCANNER)
+    assertOnce(CHECK_STYLE)
+    assertOnce(RECORD_ISSUES)
   }
 
   @Test
-  void shouldNotExecuteOpenTasks() {
+  void shouldNotExecuteTaskScanner() {
     loadAndExecuteScript("vars/defaultResultsStage/jobs/defaultResultsStageTestJob.groovy", [
       (ConfigConstants.STAGE_RESULTS): [
         (ConfigConstants.STAGE_RESULTS_OPEN_TASKS): [
@@ -281,35 +268,16 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
         ]
       ]
     ])
-    assertNone(OPENTASKS)
+    assertNone(TASK_SCANNER)
 
     assertOnce(FINGERPRINT)
     assertOnce(JUNIT)
+    assertOnce(JUNIT_PARSER)
     assertOnce(JACOCOPUBLISHER)
-    assertOnce(CHECKSTYLE)
-    assertOnce(FINDBUGS)
-    assertOnce(PMD)
-    assertOnce(ANALYSISPUBLISHER)
-  }
-
-  @Test
-  void shouldNotExecuteAnalysisPublisher() {
-    loadAndExecuteScript("vars/defaultResultsStage/jobs/defaultResultsStageTestJob.groovy", [
-      (ConfigConstants.STAGE_RESULTS): [
-        (ConfigConstants.STAGE_RESULTS_ANALYSIS_PUBLISHER): [
-          (ConfigConstants.STAGE_RESULTS_ANALYSIS_PUBLISHER_ENABLED): false
-        ]
-      ]
-    ])
-    assertNone(ANALYSISPUBLISHER)
-
-    assertOnce(FINGERPRINT)
-    assertOnce(JUNIT)
-    assertOnce(JACOCOPUBLISHER)
-    assertOnce(CHECKSTYLE)
-    assertOnce(FINDBUGS)
-    assertOnce(PMD)
-    assertOnce(OPENTASKS)
+    assertOnce(FIND_BUGS)
+    assertOnce(PMD_PARSER)
+    assertOnce(CHECK_STYLE)
+    assertOnce(RECORD_ISSUES)
   }
 
   @Test
@@ -384,25 +352,19 @@ class DefaultResultsStageIT extends PVLibraryIntegrationTestBase {
   @Test
   void shouldExecuteCheckstyleWithCustomSettings() {
     Map expectedCheckstyleCall = [
-        canComputeNew             : true,
-        defaultEncoding           : 'customEncoding',
-        healthy                   : 'customHealthy',
-        pattern                   : 'customPattern',
-        unHealthy                 : 'customUnHealthy'
+        reportEncoding: 'customEncoding',
+        pattern : 'customPattern',
     ]
     loadAndExecuteScript("vars/defaultResultsStage/jobs/defaultResultsStageTestJob.groovy", [
         (ConfigConstants.STAGE_RESULTS): [
             (ConfigConstants.STAGE_RESULTS_CHECKSTYLE): [
-                (ConfigConstants.STAGE_RESULTS_CHECKSTYLE_CAN_COMPUTE_NEW)                     : true,
-                (ConfigConstants.STAGE_RESULTS_CHECKSTYLE_DEFAULT_ENCODING)                    : "customEncoding",
-                (ConfigConstants.STAGE_RESULTS_CHECKSTYLE_HEALTHY)                             : "customHealthy",
-                (ConfigConstants.STAGE_RESULTS_CHECKSTYLE_PATTERN)                             : "customPattern",
-                (ConfigConstants.STAGE_RESULTS_CHECKSTYLE_UNHEALTHY)                           : "customUnHealthy",
+                (ConfigConstants.STAGE_RESULTS_CHECKSTYLE_REPORT_ENCODING): "customEncoding",
+                (ConfigConstants.STAGE_RESULTS_CHECKSTYLE_PATTERN)        : "customPattern",
             ]
         ]
     ])
 
-    Map actualCheckstyleCall = assertOnce(CHECKSTYLE)
+    Map actualCheckstyleCall = assertOnce(CHECK_STYLE)
     Assert.assertEquals("assertion failure in checkstyle call", expectedCheckstyleCall, actualCheckstyleCall)
   }
 }

@@ -240,12 +240,12 @@ class BuildDefaultIT extends PVLibraryIntegrationTestBase {
 
   protected assertAnalyzeSteps() {
     assertOnce(JUNIT)
+    assertOnce(JUNIT_PARSER)
     assertOnce(JACOCOPUBLISHER)
-    assertOnce(FINDBUGS)
-    assertOnce(PMD)
-    assertOnce(OPENTASKS)
-    assertOnce(CHECKSTYLE)
-    assertOnce(ANALYSISPUBLISHER)
+    assertOnce(FIND_BUGS)
+    assertOnce(PMD_PARSER)
+    assertOnce(TASK_SCANNER)
+    assertOnce(CHECK_STYLE)
   }
 
   @Override

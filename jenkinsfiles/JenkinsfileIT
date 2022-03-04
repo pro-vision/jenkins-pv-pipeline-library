@@ -76,6 +76,12 @@ Map config = [
       this.&postStage2,
     ],
   ],
+  (MAVEN): [
+    (MAVEN_DEFINES): [
+      "maven.test.failure.ignore" : true,
+      //"maven.test.skip" : true
+    ],
+  ],
   (PROPERTIES)          : [
     // disable triggers
     (PROPERTIES_PIPELINE_TRIGGERS): [
@@ -92,7 +98,8 @@ Map config = [
     ]
   ],
   (STAGE_PREPARATION) : [
-    (STAGE_PREPARATION_EXTEND) : this.&customPreparationStage
+    (STAGE_PREPARATION_EXTEND) : this.&customPreparationStage,
+    (STAGE_PREPARATION_PURGE_SHAPSHOTS): false
   ],
   (STAGE_RESULTS): [
     (STAGE_RESULTS_EXTEND): this.&customResultsStage,

@@ -88,7 +88,6 @@ After the job properties are set the closure is called
 
 Finally the wrapper calls the
 * [`notify.mail`](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/notify.md) and
-* [`notify.mattermost`](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/notify.md)
 * [`notify.mqtt`](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/notify.md)
 * [`notify.teams`](https://github.com/wcm-io-devops/jenkins-pipeline-library/blob/master/vars/notify.md)
 
