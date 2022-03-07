@@ -78,7 +78,7 @@ Map config = [
   ],
   (MAVEN): [
     (MAVEN_DEFINES): [
-      "maven.test.failure.ignore" : true,
+      // "maven.test.failure.ignore" : true,
       //"maven.test.skip" : true
     ],
   ],
@@ -103,6 +103,9 @@ Map config = [
   ],
   (STAGE_RESULTS): [
     (STAGE_RESULTS_EXTEND): this.&customResultsStage,
+  ],
+  (TIMEOUT): [
+    (TIMEOUT_TIME): 60,
   ],
 ]
 
