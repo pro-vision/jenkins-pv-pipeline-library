@@ -19,7 +19,7 @@ import org.jenkinsci.plugins.workflow.libs.Library
 
 properties([
   disableConcurrentBuilds(),
-  pipelineTriggers([pollSCM('H * * * * ')])
+  pipelineTriggers([pollSCM('H H * * * ')])
 ])
 
 Logger.init(this, LogLevel.INFO)
