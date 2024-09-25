@@ -3,6 +3,10 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.pro-vision.devops.jenkins/de.pro-vision.devops.jenkins.pv-pipeline-library/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.pro-vision.devops.jenkins/de.pro-vision.devops.jenkins.pv-pipeline-library)
 [![Sonatype Snapshots](https://img.shields.io/nexus/s/https/oss.sonatype.org/de.pro-vision.devops.jenkins/de.pro-vision.devops.jenkins.pv-pipeline-library.svg)](https://oss.sonatype.org/content/repositories/snapshots/de/pro-vision/devops/jenkins/de.pro-vision.devops.jenkins.pv-pipeline-library/)
 
+> :information_source: **Unmaintained**
+>
+> This project is currently not maintained.
+
 # PV Pipeline Library
 
 The PV pipeline library is an extension for the
